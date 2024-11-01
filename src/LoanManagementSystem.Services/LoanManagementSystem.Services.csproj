@@ -13,7 +13,6 @@
       <Folder Include="Customers\Exceptions\" />
       <Folder Include="FinancialInformation\Contracts\DTOs\" />
       <Folder Include="FinancialInformation\Contracts\Interfaces\" />
-      <Folder Include="FinancialInformation\Enums\" />
       <Folder Include="FinancialInformation\Exceptions\" />
       <Folder Include="Installments\Contracts\DTOs\" />
       <Folder Include="Installments\Contracts\Interfaces\" />
