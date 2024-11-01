@@ -6,4 +6,27 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Customers\Contracts\DTOs\" />
+      <Folder Include="Customers\Contracts\Interfaces\" />
+      <Folder Include="Customers\Enums\" />
+      <Folder Include="Customers\Exceptions\" />
+      <Folder Include="FinancialInformation\Contracts\DTOs\" />
+      <Folder Include="FinancialInformation\Contracts\Interfaces\" />
+      <Folder Include="FinancialInformation\Enums\" />
+      <Folder Include="FinancialInformation\Exceptions\" />
+      <Folder Include="Installments\Contracts\DTOs\" />
+      <Folder Include="Installments\Contracts\Interfaces\" />
+      <Folder Include="Installments\Enums\" />
+      <Folder Include="Installments\Exceptions\" />
+      <Folder Include="LoanRequests\Contracts\DTOs\" />
+      <Folder Include="LoanRequests\Contracts\Interfaces\" />
+      <Folder Include="LoanRequests\Enums\" />
+      <Folder Include="LoanRequests\Exceptions\" />
+      <Folder Include="Loans\Contracts\DTOs\" />
+      <Folder Include="Loans\Contracts\Interfaces\" />
+      <Folder Include="Loans\Enums\" />
+      <Folder Include="Loans\Exceptions\" />
+    </ItemGroup>
+
 </Project>
