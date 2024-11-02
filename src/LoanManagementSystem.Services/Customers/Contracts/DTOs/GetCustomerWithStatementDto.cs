@@ -1,4 +1,4 @@
-namespace LoanManagementSystem.Services.Customers.Contracts.Interfaces;
+namespace LoanManagementSystem.Services.Customers.Contracts.DTOs;
 
 public class GetCustomerWithStatementDto
 {

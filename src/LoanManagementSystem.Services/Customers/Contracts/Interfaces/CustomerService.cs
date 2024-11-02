@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using LoanManagementSystem.Entities.Customers;
 using LoanManagementSystem.Services.Customers.Contracts.DTOs;
 
 namespace LoanManagementSystem.Services.Customers.Contracts.Interfaces;

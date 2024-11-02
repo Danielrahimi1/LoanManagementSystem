@@ -1,5 +1,3 @@
-using LoanManagementSystem.Entities.Statements;
-
 namespace LoanManagementSystem.Services.Customers.Contracts.DTOs;
 
 public class AddCustomerDto
