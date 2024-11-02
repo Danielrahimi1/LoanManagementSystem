@@ -5,13 +5,13 @@ namespace LoanManagementSystem.Entities.Installments;
 
 public class Installment
 {
-    public int Id { get; set; }
-    public LoanRequest? LoanRequest { get; set; }
-    public required int? LoanRequestId { get; set; }
-    public required int LoanId { get; set; }
-    public DateOnly? PaymentDate { get; set; } = null;
-    public required DateOnly PaymentDeadLine { get; set; }
-    public required decimal Amount { get; set; }
-    public decimal MonthlyInterestRate { get; set; }
-    public decimal Fine { get; set; } = default;
+    public int Id { get; init; }
+    public required LoanRequest LoanRequest { get; init; }
+    public required int LoanRequestId { get; init; }
+    public required int LoanId { get; init; }
+    public required decimal Amount { get; init; }
+    public required decimal MonthlyInterestRate { get; init; }
+    public required DateOnly PaymentDeadLine { get; init; }
+    public DateOnly? PaymentDate { get; init; }
+    public decimal Fine { get; set; }
 }
