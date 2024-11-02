@@ -1,10 +1,9 @@
 using LoanManagementSystem.Entities.Statements;
 
-namespace LoanManagementSystem.Entities.Customers;
+namespace LoanManagementSystem.Services.Customers.Contracts.DTOs;
 
-public class Customer
+public class AddCustomerDto
 {
-    public int Id { get; set; }
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
     public required string NationalId { get; set; }
