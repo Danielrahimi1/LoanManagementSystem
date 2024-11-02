@@ -1,6 +1,6 @@
 namespace LoanManagementSystem.Persistence.Ef.Statements;
 
-public class EfStatementRepository
+public class EfStatementRepository(EfDataContext context)
 {
     
 }

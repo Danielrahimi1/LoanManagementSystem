@@ -1,6 +1,6 @@
 namespace LoanManagementSystem.Persistence.Ef.Installments;
 
-public class EfInstallmentRepository
+public class EfInstallmentRepository(EfDataContext context)
 {
     
 }
