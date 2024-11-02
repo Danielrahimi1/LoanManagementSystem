@@ -4,6 +4,7 @@ namespace LoanManagementSystem.Entities.Statements;
 
 public class Statement
 {
+    public int Id { get; set; }
     public int JobType { get; set; } = default;
     public int? CustomerId { get; set; }
     public int IncomeGroup { get; set; }
