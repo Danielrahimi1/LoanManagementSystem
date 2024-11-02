@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <Folder Include="Customers\Enums\" />
-      <Folder Include="Customers\Exceptions\" />
       <Folder Include="Statements\Contracts\DTOs\" />
       <Folder Include="Statements\Contracts\Interfaces\" />
       <Folder Include="Statements\Exceptions\" />
