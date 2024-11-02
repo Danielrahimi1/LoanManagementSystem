@@ -7,8 +7,9 @@ public interface CustomerRepository
 {
     Task<int> GetCreditScoreById(int id);
     Task Add(Customer customer);
+    Task<bool> IsDuplicateByNationalId(string nationalId);
     Task<bool> IsVerified(int id);
     Task<Customer?> Find(int id);
-    Task<int> Update(Customer customer);
-    Task<int> Remove(Customer customer);
+    Task Update(Customer customer);
+    Task Remove(Customer customer);
 }
