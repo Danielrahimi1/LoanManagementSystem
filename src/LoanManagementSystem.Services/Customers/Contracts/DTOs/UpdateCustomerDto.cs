@@ -12,5 +12,4 @@ public class UpdateCustomerDto
     public decimal Balance { get; set; }
     public bool IsVerified { get; set; }
     public int CreditScore { get; set; }
-    public Statement Statement { get; set; } = new();
 }

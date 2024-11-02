@@ -1,8 +1,6 @@
-using LoanManagementSystem.Entities.Statements;
+namespace LoanManagementSystem.Services.Customers.Contracts.Interfaces;
 
-namespace LoanManagementSystem.Services.Customers.Contracts.DTOs;
-
-public class AddCustomerDto
+public class GetCustomerDto
 {
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
