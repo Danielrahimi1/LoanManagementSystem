@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using LoanManagementSystem.Entities.Installments;
 
 namespace LoanManagementSystem.Entities.LoanRequests;
@@ -11,5 +12,5 @@ public class LoanRequest
     public required int CustomerId { get; set; }
     public bool DelayInRepayment { get; set; } = false;
     public DateOnly? ConfirmationDate { get; set; }
-    public Installment[] Installments { get; set; } = [];
+    public HashSet<Installment> Installments { get; set; } = [];
 }
