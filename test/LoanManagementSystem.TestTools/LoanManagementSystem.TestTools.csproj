@@ -8,6 +8,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\LoanManagementSystem.Entities\LoanManagementSystem.Entities.csproj" />
+      <ProjectReference Include="..\..\src\LoanManagementSystem.Persistence.Ef\LoanManagementSystem.Persistence.Ef.csproj" />
+      <ProjectReference Include="..\..\src\LoanManagementSystem.Services\LoanManagementSystem.Services.csproj" />
     </ItemGroup>
 
 </Project>

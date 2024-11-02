@@ -1,7 +1,7 @@
 ﻿using LoanManagementSystem.Entities.Customers;
 using LoanManagementSystem.Entities.Statements;
 
-namespace LoanManagementSystem.TestTools;
+namespace LoanManagementSystem.TestTools.Customers;
 
 public class CustomerBuilder
 {
