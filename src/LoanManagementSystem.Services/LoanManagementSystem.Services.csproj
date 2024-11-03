@@ -7,14 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Customers\Enums\" />
       <Folder Include="Statements\Contracts\DTOs\" />
       <Folder Include="Statements\Exceptions\" />
-      <Folder Include="Installments\Enums\" />
       <Folder Include="Installments\Exceptions\" />
-      <Folder Include="LoanRequests\Enums\" />
       <Folder Include="LoanRequests\Exceptions\" />
-      <Folder Include="Loans\Enums\" />
       <Folder Include="Loans\Exceptions\" />
     </ItemGroup>
 
