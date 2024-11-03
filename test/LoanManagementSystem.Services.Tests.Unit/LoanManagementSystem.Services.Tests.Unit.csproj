@@ -20,4 +20,8 @@
         <Using Include="Xunit"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\LoanManagementSystem.Services\LoanManagementSystem.Services.csproj" />
+    </ItemGroup>
+
 </Project>
