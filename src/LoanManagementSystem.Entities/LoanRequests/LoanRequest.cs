@@ -10,7 +10,7 @@ public class LoanRequest
     public int Id { get; init; }
     public required int LoanId { get; init; }
     public required int CustomerId { get; init; }
-    public int Status { get; set; }
+    public required int Status { get; set; }
     public bool DelayInRepayment { get; set; }
     public DateOnly? ConfirmationDate { get; set; }
     public required Customer Customer { get; init; }
