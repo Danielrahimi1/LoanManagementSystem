@@ -14,6 +14,6 @@ public class InstallmentEntityMap : IEntityTypeConfiguration<Installment>
         builder.Property(installment => installment.Amount).HasColumnType("money");
         builder.Property(installment => installment.Fine).HasColumnType("money");
         builder.Property(installment => installment.PaymentDate).IsRequired(false);
-        builder.Property(installment => installment.MonthlyInterestRate).HasColumnType("money");
+        builder.Property(installment => installment.MonthlyInterest).HasColumnType("money");
     }
 }
