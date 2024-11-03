@@ -102,11 +102,20 @@ public class CustomerAppService(
 
         customer.IsVerified = true;
         await customerRepository.Update(customer);
+        await unitOfWork.Save();
     }
 
-    public Task Charge(int id, UpdateBalanceDto dto)
+    public async Task Charge(int id, UpdateBalanceDto dto)
     {
-        throw new NotImplementedException();
+        var customer = await customerRepository.Find(id);
+        if (customer is null)
+        {
+            throw new CustomerNotFoundException();
+        }
+        
+        customer.Balance += dto.Charge;
+        await customerRepository.Update(customer);
+        await unitOfWork.Save();
     }
 
     public async Task Update(int id, UpdateCustomerDto dto)
