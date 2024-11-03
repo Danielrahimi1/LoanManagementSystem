@@ -9,18 +9,11 @@
     <ItemGroup>
       <Folder Include="Customers\Enums\" />
       <Folder Include="Statements\Contracts\DTOs\" />
-      <Folder Include="Statements\Contracts\Interfaces\" />
       <Folder Include="Statements\Exceptions\" />
-      <Folder Include="Installments\Contracts\DTOs\" />
-      <Folder Include="Installments\Contracts\Interfaces\" />
       <Folder Include="Installments\Enums\" />
       <Folder Include="Installments\Exceptions\" />
-      <Folder Include="LoanRequests\Contracts\DTOs\" />
-      <Folder Include="LoanRequests\Contracts\Interfaces\" />
       <Folder Include="LoanRequests\Enums\" />
       <Folder Include="LoanRequests\Exceptions\" />
-      <Folder Include="Loans\Contracts\DTOs\" />
-      <Folder Include="Loans\Contracts\Interfaces\" />
       <Folder Include="Loans\Enums\" />
       <Folder Include="Loans\Exceptions\" />
     </ItemGroup>

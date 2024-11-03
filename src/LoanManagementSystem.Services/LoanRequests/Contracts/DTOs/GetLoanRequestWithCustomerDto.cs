@@ -1,6 +1,6 @@
 using System;
 
-namespace LoanManagementSystem.Services.LoanRequests.Contracts.Interfaces;
+namespace LoanManagementSystem.Services.LoanRequests.Contracts.DTOs;
 
 public class GetLoanRequestWithCustomerDto
 {
