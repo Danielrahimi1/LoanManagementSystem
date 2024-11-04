@@ -17,10 +17,10 @@ public class CustomerEntityMap : IEntityTypeConfiguration<Customer>
         builder.Property(customer => customer.NationalId).HasMaxLength(10);
         builder.Property(customer => customer.PhoneNumber).HasMaxLength(11);
         builder.Property(customer => customer.Email).HasMaxLength(320);
-        builder.Property(customer => customer.Balance).HasColumnType("money");
-        builder.HasOne(customer => customer.Statement)
-            .WithOne(statement => statement.Customer)
-            .HasForeignKey<Statement>(statement => statement.CustomerId).IsRequired(false);
+        builder.Property(customer => customer.Balance).HasColumnType("decimal").HasPrecision(19, 4);
+        // builder.HasOne(customer => customer.Statement)
+        //     .WithOne(statement => statement.Customer)
+        //     .HasForeignKey<Statement>(statement => statement.CustomerId).IsRequired(false);
         builder.HasMany(customer => customer.LoanRequests)
             .WithOne(loanRequest => loanRequest.Customer)
             .HasForeignKey(lr => lr.CustomerId)
