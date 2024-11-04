@@ -5,7 +5,7 @@ namespace LoanManagementSystem.Services.Loans.Contracts.Interfaces;
 
 public interface LoanQuery
 {
-    Task<GetLoanDto> GetById(int loanId);
+    Task<GetLoanDto?> GetById(int id);
     Task<GetLoanDto[]> GetAll();
     Task<GetLoanDto[]> GetAllShortPeriod();
     Task<GetLoanDto[]> GetAllLongPeriod();

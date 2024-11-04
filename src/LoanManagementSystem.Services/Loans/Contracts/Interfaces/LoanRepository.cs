@@ -7,6 +7,6 @@ public interface LoanRepository
 {
     Task Add(Loan loan);
     Task<Loan?> Find(int id);
-    Task Update(Loan loan);
-    Task Remove(Loan loan);
+    void Update(Loan loan);
+    void Remove(Loan loan);
 }
