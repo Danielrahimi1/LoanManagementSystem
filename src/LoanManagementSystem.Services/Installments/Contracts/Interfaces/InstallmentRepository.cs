@@ -5,7 +5,8 @@ namespace LoanManagementSystem.Services.Installments.Contracts.Interfaces;
 
 public interface InstallmentRepository
 {
+    Task AddRange(params Installment[] installments);
     Task Add(Installment installment);
     Task<Installment?> Find(int id);
-    Task Update(Installment installment);
+    void Update(Installment installment);
 }
