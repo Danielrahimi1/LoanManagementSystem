@@ -1,83 +1,32 @@
 ﻿using FluentMigrator.Runner;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Migration.Migrations;
 
 namespace LoanManagementSystem.Migration;
 
-internal class Program
+public static class Program
 {
-    static void Main(string[] args)
+    public static void Main(string[] args)
     {
-        var options = GetSettings(args, Directory.GetCurrentDirectory());
+        using var serviceProvider = CreateServices();
+        using var scope = serviceProvider.CreateScope();
+        UpdateDatabase(scope.ServiceProvider);
+    }
 
-        var connectionString = options.ConnectionString;
+    private static ServiceProvider CreateServices() =>
+        new ServiceCollection()
+            .AddFluentMigratorCore()
+            .ConfigureRunner(rb => rb
+                .AddSqlServer()
+                .WithGlobalConnectionString(
+                    "Data Source=localhost;Initial Catalog=LMS;Integrated Security=True;Trust Server Certificate=True")
+                .ScanIn(typeof(AddCustomersTable).Assembly).For.Migrations())
+            .AddLogging(lb => lb.AddFluentMigratorConsole())
+            .BuildServiceProvider(false);
 
-        CreateDatabase(connectionString);
-
-        var runner = CreateRunner(connectionString, options);
-
+    private static void UpdateDatabase(IServiceProvider serviceProvider)
+    {
+        var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
         runner.MigrateUp();
     }
-
-    private static void CreateDatabase(string connectionString)
-    {
-        var databaseName = GetDatabaseName(connectionString);
-        string masterConnectionString = ChangeDatabaseName(connectionString, "master");
-        var commandScript = $"if db_id(N'{databaseName}') is null create database [{databaseName}]";
-
-        using var connection = new SqlConnection(masterConnectionString);
-        using var command = new SqlCommand(commandScript, connection);
-        connection.Open();
-        command.ExecuteNonQuery();
-        connection.Close();
-    }
-
-    private static string ChangeDatabaseName(string connectionString, string databaseName)
-    {
-        var csb = new SqlConnectionStringBuilder(connectionString)
-        {
-            InitialCatalog = databaseName
-        };
-        return csb.ConnectionString;
-    }
-
-    private static string GetDatabaseName(string connectionString)
-    {
-        return new SqlConnectionStringBuilder(connectionString).InitialCatalog;
-    }
-
-    private static IMigrationRunner CreateRunner(string connectionString, MigrationSettings options)
-    {
-        var container = new ServiceCollection()
-            .AddFluentMigratorCore()
-            .ConfigureRunner(_ => _
-                .AddSqlServer()
-                .WithGlobalConnectionString(connectionString)
-                .ScanIn(typeof(Program).Assembly).For.All())
-            .AddSingleton(options)
-            .AddLogging(_ => _.AddFluentMigratorConsole())
-            .BuildServiceProvider();
-        return container.GetRequiredService<IMigrationRunner>();
-    }
-
-    private static MigrationSettings GetSettings(string[] args, string baseDir)
-    {
-        var configurations = new ConfigurationBuilder()
-            .SetBasePath(baseDir)
-            .AddJsonFile("appSettings.json", optional: true, reloadOnChange: true)
-            .AddEnvironmentVariables()
-            .AddCommandLine(args)
-            .Build();
-
-        var settings = new MigrationSettings();
-        settings.ConnectionString = configurations.GetValue<string>("ConnectionString")!;
-        return settings;
-    }
-}
-
-public class MigrationSettings
-{
-    public string ConnectionString { get; set; } =
-        "server=.;database=LMS;Trusted_Connection=True;Encrypt=false;TrustServerCertificate=true;";
 }

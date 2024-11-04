@@ -14,7 +14,7 @@ public class AddStatementsTable : FluentMigrator.Migration
             .WithColumn("IncomeGroup").AsInt32().NotNullable()
             .WithColumn("NetWorth").AsDecimal().NotNullable()
             .WithColumn("CustomerId").AsInt32().NotNullable()
-                .ForeignKey("FK_Statements_Customers","Customer","Id")
+                .ForeignKey("Customers","Id")
                 .OnDelete(Rule.Cascade).Unique();
     }
 

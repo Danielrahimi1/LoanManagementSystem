@@ -15,7 +15,7 @@ public class AddCustomersTable : FluentMigrator.Migration
             .WithColumn("PhoneNumber").AsString(11).NotNullable()
             .WithColumn("Email").AsString(320).NotNullable()
             .WithColumn("Balance").AsDecimal(19,4).NotNullable()
-            .WithColumn("IsVerified").AsBinary().NotNullable()
+            .WithColumn("IsVerified").AsBoolean().NotNullable()
             .WithColumn("CreditScore").AsInt32().NotNullable();
     }
 

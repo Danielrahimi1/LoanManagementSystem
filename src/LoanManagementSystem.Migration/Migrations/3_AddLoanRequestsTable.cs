@@ -11,11 +11,11 @@ public class AddLoanRequestsTable : FluentMigrator.Migration
         Create.Table("LoanRequests")
             .WithColumn("Id").AsInt32().PrimaryKey().Identity()
             .WithColumn("Status").AsInt32().NotNullable()
-            .WithColumn("DelayInRepayment").AsBinary().NotNullable()
+            .WithColumn("DelayInRepayment").AsBoolean().NotNullable()
             .WithColumn("ConfirmationDate").AsDateTime2().Nullable()
             .WithColumn("LoanId").AsInt32().NotNullable()
             .WithColumn("CustomerId").AsInt32().NotNullable()
-                .ForeignKey("FK_LoanRequests_Customers", "Customer", "Id")
+                .ForeignKey("FK_LoanRequests_Customers", "Customers", "Id")
                 .OnDelete(Rule.None);
     }
 
