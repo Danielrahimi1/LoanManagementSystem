@@ -7,5 +7,5 @@ public interface StatementRepository
 {
     Task Add(Statement statement);
     Task<Statement?> Find(int id);
-    Task Update(Statement statement);
+    void Update(Statement statement);
 }
