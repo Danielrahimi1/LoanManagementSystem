@@ -7,5 +7,5 @@ public interface LoanRequestRepository
 {
     Task Add(LoanRequest loanRequest);
     Task<LoanRequest?> Find(int id);
-    Task Update(LoanRequest loanRequest);
+    void Update(LoanRequest loanRequest);
 }
