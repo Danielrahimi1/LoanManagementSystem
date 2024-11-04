@@ -11,6 +11,5 @@ public class EfInstallmentRepository(EfDataContext context) : InstallmentReposit
     public async Task<Installment?> Find(int id) =>
         await context.Set<Installment>().FirstOrDefaultAsync(i => i.Id == id);
 
-    public async Task Update(Installment installment) =>
-        await Task.Run(() => context.Set<Installment>().Update(installment));
+    public void Update(Installment installment) => context.Set<Installment>().Update(installment);
 }
