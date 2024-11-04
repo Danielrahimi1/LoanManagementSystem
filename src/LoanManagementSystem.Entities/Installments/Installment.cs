@@ -11,6 +11,6 @@ public class Installment
     public required decimal Amount { get; init; }
     public required decimal MonthlyInterest { get; init; }
     public required DateOnly PaymentDeadLine { get; init; }
-    public DateOnly? PaymentDate { get; init; }
+    public DateOnly? PaymentDate { get; set; }
     public decimal Fine { get; set; } = default;
 }
