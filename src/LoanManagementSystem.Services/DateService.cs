@@ -4,5 +4,5 @@ namespace LoanManagementSystem.Services;
 
 public interface DateService
 {
-    public DateOnly NowUtc { get; set; }
+    public DateOnly UtcNow { get; set; }
 }
