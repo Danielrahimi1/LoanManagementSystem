@@ -12,6 +12,5 @@ public class EfLoanRequestRepository(EfDataContext context) : LoanRequestReposit
     public async Task<LoanRequest?> Find(int id) =>
         await context.Set<LoanRequest>().FirstOrDefaultAsync(lr => lr.Id == id);
 
-    public async Task Update(LoanRequest loanRequest) =>
-        await Task.Run(() => context.Set<LoanRequest>().Update(loanRequest));
+    public void Update(LoanRequest loanRequest) => context.Set<LoanRequest>().Update(loanRequest);
 }
