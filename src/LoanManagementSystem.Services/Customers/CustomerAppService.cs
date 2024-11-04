@@ -19,14 +19,11 @@ public class CustomerAppService(
 {
     public async Task Register(AddCustomerDto dto)
     {
-        if (IsEmailValid(dto.Email))
-        {
-            throw new EmailNotValidException();
-        }
+        IsEmailValid(dto.Email);
 
-        if (IsNationalIdValid(dto.NationalId))
+        if (!IsNationalIdValid(dto.NationalId))
         {
-            throw new NationalIdDuplicateException();
+            throw new InvalidNationalIdException();
         }
 
         if (await customerRepository.IsDuplicateByNationalId(dto.NationalId))
@@ -48,25 +45,24 @@ public class CustomerAppService(
 
     public async Task RegisterWithStatement(AddCustomerWithStatementDto dto)
     {
-        if (IsEmailValid(dto.Email))
-        {
-            throw new EmailNotValidException();
-        }
+        IsEmailValid(dto.Email);
 
-        if (IsNationalIdValid(dto.NationalId))
+        if (!IsNationalIdValid(dto.NationalId))
         {
-            throw new NationalIdDuplicateException();
+            throw new InvalidNationalIdException();
         }
 
         if (await customerRepository.IsDuplicateByNationalId(dto.NationalId))
         {
             throw new NationalIdDuplicateException();
         }
-
+        
+        
+        
         var incomeGroup = dto.Income > 10M ? IncomeGroup.MoreThanTen :
             dto.Income >= 5M ? IncomeGroup.FiveUptoIncludingTen : IncomeGroup.LessThanFive;
 
-        var jobType = Enum.Parse(typeof(JobType), dto.JobType, true);
+        var jobType = (JobType)Enum.Parse(typeof(JobType), dto.JobType, true);
 
         var customer = new Customer
         {
@@ -77,7 +73,7 @@ public class CustomerAppService(
             Email = dto.Email,
             Statement = new Statement
             {
-                JobType = (JobType)jobType,
+                JobType = jobType,
                 IncomeGroup = incomeGroup,
                 NetWorth = dto.NetWorth,
             }
@@ -101,7 +97,7 @@ public class CustomerAppService(
         }
 
         customer.IsVerified = true;
-        await customerRepository.Update(customer);
+        customerRepository.Update(customer);
         await unitOfWork.Save();
     }
 
@@ -112,9 +108,9 @@ public class CustomerAppService(
         {
             throw new CustomerNotFoundException();
         }
-        
+
         customer.Balance += dto.Charge;
-        await customerRepository.Update(customer);
+        customerRepository.Update(customer);
         await unitOfWork.Save();
     }
 
@@ -140,6 +136,9 @@ public class CustomerAppService(
         customer.LastName = dto.LastName ?? customer.LastName;
         customer.PhoneNumber = dto.PhoneNumber ?? customer.PhoneNumber;
         customer.Email = dto.Email ?? customer.Email;
+        customer.IsVerified = false;
+        customerRepository.Update(customer);
+        await unitOfWork.Save();
     }
 
     public Task Delete(int id)
@@ -147,9 +146,18 @@ public class CustomerAppService(
         throw new NotImplementedException();
     }
 
-    private static bool IsEmailValid(string email) =>
-        new MailAddress(email).Address != email;
+    private static void IsEmailValid(string email)
+    {
+        try
+        {
+            _ = new MailAddress(email).Address;
+        }
+        catch (Exception e)
+        {
+            throw new InvalidEmailException();
+        }
+    }
 
     private static bool IsNationalIdValid(string nationalId) =>
-        new GeneratedRegexAttribute("\\d{10}").Match(nationalId);
+        Regex.IsMatch(nationalId, @"^\d{10}\b");
 }
