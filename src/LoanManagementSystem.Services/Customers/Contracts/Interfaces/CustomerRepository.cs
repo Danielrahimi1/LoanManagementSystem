@@ -10,6 +10,6 @@ public interface CustomerRepository
     Task<bool> IsDuplicateByNationalId(string nationalId);
     Task<bool> IsVerified(int id);
     Task<Customer?> Find(int id);
-    Task Update(Customer customer);
-    Task Remove(Customer customer);
+    void Update(Customer customer);
+    void Remove(Customer customer);
 }
