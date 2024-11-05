@@ -3,8 +3,7 @@ using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using LoanManagementSystem.Entities.Customers;
-using LoanManagementSystem.Entities.Statements;
-using LoanManagementSystem.Entities.Statements.Enums;
+using LoanManagementSystem.Entities.Customers.Enums;
 using LoanManagementSystem.Services.Customers.Contracts.DTOs;
 using LoanManagementSystem.Services.Customers.Contracts.Interfaces;
 using LoanManagementSystem.Services.Customers.Exceptions;
@@ -56,9 +55,8 @@ public class CustomerAppService(
         {
             throw new NationalIdDuplicateException();
         }
-        
-        
-        
+
+
         var incomeGroup = dto.Income > 10M ? IncomeGroup.MoreThanTen :
             dto.Income >= 5M ? IncomeGroup.FiveUptoIncludingTen : IncomeGroup.LessThanFive;
 
@@ -71,12 +69,9 @@ public class CustomerAppService(
             NationalId = dto.NationalId,
             PhoneNumber = dto.PhoneNumber,
             Email = dto.Email,
-            Statement = new Statement
-            {
-                JobType = jobType,
-                IncomeGroup = incomeGroup,
-                NetWorth = dto.NetWorth,
-            }
+            JobType = jobType,
+            IncomeGroup = incomeGroup,
+            NetWorth = dto.NetWorth,
         };
         await customerRepository.Add(customer);
         await unitOfWork.Save();

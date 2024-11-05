@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using LoanManagementSystem.Entities.Statements;
+using LoanManagementSystem.Entities.Customers;
 
 namespace LoanManagementSystem.Services.Statements.Contracts.Interfaces;
 
