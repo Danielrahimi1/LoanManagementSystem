@@ -9,7 +9,6 @@
     <ItemGroup>
       <Folder Include="Statements\Contracts\DTOs\" />
       <Folder Include="Statements\Exceptions\" />
-      <Folder Include="LoanRequests\Exceptions\" />
       <Folder Include="Loans\Exceptions\" />
     </ItemGroup>
 
