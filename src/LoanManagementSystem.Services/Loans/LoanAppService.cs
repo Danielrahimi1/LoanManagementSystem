@@ -17,7 +17,7 @@ public class LoanAppService(
         {
             Amount = dto.Amount,
             InstallmentCount = dto.InstallmentCount,
-            AnnualInterestRate = dto.AnnualInterestRate
+            AnnualInterestRate = dto.InstallmentCount > 12 ? 20 : 15
         };
         await loanRepository.Add(loan);
         await unitOfWork.Save();
@@ -32,7 +32,7 @@ public class LoanAppService(
         }
 
         loan.InstallmentCount = dto.InstallmentCount ?? loan.InstallmentCount;
-        loan.AnnualInterestRate = dto.AnnualInterestRate ?? loan.AnnualInterestRate;
+        loan.AnnualInterestRate = loan.InstallmentCount > 12 ? 20 : 15;
         loan.Amount = dto.Amount ?? loan.Amount;
         loanRepository.Update(loan);
         await unitOfWork.Save();
