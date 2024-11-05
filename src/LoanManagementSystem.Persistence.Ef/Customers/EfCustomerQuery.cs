@@ -38,7 +38,7 @@ public class EfCustomerQuery(EfDataContext context) : CustomerQuery
                 IsVerified = c.IsVerified,
                 CreditScore = c.CreditScore,
                 JobType = c.JobType.ToString(),
-                IncomeGroup = c.JobType.ToString(),
+                IncomeGroup = c.IncomeGroup.ToString(),
                 NetWorth = c.NetWorth
             }).FirstOrDefaultAsync();
 
@@ -69,13 +69,24 @@ public class EfCustomerQuery(EfDataContext context) : CustomerQuery
                 IsVerified = c.IsVerified,
                 CreditScore = c.CreditScore,
                 JobType = c.JobType.ToString(),
-                IncomeGroup = c.JobType.ToString(),
+                IncomeGroup = c.IncomeGroup.ToString(),
                 NetWorth = c.NetWorth
             }).ToArrayAsync();
 
-    public async Task<GetCustomerDto[]> GetRiskyCustomers() =>
-        await (from i in context.Set<Installment>()
-            where i.Fine > 0
+    public async Task<GetCustomerDto[]> GetRiskyCustomers()
+    {
+        var installmentsGroup =
+            (from i in context.Set<Installment>()
+                where i.Fine > 0
+                group i by i.LoanRequestId
+                into g
+                select new
+                {
+                    LoanRequestId = g.Key,
+                    DelayedInstallments = g.Count()
+                }).Where(ig => ig.DelayedInstallments > 1);
+
+        return await (from i in installmentsGroup
             join lr in context.Set<LoanRequest>()
                 on i.LoanRequestId equals lr.Id
             join c in context.Set<Customer>()
@@ -91,14 +102,21 @@ public class EfCustomerQuery(EfDataContext context) : CustomerQuery
                 IsVerified = c.IsVerified,
                 CreditScore = c.CreditScore,
             }).ToArrayAsync();
+    }
 
-    public async Task<GetCustomerWithStatementDto[]> GetRiskyCustomersWithStatement() =>
-        await (from i in context.Set<Installment>()
-            where i.Fine > 0
-            join lr in context.Set<LoanRequest>()
-                on i.LoanRequestId equals lr.Id
-            join c in context.Set<Customer>()
-                on lr.CustomerId equals c.Id
+    public async Task<GetCustomerWithStatementDto[]> GetRiskyCustomersWithStatement()
+    {
+        return await (from i in (from i in context.Set<Installment>()
+                where i.Fine > 0
+                group i by i.LoanRequestId
+                into g
+                select new
+                {
+                    LoanRequestId = g.Key,
+                    DelayedInstallments = g.Count()
+                }).Where(ig => ig.DelayedInstallments > 1)
+            join lr in context.Set<LoanRequest>() on i.LoanRequestId equals lr.Id
+            join c in context.Set<Customer>() on lr.CustomerId equals c.Id
             select new GetCustomerWithStatementDto
             {
                 FirstName = c.FirstName,
@@ -110,7 +128,8 @@ public class EfCustomerQuery(EfDataContext context) : CustomerQuery
                 IsVerified = c.IsVerified,
                 CreditScore = c.CreditScore,
                 JobType = c.JobType.ToString(),
-                IncomeGroup = c.JobType.ToString(),
+                IncomeGroup = c.IncomeGroup.ToString(),
                 NetWorth = c.NetWorth
             }).ToArrayAsync();
+    }
 }

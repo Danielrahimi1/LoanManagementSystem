@@ -10,9 +10,9 @@ public class LoanBuilder
     {
         _loan = new Loan
         {
-            Amount = 12,
+            Amount = 100,
             InstallmentCount = 10,
-            AnnualInterestRate = 18
+            AnnualInterestRate = 15
         };
     }
 
