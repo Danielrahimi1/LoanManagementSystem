@@ -13,7 +13,6 @@ public class AddLoanDtoBuilder
         {
             Amount = 12,
             InstallmentCount = 10,
-            AnnualInterestRate = 18
         };
     }
 
@@ -26,12 +25,6 @@ public class AddLoanDtoBuilder
     public AddLoanDtoBuilder WithInstallmentCount(int value)
     {
         _loan.InstallmentCount = value;
-        return this;
-    }
-
-    public AddLoanDtoBuilder WithAnnualInterestRate(int value)
-    {
-        _loan.AnnualInterestRate = value;
         return this;
     }
 

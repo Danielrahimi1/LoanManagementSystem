@@ -38,6 +38,9 @@ public class LoanQueryTests : BusinessIntegrationTest
     [Fact]
     public async Task GetById_return_null_GetLoanDto__when_passed_loan_id_not_found()
     {
+        var loan1 = new LoanBuilder().WithAmount(100)
+            .WithInstallmentCount(60).WithAnnualInterestRate(4).Build();
+        Save(loan1);
         var actual = await _sut.GetById(-1);
 
         actual.Should().BeNull();

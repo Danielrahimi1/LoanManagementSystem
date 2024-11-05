@@ -24,7 +24,6 @@ public class LoanServiceTests : BusinessIntegrationTest
         {
             Amount = 10,
             InstallmentCount = 12,
-            AnnualInterestRate = 18
         };
 
         await _sut.Create(dto);
@@ -32,7 +31,7 @@ public class LoanServiceTests : BusinessIntegrationTest
         var expected = ReadContext.Set<Loan>().Single();
         expected.Amount.Should().Be(dto.Amount);
         expected.InstallmentCount.Should().Be(dto.InstallmentCount);
-        expected.AnnualInterestRate.Should().Be(dto.AnnualInterestRate);
+        expected.AnnualInterestRate.Should().Be(15);
     }
 
     [Fact]
@@ -44,8 +43,7 @@ public class LoanServiceTests : BusinessIntegrationTest
         var dto = new UpdateLoanDto
         {
             Amount = 10,
-            InstallmentCount = 12,
-            AnnualInterestRate = 18
+            InstallmentCount = 24,
         };
 
         await _sut.Update(loan.Id, dto);
@@ -53,7 +51,7 @@ public class LoanServiceTests : BusinessIntegrationTest
         var expected = ReadContext.Set<Loan>().Single();
         expected.Amount.Should().Be(dto.Amount);
         expected.InstallmentCount.Should().Be(dto.InstallmentCount);
-        expected.AnnualInterestRate.Should().Be(dto.AnnualInterestRate);
+        expected.AnnualInterestRate.Should().Be(20);
     }
 
     [Fact]
@@ -65,8 +63,7 @@ public class LoanServiceTests : BusinessIntegrationTest
         var dto = new UpdateLoanDto
         {
             Amount = 10,
-            InstallmentCount = 12,
-            AnnualInterestRate = 18
+            InstallmentCount = 24,
         };
 
         var expected = async () => await _sut.Update(-1, dto);
