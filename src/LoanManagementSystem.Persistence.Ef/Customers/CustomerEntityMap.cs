@@ -1,5 +1,4 @@
 using LoanManagementSystem.Entities.Customers;
-using LoanManagementSystem.Entities.Statements;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,9 +17,11 @@ public class CustomerEntityMap : IEntityTypeConfiguration<Customer>
         builder.Property(customer => customer.PhoneNumber).HasMaxLength(11);
         builder.Property(customer => customer.Email).HasMaxLength(320);
         builder.Property(customer => customer.Balance).HasColumnType("decimal").HasPrecision(19, 4);
-        // builder.HasOne(customer => customer.Statement)
-        //     .WithOne(statement => statement.Customer)
-        //     .HasForeignKey<Statement>(statement => statement.CustomerId).IsRequired(false);
+
+        builder.Property(customer => customer.JobType).HasConversion<int>().IsRequired(false);
+        builder.Property(customer => customer.IncomeGroup).HasConversion<int>().IsRequired(false);
+        builder.Property(customer => customer.NetWorth).IsRequired(false);
+
         builder.HasMany(customer => customer.LoanRequests)
             .WithOne(loanRequest => loanRequest.Customer)
             .HasForeignKey(lr => lr.CustomerId)
