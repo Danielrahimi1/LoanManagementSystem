@@ -204,15 +204,17 @@ public class CustomerQueryTests : BusinessIntegrationTest
             .WithPhoneNumber("09001239876").WithEmail("john@outlook.com").Build();
         var lr1 = new LoanRequestBuilder().Build();
         var lr2 = new LoanRequestBuilder().Build();
-        customer1.LoanRequests.Add(lr1);
-        customer2.LoanRequests.Add(lr2);
+        var lr3 = new LoanRequestBuilder().Build();
         var in11 = new InstallmentBuilder().WithFine(0.01m).Build();
         var in12 = new InstallmentBuilder().WithFine(0.01m).Build();
         var in13 = new InstallmentBuilder().WithFine(0.01m).Build();
-        var in21 = new InstallmentBuilder().Build();
+        var in21 = new InstallmentBuilder().WithFine(0.01m).Build();
         var in22 = new InstallmentBuilder().Build();
-        lr1.Installments.UnionWith([in11, in12, in13]);
-        lr2.Installments.UnionWith([in21, in22]);
+        lr1.Installments.UnionWith([in11]);
+        lr2.Installments.UnionWith([in12]);
+        lr3.Installments.UnionWith([in11]);
+        customer1.LoanRequests.Add(lr1);
+        customer2.LoanRequests.UnionWith([lr2,lr3]);
         Save(customer1, customer2);
 
         var actual = await _sut.GetRiskyCustomers();
@@ -221,14 +223,14 @@ public class CustomerQueryTests : BusinessIntegrationTest
         actual.Should().BeEquivalentTo([
             new GetCustomerDto
             {
-                FirstName = customer1.FirstName,
-                LastName = customer1.LastName,
-                NationalId = customer1.NationalId,
-                PhoneNumber = customer1.PhoneNumber,
-                Email = customer1.Email,
-                Balance = customer1.Balance,
-                IsVerified = customer1.IsVerified,
-                CreditScore = customer1.CreditScore
+                FirstName = customer2.FirstName,
+                LastName = customer2.LastName,
+                NationalId = customer2.NationalId,
+                PhoneNumber = customer2.PhoneNumber,
+                Email = customer2.Email,
+                Balance = customer2.Balance,
+                IsVerified = customer2.IsVerified,
+                CreditScore = customer2.CreditScore
             }
         ]);
     }
@@ -252,15 +254,15 @@ public class CustomerQueryTests : BusinessIntegrationTest
             .WithNetWorth(18546).Build();
         var lr1 = new LoanRequestBuilder().Build();
         var lr2 = new LoanRequestBuilder().Build();
-        customer1.LoanRequests.Add(lr1);
-        customer2.LoanRequests.Add(lr2);
-        var in11 = new InstallmentBuilder().WithFine(0.01m).Build();
-        var in12 = new InstallmentBuilder().WithFine(0.01m).Build();
-        var in13 = new InstallmentBuilder().WithFine(0.01m).Build();
-        var in21 = new InstallmentBuilder().Build();
-        var in22 = new InstallmentBuilder().Build();
-        lr1.Installments.UnionWith([in11, in12, in13]);
-        lr2.Installments.UnionWith([in21, in22]);
+        var lr3 = new LoanRequestBuilder().Build();
+        var in1 = new InstallmentBuilder().WithFine(0.01m).Build();
+        var in2 = new InstallmentBuilder().WithFine(0.01m).Build();
+        var in3 = new InstallmentBuilder().WithFine(0.01m).Build();
+        lr1.Installments.UnionWith([in1]);
+        lr2.Installments.UnionWith([in2]);
+        lr3.Installments.UnionWith([in3]);
+        customer1.LoanRequests.UnionWith([lr1,lr2]);
+        customer2.LoanRequests.Add(lr3);
         Save(customer1, customer2);
 
         var actual = await _sut.GetRiskyCustomersWithStatement();

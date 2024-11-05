@@ -73,24 +73,19 @@ public class EfCustomerQuery(EfDataContext context) : CustomerQuery
                 NetWorth = c.NetWorth
             }).ToArrayAsync();
 
-    public async Task<GetCustomerDto[]> GetRiskyCustomers()
-    {
-        var installmentsGroup =
-            (from i in context.Set<Installment>()
+    public async Task<GetCustomerDto[]> GetRiskyCustomers() =>
+        await (from i in (from i in context.Set<Installment>()
                 where i.Fine > 0
-                group i by i.LoanRequestId
+                join lr in context.Set<LoanRequest>()
+                    on i.LoanRequestId equals lr.Id
+                group i by lr.CustomerId
                 into g
                 select new
                 {
-                    LoanRequestId = g.Key,
-                    DelayedInstallments = g.Count()
-                }).Where(ig => ig.DelayedInstallments > 1);
-
-        return await (from i in installmentsGroup
-            join lr in context.Set<LoanRequest>()
-                on i.LoanRequestId equals lr.Id
-            join c in context.Set<Customer>()
-                on lr.CustomerId equals c.Id
+                    CustomerId = g.Key,
+                    Delays = g.Count()
+                }).Where(ig => ig.Delays > 1)
+            join c in context.Set<Customer>() on i.CustomerId equals c.Id
             select new GetCustomerDto
             {
                 FirstName = c.FirstName,
@@ -102,21 +97,24 @@ public class EfCustomerQuery(EfDataContext context) : CustomerQuery
                 IsVerified = c.IsVerified,
                 CreditScore = c.CreditScore,
             }).ToArrayAsync();
-    }
 
     public async Task<GetCustomerWithStatementDto[]> GetRiskyCustomersWithStatement()
     {
-        return await (from i in (from i in context.Set<Installment>()
-                where i.Fine > 0
-                group i by i.LoanRequestId
-                into g
-                select new
-                {
-                    LoanRequestId = g.Key,
-                    DelayedInstallments = g.Count()
-                }).Where(ig => ig.DelayedInstallments > 1)
-            join lr in context.Set<LoanRequest>() on i.LoanRequestId equals lr.Id
-            join c in context.Set<Customer>() on lr.CustomerId equals c.Id
+        var installments = (
+            from i in context.Set<Installment>()
+            where i.Fine > 0
+            join lr in context.Set<LoanRequest>()
+                on i.LoanRequestId equals lr.Id
+            group i by lr.CustomerId
+            into g
+            select new
+            {
+                CustomerId = g.Key,
+                Delays = g.Count()
+            }).Where(ig => ig.Delays > 1);
+        return await (from i in installments
+            join c in context.Set<Customer>() 
+                on i.CustomerId equals c.Id
             select new GetCustomerWithStatementDto
             {
                 FirstName = c.FirstName,
