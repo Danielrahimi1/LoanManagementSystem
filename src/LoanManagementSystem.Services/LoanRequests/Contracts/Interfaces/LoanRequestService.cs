@@ -5,7 +5,7 @@ namespace LoanManagementSystem.Services.LoanRequests.Contracts.Interfaces;
 
 public interface LoanRequestService
 {
-    Task Open(AddLoanRequestDto dto);
+    Task Open(int customerId, AddLoanRequestDto dto);
     Task Accept(int id);
     Task Reject(int id);
     Task Activate(int id);
