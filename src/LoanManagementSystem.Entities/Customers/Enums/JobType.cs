@@ -1,4 +1,4 @@
-namespace LoanManagementSystem.Entities.Statements.Enums;
+namespace LoanManagementSystem.Entities.Customers.Enums;
 
 public enum JobType
 {

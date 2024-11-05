@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using LoanManagementSystem.Entities.Customers.Enums;
 using LoanManagementSystem.Entities.LoanRequests;
-using LoanManagementSystem.Entities.Statements;
 
 namespace LoanManagementSystem.Entities.Customers;
 
@@ -15,6 +15,8 @@ public class Customer
     public decimal Balance { get; set; } = default;
     public bool IsVerified { get; set; } = default;
     public int CreditScore { get; set; } = default;
-    public Statement? Statement { get; set; }
+    public JobType JobType { get; set; } = JobType.UnEmployed;
+    public IncomeGroup IncomeGroup { get; set; } = IncomeGroup.LessThanFive;
+    public decimal NetWorth { get; set; }
     public HashSet<LoanRequest> LoanRequests { get; init; } = [];
 }
