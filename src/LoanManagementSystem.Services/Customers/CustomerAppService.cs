@@ -37,6 +37,14 @@ public class CustomerAppService(
             NationalId = dto.NationalId,
             PhoneNumber = dto.PhoneNumber,
             Email = dto.Email,
+            Balance = 0,
+            IsVerified = false,
+            CreditScore = 0,
+            JobType = JobType.UnEmployed,
+            IncomeGroup = IncomeGroup.LessThanFive,
+            NetWorth = 0,
+            LoanRequests = [],
+
         };
         await customerRepository.Add(customer);
         await unitOfWork.Save();
