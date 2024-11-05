@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using LoanManagementSystem.Services.Installments.Contracts.Interfaces;
 using LoanManagementSystem.Services.Installments.Exceptions;
