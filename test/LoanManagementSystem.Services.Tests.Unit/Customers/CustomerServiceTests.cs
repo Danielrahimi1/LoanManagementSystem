@@ -1,6 +1,6 @@
 using FluentAssertions;
 using LoanManagementSystem.Entities.Customers;
-using LoanManagementSystem.Entities.Statements.Enums;
+using LoanManagementSystem.Entities.Customers.Enums;
 using LoanManagementSystem.Services.Customers.Contracts.DTOs;
 using LoanManagementSystem.Services.Customers.Contracts.Interfaces;
 using LoanManagementSystem.Services.Customers.Exceptions;
@@ -122,14 +122,14 @@ public class CustomerServiceTests : BusinessIntegrationTest
 
         await _sut.RegisterWithStatement(dto);
 
-        var expected = ReadContext.Set<Customer>().Include(c => c.Statement).Single();
+        var expected = ReadContext.Set<Customer>().Single();
         expected.FirstName.Should().Be(dto.FirstName);
         expected.LastName.Should().Be(dto.LastName);
         expected.NationalId.Should().Be(dto.NationalId);
         expected.PhoneNumber.Should().Be(dto.PhoneNumber);
         expected.Email.Should().Be(dto.Email);
-        expected.Statement!.JobType.ToString().Should().Be(dto.JobType);
-        expected.Statement.NetWorth.Should().Be(dto.NetWorth);
-        expected.Statement.IncomeGroup.Should().Be(IncomeGroup.MoreThanTen);
+        expected.JobType.ToString().Should().Be(dto.JobType);
+        expected.NetWorth.Should().Be(dto.NetWorth);
+        expected.IncomeGroup.Should().Be(IncomeGroup.MoreThanTen);
     }
 }

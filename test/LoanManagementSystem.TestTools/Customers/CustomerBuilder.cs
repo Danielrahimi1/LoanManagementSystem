@@ -1,5 +1,5 @@
 ﻿using LoanManagementSystem.Entities.Customers;
-using LoanManagementSystem.Entities.Statements;
+using LoanManagementSystem.Entities.Customers.Enums;
 
 namespace LoanManagementSystem.TestTools.Customers;
 
@@ -70,9 +70,21 @@ public class CustomerBuilder
         return this;
     }
     
-    public CustomerBuilder WithCreditScore(Statement value)
+    public CustomerBuilder WithIncomeGroup(IncomeGroup value)
     {
-        _customer.Statement = value;
+        _customer.IncomeGroup = value;
+        return this;
+    }
+    
+    public CustomerBuilder WithJobType(JobType value)
+    {
+        _customer.JobType = value;
+        return this;
+    }
+    
+    public CustomerBuilder WithNetWorth(decimal value)
+    {
+        _customer.NetWorth = value;
         return this;
     }
 
