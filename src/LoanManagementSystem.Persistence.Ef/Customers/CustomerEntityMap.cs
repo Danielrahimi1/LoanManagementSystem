@@ -11,15 +11,14 @@ public class CustomerEntityMap : IEntityTypeConfiguration<Customer>
         builder.ToTable("Customers");
         builder.HasKey(customer => customer.Id);
         builder.Property(customer => customer.Id).UseIdentityColumn();
-        builder.Property(customer => customer.FirstName).HasMaxLength(50);
-        builder.Property(customer => customer.LastName).HasMaxLength(50);
-        builder.Property(customer => customer.NationalId).HasMaxLength(10);
-        builder.Property(customer => customer.PhoneNumber).HasMaxLength(11);
-        builder.Property(customer => customer.Email).HasMaxLength(320);
-        builder.Property(customer => customer.Balance).HasColumnType("decimal").HasPrecision(19, 4);
-
-        builder.Property(customer => customer.JobType).HasConversion<int>().IsRequired(false);
-        builder.Property(customer => customer.IncomeGroup).HasConversion<int>().IsRequired(false);
+        builder.Property(customer => customer.FirstName).HasMaxLength(50).IsRequired();
+        builder.Property(customer => customer.LastName).HasMaxLength(50).IsRequired();
+        builder.Property(customer => customer.NationalId).HasMaxLength(10).IsRequired();
+        builder.Property(customer => customer.PhoneNumber).HasMaxLength(11).IsRequired();
+        builder.Property(customer => customer.Email).HasMaxLength(320).IsRequired();
+        builder.Property(customer => customer.Balance).HasColumnType("decimal").HasPrecision(19, 4).IsRequired(false);
+        builder.Property(customer => customer.JobType).IsRequired(false);
+        builder.Property(customer => customer.IncomeGroup).IsRequired(false);
         builder.Property(customer => customer.NetWorth).IsRequired(false);
 
         builder.HasMany(customer => customer.LoanRequests)
