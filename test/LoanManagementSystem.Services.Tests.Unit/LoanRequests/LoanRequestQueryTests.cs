@@ -1,13 +1,10 @@
 using FluentAssertions;
-using LoanManagementSystem.Entities.Customers.Enums;
 using LoanManagementSystem.Entities.LoanRequests.Enums;
 using LoanManagementSystem.Persistence.Ef.LoanRequests;
-using LoanManagementSystem.Services.Customers.Contracts.DTOs;
 using LoanManagementSystem.Services.LoanRequests.Contracts.DTOs;
 using LoanManagementSystem.Services.LoanRequests.Contracts.Interfaces;
 using LoanManagementSystem.TestTools.Customers;
 using LoanManagementSystem.TestTools.Infrastructure.DataBaseConfig.Integration;
-using LoanManagementSystem.TestTools.Installments;
 using LoanManagementSystem.TestTools.LoanRequests;
 using LoanManagementSystem.TestTools.Loans;
 
@@ -21,7 +18,7 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
         _sut = new EfLoanRequestQuery(ReadContext);
 
     [Fact]
-    public async Task GetById_return_GetLoanRequestDto__when_passed_loanRequest_id()
+    public async Task GetById_return_GetLoanRequestDto_when_passed_loanRequest_id()
     {
         var c = new CustomerBuilder().Build();
         var lr1 = new LoanRequestBuilder().Build();
@@ -33,7 +30,7 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
 
         actual!.LoanId.Should().Be(lr1.LoanId);
         actual.CustomerId.Should().Be(lr1.CustomerId);
-        actual.Status.Should().Be(lr1.Status);
+        actual.Status.Should().Be(lr1.Status.ToString());
         actual.DelayInRepayment.Should().Be(lr1.DelayInRepayment);
         actual.Rate.Should().Be(lr1.Rate);
         actual.ConfirmationDate.Should().Be(lr1.ConfirmationDate);
@@ -63,13 +60,14 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
         Save(customer1, customer2);
 
         var actual = await _sut.GetAllByCustomer(customer1.Id);
+
         actual.Should().BeEquivalentTo([
             new GetLoanRequestDto
             {
                 LoanId = lr1.LoanId,
                 CustomerId = lr1.CustomerId,
                 Rate = lr1.Rate,
-                Status = lr1.Status,
+                Status = lr1.Status.ToString(),
                 DelayInRepayment = lr1.DelayInRepayment,
                 ConfirmationDate = lr1.ConfirmationDate
             },
@@ -78,7 +76,7 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
                 LoanId = lr2.LoanId,
                 CustomerId = lr2.CustomerId,
                 Rate = lr2.Rate,
-                Status = lr2.Status,
+                Status = lr2.Status.ToString(),
                 DelayInRepayment = lr2.DelayInRepayment,
                 ConfirmationDate = lr2.ConfirmationDate
             }
@@ -86,218 +84,383 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
     }
 
     [Fact]
-    public async Task GetById_return_null_GetCustomerDto__when_passed_customer_id_not_found()
+    public async Task GetAll_return_all_loanRequests_when_invoked()
     {
-        var customer1 = new CustomerBuilder()
-            .WithFirstName("John").WithLastName("Doe")
-            .WithNationalId("1234567899")
-            .WithPhoneNumber("09001239876").WithEmail("john@outlook.com")
-            .WithBalance(26).WithIsVerified(true)
-            // .WithCreditScore(90)
-            .Build();
-        Save(customer1);
-        var actual = await _sut.GetById(-1);
-
-        actual.Should().BeNull();
-    }
-
-    [Fact]
-    public async Task GetAll_return_all_when_invoked()
-    {
-        var customer1 = new CustomerBuilder()
-            .WithFirstName("John").WithLastName("Doe")
-            .WithNationalId("1234567899").WithPhoneNumber("09001239876")
-            .WithEmail("john@outlook.com").WithBalance(26)
-            .WithIsVerified(true)
-            // .WithCreditScore(90)
-            .Build();
-        var customer2 = new CustomerBuilder()
-            .WithFirstName("Jacob").WithLastName("Doe")
-            .WithNationalId("1234567898").WithPhoneNumber("09001234321")
-            .WithEmail("jacob@outlook.com").WithBalance(34)
-            .WithIsVerified(true)
-            // .WithCreditScore(89)
-            .Build();
+        var loan = new LoanBuilder().Build();
+        Save(loan);
+        var customer1 = new CustomerBuilder().Build();
+        var customer2 = new CustomerBuilder().Build();
+        var lr1 = new LoanRequestBuilder().WithLoanId(loan.Id).Build();
+        var lr2 = new LoanRequestBuilder().WithLoanId(loan.Id).Build();
+        var lr3 = new LoanRequestBuilder().WithLoanId(loan.Id).Build();
+        customer1.LoanRequests.UnionWith([lr1]);
+        customer2.LoanRequests.UnionWith([lr2, lr3]);
         Save(customer1, customer2);
 
         var actual = await _sut.GetAll();
 
-        actual.Should().HaveCount(2);
         actual.Should().BeEquivalentTo([
-            new GetCustomerDto
+            new GetLoanRequestDto
             {
-                FirstName = customer1.FirstName,
-                LastName = customer1.LastName,
-                NationalId = customer1.NationalId,
-                PhoneNumber = customer1.PhoneNumber,
-                Email = customer1.Email,
-                Balance = customer1.Balance,
-                IsVerified = customer1.IsVerified,
-                // CreditScore = customer1.CreditScore
+                LoanId = lr1.LoanId,
+                CustomerId = lr1.CustomerId,
+                Rate = lr1.Rate,
+                Status = lr1.Status.ToString(),
+                DelayInRepayment = lr1.DelayInRepayment,
+                ConfirmationDate = lr1.ConfirmationDate
             },
-            new GetCustomerDto
+            new GetLoanRequestDto
             {
-                FirstName = customer2.FirstName,
-                LastName = customer2.LastName,
-                NationalId = customer2.NationalId,
-                PhoneNumber = customer2.PhoneNumber,
-                Email = customer2.Email,
-                Balance = customer2.Balance,
-                IsVerified = customer2.IsVerified,
-                // CreditScore = customer2.CreditScore
-            }
+                LoanId = lr2.LoanId,
+                CustomerId = lr2.CustomerId,
+                Rate = lr2.Rate,
+                Status = lr2.Status.ToString(),
+                DelayInRepayment = lr2.DelayInRepayment,
+                ConfirmationDate = lr2.ConfirmationDate
+            },
+            new GetLoanRequestDto
+            {
+                LoanId = lr3.LoanId,
+                CustomerId = lr3.CustomerId,
+                Rate = lr3.Rate,
+                Status = lr3.Status.ToString(),
+                DelayInRepayment = lr3.DelayInRepayment,
+                ConfirmationDate = lr3.ConfirmationDate
+            },
         ]);
     }
 
     [Fact]
-    public async Task GetAllWithStatement_return_all_customers_with_statement_when_invoked()
+    public async Task GetAllActiveLoans_return_all_active_loans_when_invoked()
     {
-        var customer1 = new CustomerBuilder()
-            .WithFirstName("John").WithLastName("Doe")
-            .WithNationalId("1234567899").WithPhoneNumber("09001239876")
-            .WithEmail("john@outlook.com").WithBalance(26)
-            .WithIsVerified(true)
-            // .WithCreditScore(90)
-            .WithIncomeGroup(IncomeGroup.MoreThanTen).WithJobType(JobType.SelfEmployed)
-            .WithNetWorth(15644).Build();
-        var customer2 = new CustomerBuilder()
-            .WithFirstName("Jacob").WithLastName("Doe")
-            .WithNationalId("1234567898").WithPhoneNumber("09001234321")
-            .WithEmail("jacob@outlook.com").WithBalance(34)
-            .WithIsVerified(true)
-            // .WithCreditScore(89)
-            .WithIncomeGroup(IncomeGroup.MoreThanTen).WithJobType(JobType.UnEmployed)
-            .WithNetWorth(18546).Build();
-        Save(customer1, customer2);
-
-
-        var actual = await _sut.GetAllActiveLoans();
-
-        actual.Should().HaveCount(2);
-        actual.Should().BeEquivalentTo([
-            new GetCustomerWithStatementDto
-            {
-                FirstName = customer1.FirstName,
-                LastName = customer1.LastName,
-                NationalId = customer1.NationalId,
-                PhoneNumber = customer1.PhoneNumber,
-                Email = customer1.Email,
-                Balance = customer1.Balance,
-                IsVerified = customer1.IsVerified,
-                // CreditScore = customer1.CreditScore,
-                JobType = customer1.JobType.ToString(),
-                IncomeGroup = customer1.IncomeGroup.ToString(),
-                NetWorth = customer1.NetWorth
-            },
-            new GetCustomerWithStatementDto
-            {
-                FirstName = customer2.FirstName,
-                LastName = customer2.LastName,
-                NationalId = customer2.NationalId,
-                PhoneNumber = customer2.PhoneNumber,
-                Email = customer2.Email,
-                Balance = customer2.Balance,
-                IsVerified = customer2.IsVerified,
-                // CreditScore = customer2.CreditScore,
-                JobType = customer2.JobType.ToString(),
-                IncomeGroup = customer2.IncomeGroup.ToString(),
-                NetWorth = customer2.NetWorth
-            }
-        ]);
-    }
-
-    [Fact]
-    public async Task GetRiskyCustomers_return_all_risky_customers_when_invoked()
-    {
-        var customer1 = new CustomerBuilder()
-            .WithFirstName("John").WithLastName("Doe").WithNationalId("1234567899")
-            .WithPhoneNumber("09001239876").WithEmail("john@outlook.com").Build();
-        var customer2 = new CustomerBuilder()
-            .WithFirstName("Jacob").WithLastName("Doe").WithNationalId("1234567899")
-            .WithPhoneNumber("09001239876").WithEmail("john@outlook.com").Build();
-        var lr1 = new LoanRequestBuilder().Build();
-        var lr2 = new LoanRequestBuilder().Build();
-        var lr3 = new LoanRequestBuilder().Build();
-        var in11 = new InstallmentBuilder().WithFine(0.01m).Build();
-        var in12 = new InstallmentBuilder().WithFine(0.01m).Build();
-        // var in13 = new InstallmentBuilder().WithFine(0.01m).Build();
-        // var in21 = new InstallmentBuilder().WithFine(0.01m).Build();
-        // var in22 = new InstallmentBuilder().Build();
-        lr1.Installments.UnionWith([in11]);
-        lr2.Installments.UnionWith([in12]);
-        lr3.Installments.UnionWith([in11]);
-        customer1.LoanRequests.Add(lr1);
+        var loan = new LoanBuilder().Build();
+        Save(loan);
+        var customer1 = new CustomerBuilder().Build();
+        var customer2 = new CustomerBuilder().Build();
+        var lr1 = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Active).WithLoanId(loan.Id).Build();
+        var lr2 = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Reject).WithLoanId(loan.Id).Build();
+        var lr3 = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Active).WithLoanId(loan.Id).Build();
+        customer1.LoanRequests.UnionWith([lr1]);
         customer2.LoanRequests.UnionWith([lr2, lr3]);
         Save(customer1, customer2);
 
-        var actual = await _sut.GetAllDoneLoans();
+        var actual = await _sut.GetAllActiveLoans();
 
-        actual.Should().HaveCount(1);
+        // actual.Should().Satisfy(lr => lr.Status == LoanRequestStatus.Active.ToString());
+        actual.Should().HaveCount(2);
         actual.Should().BeEquivalentTo([
-            new GetCustomerDto
+            new GetLoanRequestDto
             {
-                FirstName = customer2.FirstName,
-                LastName = customer2.LastName,
-                NationalId = customer2.NationalId,
-                PhoneNumber = customer2.PhoneNumber,
-                Email = customer2.Email,
-                Balance = customer2.Balance,
-                IsVerified = customer2.IsVerified,
-                // CreditScore = customer2.CreditScore
-            }
+                LoanId = lr1.LoanId,
+                CustomerId = lr1.CustomerId,
+                Rate = lr1.Rate,
+                Status = LoanRequestStatus.Active.ToString(),
+                DelayInRepayment = lr1.DelayInRepayment,
+                ConfirmationDate = lr1.ConfirmationDate
+            },
+            new GetLoanRequestDto
+            {
+                LoanId = lr3.LoanId,
+                CustomerId = lr3.CustomerId,
+                Rate = lr3.Rate,
+                Status = LoanRequestStatus.Active.ToString(),
+                DelayInRepayment = lr3.DelayInRepayment,
+                ConfirmationDate = lr3.ConfirmationDate
+            },
         ]);
     }
 
     [Fact]
-    public async Task GetRiskyCustomersWithStatement_return_all_risky_customers_with_statement_when_invoked()
+    public async Task GetAllDelayedLoans_return_all_delayed_loans_when_invoked()
     {
-        var customer1 = new CustomerBuilder()
-            .WithFirstName("John").WithLastName("Doe")
-            .WithNationalId("1234567899").WithPhoneNumber("09001239876")
-            .WithEmail("john@outlook.com").WithBalance(26)
-            .WithIsVerified(true)
-            // .WithCreditScore(90)
-            .WithIncomeGroup(IncomeGroup.MoreThanTen).WithJobType(JobType.SelfEmployed)
-            .WithNetWorth(15644).Build();
-        var customer2 = new CustomerBuilder()
-            .WithFirstName("Jacob").WithLastName("Doe")
-            .WithNationalId("1234567898").WithPhoneNumber("09001234321")
-            .WithEmail("jacob@outlook.com").WithBalance(34)
-            .WithIsVerified(true)
-            // .WithCreditScore(89)
-            .WithIncomeGroup(IncomeGroup.MoreThanTen).WithJobType(JobType.UnEmployed)
-            .WithNetWorth(18546).Build();
-        var lr1 = new LoanRequestBuilder().Build();
-        var lr2 = new LoanRequestBuilder().Build();
-        var lr3 = new LoanRequestBuilder().Build();
-        var in1 = new InstallmentBuilder().WithFine(0.01m).Build();
-        var in2 = new InstallmentBuilder().WithFine(0.01m).Build();
-        var in3 = new InstallmentBuilder().WithFine(0.01m).Build();
-        lr1.Installments.UnionWith([in1]);
-        lr2.Installments.UnionWith([in2]);
-        lr3.Installments.UnionWith([in3]);
-        customer1.LoanRequests.UnionWith([lr1, lr2]);
-        customer2.LoanRequests.Add(lr3);
+        var loan = new LoanBuilder().Build();
+        Save(loan);
+        var customer1 = new CustomerBuilder().Build();
+        var customer2 = new CustomerBuilder().Build();
+        var lr1 = new LoanRequestBuilder()
+            .WithDelayInRepayment(true)
+            .WithStatus(LoanRequestStatus.Active).WithLoanId(loan.Id).Build();
+        var lr2 = new LoanRequestBuilder()
+            .WithDelayInRepayment(false)
+            .WithStatus(LoanRequestStatus.Active).WithLoanId(loan.Id).Build();
+        var lr3 = new LoanRequestBuilder()
+            .WithDelayInRepayment(true)
+            .WithStatus(LoanRequestStatus.Active).WithLoanId(loan.Id).Build();
+        customer1.LoanRequests.UnionWith([lr1]);
+        customer2.LoanRequests.UnionWith([lr2, lr3]);
         Save(customer1, customer2);
 
-        var actual = await _sut.GetAllDelayedLoansWithCustomer();
-
-        actual.Should().HaveCount(1);
+        var actual = await _sut.GetAllDelayedLoans();
+        
+        actual.Should().HaveCount(2);
         actual.Should().BeEquivalentTo([
-            new GetCustomerWithStatementDto
+            new GetLoanRequestDto
+            {
+                LoanId = lr1.LoanId,
+                CustomerId = lr1.CustomerId,
+                Rate = lr1.Rate,
+                Status = lr1.Status.ToString(),
+                DelayInRepayment = true,
+                ConfirmationDate = lr1.ConfirmationDate
+            },
+            new GetLoanRequestDto
+            {
+                LoanId = lr3.LoanId,
+                CustomerId = lr3.CustomerId,
+                Rate = lr3.Rate,
+                Status = lr3.Status.ToString(),
+                DelayInRepayment = true,
+                ConfirmationDate = lr3.ConfirmationDate
+            },
+        ]);
+    }
+    
+    [Fact]
+    public async Task GetAllCloseLoans_return_all_done_loans_when_invoked()
+    {
+        var loan = new LoanBuilder().Build();
+        Save(loan);
+        var customer1 = new CustomerBuilder().Build();
+        var customer2 = new CustomerBuilder().Build();
+        var lr1 = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Close).WithLoanId(loan.Id).Build();
+        var lr2 = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Close).WithLoanId(loan.Id).Build();
+        var lr3 = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Active).WithLoanId(loan.Id).Build();
+        customer1.LoanRequests.UnionWith([lr1]);
+        customer2.LoanRequests.UnionWith([lr2, lr3]);
+        Save(customer1, customer2);
+
+        var actual = await _sut.GetAllCloseLoans();
+
+        // actual.Should().Satisfy(lr => lr.Status == LoanRequestStatus.Active.ToString());
+        actual.Should().HaveCount(2);
+        actual.Should().BeEquivalentTo([
+            new GetLoanRequestDto
+            {
+                LoanId = lr1.LoanId,
+                CustomerId = lr1.CustomerId,
+                Rate = lr1.Rate,
+                Status = LoanRequestStatus.Close.ToString(),
+                DelayInRepayment = lr1.DelayInRepayment,
+                ConfirmationDate = lr1.ConfirmationDate
+            },
+            new GetLoanRequestDto
+            {
+                LoanId = lr2.LoanId,
+                CustomerId = lr2.CustomerId,
+                Rate = lr2.Rate,
+                Status = LoanRequestStatus.Close.ToString(),
+                DelayInRepayment = lr2.DelayInRepayment,
+                ConfirmationDate = lr2.ConfirmationDate
+            },
+        ]);
+    }
+
+    [Fact]
+    public async Task GetAllWithCustomer_return_all_loanRequests_with_customer_when_invoked()
+    {
+        var loan = new LoanBuilder().Build();
+        Save(loan);
+        var customer1 = new CustomerBuilder().Build();
+        var customer2 = new CustomerBuilder().Build();
+        var lr1 = new LoanRequestBuilder().WithLoanId(loan.Id).Build();
+        var lr2 = new LoanRequestBuilder().WithLoanId(loan.Id).Build();
+        var lr3 = new LoanRequestBuilder().WithLoanId(loan.Id).Build();
+        customer1.LoanRequests.UnionWith([lr1]);
+        customer2.LoanRequests.UnionWith([lr2, lr3]);
+        Save(customer1, customer2);
+
+        var actual = await _sut.GetAllWithCustomer();
+
+        actual.Should().BeEquivalentTo([
+            new GetLoanRequestWithCustomerDto
             {
                 FirstName = customer1.FirstName,
                 LastName = customer1.LastName,
                 NationalId = customer1.NationalId,
                 PhoneNumber = customer1.PhoneNumber,
                 Email = customer1.Email,
-                Balance = customer1.Balance,
-                IsVerified = customer1.IsVerified,
-                // CreditScore = customer1.CreditScore,
-                JobType = customer1.JobType.ToString(),
-                IncomeGroup = customer1.IncomeGroup.ToString(),
-                NetWorth = customer1.NetWorth
-            }
+                LoanId = lr1.LoanId,
+                Rate = lr1.Rate,
+                Status = lr1.Status.ToString(),
+                DelayInRepayment = lr1.DelayInRepayment,
+                ConfirmationDate = lr1.ConfirmationDate,
+
+            },
+            new GetLoanRequestWithCustomerDto
+            {
+                FirstName = customer2.FirstName,
+                LastName = customer2.LastName,
+                NationalId = customer2.NationalId,
+                PhoneNumber = customer2.PhoneNumber,
+                Email = customer2.Email,
+                LoanId = lr2.LoanId,
+                Rate = lr2.Rate,
+                Status = lr2.Status.ToString(),
+                DelayInRepayment = lr2.DelayInRepayment,
+                ConfirmationDate = lr2.ConfirmationDate
+            },
+            new GetLoanRequestWithCustomerDto
+            {
+                FirstName = customer2.FirstName,
+                LastName = customer2.LastName,
+                NationalId = customer2.NationalId,
+                PhoneNumber = customer2.PhoneNumber,
+                Email = customer2.Email,
+                LoanId = lr3.LoanId,
+                Rate = lr3.Rate,
+                Status = lr3.Status.ToString(),
+                DelayInRepayment = lr3.DelayInRepayment,
+                ConfirmationDate = lr3.ConfirmationDate
+            },
+        ]);
+    }
+
+    [Fact]
+    public async Task GetAllActiveLoansWithCustomer_return_all_active_loans_with_customer_when_invoked()
+    {
+        var loan = new LoanBuilder().Build();
+        Save(loan);
+        var customer1 = new CustomerBuilder().Build();
+        var customer2 = new CustomerBuilder().Build();
+        var lr1 = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Active).WithLoanId(loan.Id).Build();
+        var lr2 = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Reject).WithLoanId(loan.Id).Build();
+        var lr3 = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Active).WithLoanId(loan.Id).Build();
+        customer1.LoanRequests.UnionWith([lr1]);
+        customer2.LoanRequests.UnionWith([lr2, lr3]);
+        Save(customer1, customer2);
+
+        var actual = await _sut.GetAllActiveLoansWithCustomer();
+
+        // actual.Should().Satisfy(lr => lr.Status == LoanRequestStatus.Active.ToString());
+        actual.Should().HaveCount(2);
+        actual.Should().BeEquivalentTo([
+            new GetLoanRequestWithCustomerDto
+            {
+                FirstName = customer1.FirstName,
+                LastName = customer1.LastName,
+                NationalId = customer1.NationalId,
+                PhoneNumber = customer1.PhoneNumber,
+                Email = customer1.Email,
+                LoanId = lr1.LoanId,
+                Rate = lr1.Rate,
+                Status = LoanRequestStatus.Active.ToString(),
+                DelayInRepayment = lr1.DelayInRepayment,
+                ConfirmationDate = lr1.ConfirmationDate
+            },
+            new GetLoanRequestWithCustomerDto
+            {
+                FirstName = customer2.FirstName,
+                LastName = customer2.LastName,
+                NationalId = customer2.NationalId,
+                PhoneNumber = customer2.PhoneNumber,
+                Email = customer2.Email,
+                LoanId = lr3.LoanId,
+                Rate = lr3.Rate,
+                Status = LoanRequestStatus.Active.ToString(),
+                DelayInRepayment = lr3.DelayInRepayment,
+                ConfirmationDate = lr3.ConfirmationDate
+            },
+        ]);
+    }
+
+    [Fact]
+    public async Task GetAllDelayedLoansWithCustomer_return_all_delayed_loans_with_customer_when_invoked()
+    {
+        var loan = new LoanBuilder().Build();
+        Save(loan);
+        var customer1 = new CustomerBuilder().Build();
+        var customer2 = new CustomerBuilder().Build();
+        var lr1 = new LoanRequestBuilder()
+            .WithDelayInRepayment(true)
+            .WithStatus(LoanRequestStatus.Active).WithLoanId(loan.Id).Build();
+        var lr2 = new LoanRequestBuilder()
+            .WithDelayInRepayment(false)
+            .WithStatus(LoanRequestStatus.Active).WithLoanId(loan.Id).Build();
+        var lr3 = new LoanRequestBuilder()
+            .WithDelayInRepayment(true)
+            .WithStatus(LoanRequestStatus.Active).WithLoanId(loan.Id).Build();
+        customer1.LoanRequests.UnionWith([lr1]);
+        customer2.LoanRequests.UnionWith([lr2, lr3]);
+        Save(customer1, customer2);
+
+        var actual = await _sut.GetAllDelayedLoansWithCustomer();
+        
+        actual.Should().HaveCount(2);
+        actual.Should().BeEquivalentTo([
+            new GetLoanRequestWithCustomerDto
+            {
+                FirstName = customer1.FirstName,
+                LastName = customer1.LastName,
+                NationalId = customer1.NationalId,
+                PhoneNumber = customer1.PhoneNumber,
+                Email = customer1.Email,
+                LoanId = lr1.LoanId,
+                Rate = lr1.Rate,
+                Status = lr1.Status.ToString(),
+                DelayInRepayment = true,
+                ConfirmationDate = lr1.ConfirmationDate
+            },
+            new GetLoanRequestWithCustomerDto
+            {
+                FirstName = customer2.FirstName,
+                LastName = customer2.LastName,
+                NationalId = customer2.NationalId,
+                PhoneNumber = customer2.PhoneNumber,
+                Email = customer2.Email,
+                LoanId = lr3.LoanId,
+                Rate = lr3.Rate,
+                Status = lr3.Status.ToString(),
+                DelayInRepayment = true,
+                ConfirmationDate = lr3.ConfirmationDate
+            },
+        ]);
+    }
+    
+    [Fact]
+    public async Task GetAllCloseLoansWithCustomer_return_all_done_loans_with_customer_when_invoked()
+    {
+        var loan = new LoanBuilder().Build();
+        Save(loan);
+        var customer1 = new CustomerBuilder().Build();
+        var customer2 = new CustomerBuilder().Build();
+        var lr1 = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Close).WithLoanId(loan.Id).Build();
+        var lr2 = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Close).WithLoanId(loan.Id).Build();
+        var lr3 = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Active).WithLoanId(loan.Id).Build();
+        customer1.LoanRequests.UnionWith([lr1]);
+        customer2.LoanRequests.UnionWith([lr2, lr3]);
+        Save(customer1, customer2);
+
+        var actual = await _sut.GetAllClosedLoansWithCustomer();
+
+        // actual.Should().Satisfy(lr => lr.Status == LoanRequestStatus.Active.ToString());
+        actual.Should().HaveCount(2);
+        actual.Should().BeEquivalentTo([
+            new GetLoanRequestWithCustomerDto
+            {
+                FirstName = customer1.FirstName,
+                LastName = customer1.LastName,
+                NationalId = customer1.NationalId,
+                PhoneNumber = customer1.PhoneNumber,
+                Email = customer1.Email,
+                LoanId = lr1.LoanId,
+                Rate = lr1.Rate,
+                Status = LoanRequestStatus.Close.ToString(),
+                DelayInRepayment = lr1.DelayInRepayment,
+                ConfirmationDate = lr1.ConfirmationDate
+            },
+            new GetLoanRequestWithCustomerDto
+            {
+                FirstName = customer2.FirstName,
+                LastName = customer2.LastName,
+                NationalId = customer2.NationalId,
+                PhoneNumber = customer2.PhoneNumber,
+                Email = customer2.Email,
+                LoanId = lr2.LoanId,
+                Rate = lr2.Rate,
+                Status = LoanRequestStatus.Close.ToString(),
+                DelayInRepayment = lr2.DelayInRepayment,
+                ConfirmationDate = lr2.ConfirmationDate
+            },
         ]);
     }
 }
