@@ -39,6 +39,10 @@ public class LoanRequestAppService(
             throw new CustomerNotVerifiedException();
         }
 
+        if (await loanRequestRepository.HasActiveLoanRequests(customerId))
+        {
+            throw new CustomerHasActiveLoanRequestsException();
+        }
 
         if (loan is null)
         {
