@@ -16,7 +16,9 @@ public class LoanRequestBuilder
             LoanId = 1,
             Status = (LoanRequestStatus)0,
             DelayInRepayment = false,
+            Rate = 0,
             ConfirmationDate = null,
+            Customer = null,
             Installments = []
         };
     }
@@ -41,6 +43,11 @@ public class LoanRequestBuilder
     public LoanRequestBuilder WithDelayInRepayment(bool value)
     {
         _loanRequest.DelayInRepayment = value;
+        return this;
+    }
+    public LoanRequestBuilder WithRate(int value)
+    {
+        _loanRequest.Rate = value;
         return this;
     }
     public LoanRequestBuilder WithConfirmationDate(DateOnly value)
