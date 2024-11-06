@@ -7,12 +7,14 @@ using LoanManagementSystem.Entities.Customers.Enums;
 using LoanManagementSystem.Services.Customers.Contracts.DTOs;
 using LoanManagementSystem.Services.Customers.Contracts.Interfaces;
 using LoanManagementSystem.Services.Customers.Exceptions;
+using LoanManagementSystem.Services.LoanRequests.Contracts.Interfaces;
 using LoanManagementSystem.Services.UnitOfWorks;
 
 namespace LoanManagementSystem.Services.Customers;
 
 public class CustomerAppService(
     CustomerRepository customerRepository,
+    LoanRequestRepository loanRequestRepository,
     UnitOfWork unitOfWork
 ) : CustomerService
 {
@@ -44,7 +46,6 @@ public class CustomerAppService(
             IncomeGroup = IncomeGroup.LessThanFive,
             NetWorth = 0,
             LoanRequests = [],
-
         };
         await customerRepository.Add(customer);
         await unitOfWork.Save();
@@ -134,19 +135,48 @@ public class CustomerAppService(
 
             customer.NationalId = dto.NationalId;
         }
+        
+        if (dto.Income is not null)
+        {
+            var income = dto.Income > 10 ? IncomeGroup.MoreThanTen :
+                dto.Income > 5 ? IncomeGroup.FiveUptoIncludingTen : IncomeGroup.LessThanFive;
+        }
 
         customer.FirstName = dto.FirstName ?? customer.FirstName;
         customer.LastName = dto.LastName ?? customer.LastName;
         customer.PhoneNumber = dto.PhoneNumber ?? customer.PhoneNumber;
         customer.Email = dto.Email ?? customer.Email;
         customer.IsVerified = false;
+        customer.JobType = dto.JobType != null ? (JobType)Enum.Parse(typeof(JobType), dto.JobType, true) : customer.JobType;
+        customer.IncomeGroup = dto.Income == null ? customer.IncomeGroup :
+            dto.Income > 10 ? IncomeGroup.MoreThanTen :
+            dto.Income > 5 ? IncomeGroup.FiveUptoIncludingTen : IncomeGroup.LessThanFive;
+        customer.NetWorth = dto.NetWorth ?? customer.NetWorth;
+        
+        // if loanRequest not delayed +30
+        // if installment delayed -5
+        // LoanAmount/NetWorth
+        
+        customer.CreditScore= (int)customer.JobType + (int)customer.IncomeGroup;
         customerRepository.Update(customer);
         await unitOfWork.Save();
     }
 
-    public Task Delete(int id)
+    public async Task Delete(int id)
     {
-        throw new NotImplementedException();
+        var customer = await customerRepository.Find(id);
+        if (customer is null)
+        {
+            throw new CustomerNotFoundException();
+        }
+
+        if (await loanRequestRepository.HasActiveLoanRequests(customer.Id))
+        {
+            throw new CustomerHasActiveLoanRequestsException();
+        }
+
+        customerRepository.Remove(customer);
+        await unitOfWork.Save();
     }
 
     private static void IsEmailValid(string email)

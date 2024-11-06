@@ -1,11 +1,13 @@
 using FluentAssertions;
 using LoanManagementSystem.Entities.Customers;
 using LoanManagementSystem.Entities.Customers.Enums;
+using LoanManagementSystem.Entities.LoanRequests.Enums;
 using LoanManagementSystem.Services.Customers.Contracts.DTOs;
 using LoanManagementSystem.Services.Customers.Contracts.Interfaces;
 using LoanManagementSystem.Services.Customers.Exceptions;
 using LoanManagementSystem.TestTools.Customers;
 using LoanManagementSystem.TestTools.Infrastructure.DataBaseConfig.Integration;
+using LoanManagementSystem.TestTools.LoanRequests;
 using Microsoft.EntityFrameworkCore;
 
 namespace LoanManagementSystem.Services.Tests.Unit.Customers;
@@ -131,5 +133,68 @@ public class CustomerServiceTests : BusinessIntegrationTest
         expected.JobType.ToString().Should().Be(dto.JobType);
         expected.NetWorth.Should().Be(dto.NetWorth);
         expected.IncomeGroup.Should().Be(IncomeGroup.MoreThanTen);
+    }
+
+    [Fact]
+    public async Task VerifyManually_set_IsVerified_property_to_true_when_given_customer_id()
+    {
+        var customer1 = new CustomerBuilder().WithFirstName("Jacob").WithIsVerified(false).Build();
+        Save(customer1);
+
+        await _sut.VerifyManually(customer1.Id);
+        var actual = ReadContext.Set<Customer>().Single();
+
+        actual.IsVerified.Should().Be(true);
+    }
+
+    [Fact]
+    public async Task Charge_increase_balance_with_amount_when_given_UpdateBalanceDto()
+    {
+        var customer1 = new CustomerBuilder().WithFirstName("Jacob").WithBalance(315).Build();
+        Save(customer1);
+        var dto = new UpdateBalanceDto { Charge = 321 };
+
+        await _sut.Charge(customer1.Id, dto);
+        var actual = ReadContext.Set<Customer>().Single();
+
+        actual.Balance.Should().Be(dto.Charge + customer1.Balance);
+    }
+
+    [Fact]
+    public async Task Delete_remove_a_customer_when_given_id()
+    {
+        var customer1 = new CustomerBuilder().WithFirstName("Jacob").Build();
+        var customer2 = new CustomerBuilder().WithFirstName("Joseph").Build();
+        Save(customer1, customer2);
+
+        await _sut.Delete(customer2.Id);
+        var expected = ReadContext.Set<Customer>().Single();
+
+        expected.FirstName.Should().Be(customer1.FirstName);
+    }
+
+    [Fact]
+    public async Task Delete_throw_exception_when_given_id_not_found()
+    {
+        var customer1 = new CustomerBuilder().WithFirstName("Jacob").Build();
+        var customer2 = new CustomerBuilder().WithFirstName("Joseph").Build();
+        Save(customer1, customer2);
+
+        var expected = async () => await _sut.Delete(-1);
+
+        await expected.Should().ThrowExactlyAsync<CustomerNotFoundException>();
+    }
+
+    [Fact]
+    public async Task Delete_throw_exception_when_customer_has_active_loanRequest()
+    {
+        var customer1 = new CustomerBuilder().WithFirstName("Jacob").Build();
+        var lr = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Active).Build();
+        customer1.LoanRequests.Add(lr);
+        Save(customer1);
+
+        var expected = async () => await _sut.Delete(customer1.Id);
+
+        await expected.Should().ThrowExactlyAsync<CustomerHasActiveLoanRequestsException>();
     }
 }
