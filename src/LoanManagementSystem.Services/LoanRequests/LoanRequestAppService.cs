@@ -26,6 +26,7 @@ public class LoanRequestAppService(
     public async Task Open(int customerId, AddLoanRequestDto dto)
     {
         var customer = await customerRepository.Find(customerId);
+        var loan = await loanRepository.Find(dto.LoanId);
         if (customer is null)
         {
             throw new CustomerNotFoundException();
@@ -36,7 +37,17 @@ public class LoanRequestAppService(
             throw new CustomerNotVerifiedException();
         }
 
-        if (customer.CreditScore < 60)
+
+        if (loan is null)
+        {
+            throw new LoanNotFoundException();
+        }
+
+        var onTimeClosedLoans = await loanRequestRepository.CountNonDelayedLoans(customerId) * 30;
+        var loanNetWorthRatio = loan.Amount / customer.NetWorth < loan.Amount * 0.5M ? 20 :
+            loan.Amount < loan.Amount * 0.7M ? 10 : 0;
+        var rate = (int)customer.IncomeGroup + (int)customer.JobType + onTimeClosedLoans + loanNetWorthRatio;
+        if (rate < 60)
         {
             throw new NotEnoughCreditScoreException();
         }
@@ -47,8 +58,9 @@ public class LoanRequestAppService(
             CustomerId = dto.CustomerId,
             Status = LoanRequestStatus.Review,
             DelayInRepayment = false,
+            Rate = rate,
             ConfirmationDate = null,
-            Customer = customer
+            Customer = customer,
         };
 
         await loanRequestRepository.Add(lr);

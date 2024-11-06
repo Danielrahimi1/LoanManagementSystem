@@ -18,7 +18,8 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                 CustomerId = lr.CustomerId,
                 Status = lr.Status,
                 DelayInRepayment = lr.DelayInRepayment,
-                ConfirmationDate = lr.ConfirmationDate
+                ConfirmationDate = lr.ConfirmationDate,
+                Rate = lr.Rate
             }).FirstOrDefaultAsync();
 
     public async Task<GetLoanRequestDto[]> GetAllByCustomer(int customerId) =>
@@ -30,7 +31,8 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                 CustomerId = lr.CustomerId,
                 Status = lr.Status,
                 DelayInRepayment = lr.DelayInRepayment,
-                ConfirmationDate = lr.ConfirmationDate
+                ConfirmationDate = lr.ConfirmationDate,
+                Rate = lr.Rate
             }).ToArrayAsync();
 
     public async Task<GetLoanRequestDto[]> GetAll() =>
@@ -41,7 +43,8 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                 CustomerId = lr.CustomerId,
                 Status = lr.Status,
                 DelayInRepayment = lr.DelayInRepayment,
-                ConfirmationDate = lr.ConfirmationDate
+                ConfirmationDate = lr.ConfirmationDate,
+                Rate = lr.Rate
             }).ToArrayAsync();
 
     public async Task<GetLoanRequestDto[]> GetAllActiveLoans() =>
@@ -53,6 +56,7 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                 Status = lr.Status,
                 DelayInRepayment = lr.DelayInRepayment,
                 ConfirmationDate = lr.ConfirmationDate,
+                Rate = lr.Rate,
             }).ToArrayAsync();
 
     public async Task<GetLoanRequestDto[]> GetAllDelayedLoans() =>
@@ -64,7 +68,8 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                 CustomerId = lr.CustomerId,
                 Status = lr.Status,
                 DelayInRepayment = lr.DelayInRepayment,
-                ConfirmationDate = lr.ConfirmationDate
+                ConfirmationDate = lr.ConfirmationDate,
+                Rate = lr.Rate
             }).ToArrayAsync();
 
     public Task<GetLoanRequestDto[]> GetAllDoneLoans()
@@ -86,7 +91,8 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                 LoanId = lr.LoanId,
                 Status = lr.Status,
                 DelayInRepayment = lr.DelayInRepayment,
-                ConfirmationDate = lr.ConfirmationDate
+                ConfirmationDate = lr.ConfirmationDate,
+                Rate = lr.Rate
             }).ToArrayAsync();
     
     public async Task<GetLoanRequestWithCustomerDto[]> GetAllActiveLoansWithCustomer() =>
@@ -104,7 +110,8 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                 LoanId = lr.LoanId,
                 Status = lr.Status,
                 DelayInRepayment = lr.DelayInRepayment,
-                ConfirmationDate = lr.ConfirmationDate
+                ConfirmationDate = lr.ConfirmationDate,
+                Rate = lr.Rate
             }).ToArrayAsync();
 
     public async Task<GetLoanRequestWithCustomerDto[]> GetAllDelayedLoansWithCustomer() =>
@@ -122,7 +129,8 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                 LoanId = lr.LoanId,
                 Status = lr.Status,
                 DelayInRepayment = lr.DelayInRepayment,
-                ConfirmationDate = lr.ConfirmationDate
+                ConfirmationDate = lr.ConfirmationDate,
+                Rate = lr.Rate
             }).ToArrayAsync();
 
     public async Task<GetLoanRequestWithCustomerDto[]> GetAllClosedLoansWithCustomer() =>
@@ -140,6 +148,7 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                 LoanId = lr.LoanId,
                 Status = lr.Status,
                 DelayInRepayment = lr.DelayInRepayment,
-                ConfirmationDate = lr.ConfirmationDate
+                ConfirmationDate = lr.ConfirmationDate,
+                Rate = lr.Rate
             }).ToArrayAsync();
 }

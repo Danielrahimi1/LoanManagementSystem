@@ -13,6 +13,11 @@ public class EfLoanRequestRepository(EfDataContext context) : LoanRequestReposit
     public async Task<LoanRequest?> Find(int id) =>
         await context.Set<LoanRequest>().FirstOrDefaultAsync(lr => lr.Id == id);
 
+    public async Task<int> CountNonDelayedLoans(int customerId) =>
+        await context.Set<LoanRequest>()
+            .CountAsync(lr => lr.CustomerId == customerId && lr.Status == LoanRequestStatus.Close);
+
+
     public async Task<bool> HasActiveLoanRequests(int customerId) =>
         await context.Set<LoanRequest>()
             .AnyAsync(lr => lr.CustomerId == customerId && lr.Status == LoanRequestStatus.Active);

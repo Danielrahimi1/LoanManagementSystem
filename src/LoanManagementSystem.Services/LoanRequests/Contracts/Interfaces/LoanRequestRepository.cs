@@ -7,6 +7,7 @@ public interface LoanRequestRepository
 {
     Task Add(LoanRequest loanRequest);
     Task<LoanRequest?> Find(int id);
+    Task<int> CountNonDelayedLoans(int customerId);
     Task<bool> HasActiveLoanRequests(int customerId);
     void Update(LoanRequest loanRequest);
 }
