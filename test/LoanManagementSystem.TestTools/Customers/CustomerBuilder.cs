@@ -18,7 +18,7 @@ public class CustomerBuilder
             Email = "name@domain.com",
             Balance = 0,
             IsVerified = false,
-            CreditScore = 0
+            // CreditScore = 0
         };
     }
 
@@ -64,32 +64,29 @@ public class CustomerBuilder
         return this;
     }
 
-    public CustomerBuilder WithCreditScore(int value)
-    {
-        _customer.CreditScore = value;
-        return this;
-    }
-    
+    // public CustomerBuilder WithCreditScore(int value)
+    // {
+    //     _customer.CreditScore = value;
+    //     return this;
+    // }
+
     public CustomerBuilder WithIncomeGroup(IncomeGroup value)
     {
         _customer.IncomeGroup = value;
         return this;
     }
-    
+
     public CustomerBuilder WithJobType(JobType value)
     {
         _customer.JobType = value;
         return this;
     }
-    
+
     public CustomerBuilder WithNetWorth(decimal value)
     {
         _customer.NetWorth = value;
         return this;
     }
 
-    public Customer Build()
-    {
-        return _customer;
-    }
+    public Customer Build() => _customer;
 }

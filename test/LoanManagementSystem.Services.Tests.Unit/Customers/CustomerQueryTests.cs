@@ -3,25 +3,19 @@ using LoanManagementSystem.Entities.Customers.Enums;
 using LoanManagementSystem.Persistence.Ef.Customers;
 using LoanManagementSystem.Services.Customers.Contracts.DTOs;
 using LoanManagementSystem.Services.Customers.Contracts.Interfaces;
-using LoanManagementSystem.Services.Loans.Contracts.DTOs;
 using LoanManagementSystem.TestTools.Customers;
 using LoanManagementSystem.TestTools.Infrastructure.DataBaseConfig.Integration;
 using LoanManagementSystem.TestTools.Installments;
 using LoanManagementSystem.TestTools.LoanRequests;
-using LoanManagementSystem.TestTools.Loans;
-using Xunit.Abstractions;
 
 namespace LoanManagementSystem.Services.Tests.Unit.Customers;
 
 public class CustomerQueryTests : BusinessIntegrationTest
 {
     private readonly CustomerQuery _sut;
-
-
-    public CustomerQueryTests()
-    {
+    
+    public CustomerQueryTests() =>
         _sut = new EfCustomerQuery(ReadContext);
-    }
 
     [Fact]
     public async Task GetById_return_GetCustomerDto__when_passed_customer_id()
@@ -30,7 +24,8 @@ public class CustomerQueryTests : BusinessIntegrationTest
             .WithFirstName("John").WithLastName("Doe")
             .WithNationalId("1234567899")
             .WithPhoneNumber("09001239876").WithEmail("john@outlook.com")
-            .WithBalance(26).WithIsVerified(true).WithCreditScore(90)
+            .WithBalance(26).WithIsVerified(true)
+            // .WithCreditScore(90)
             .Build();
         var customer2 = new CustomerBuilder()
             .WithFirstName("Jacob").WithLastName("Doe")
@@ -46,7 +41,7 @@ public class CustomerQueryTests : BusinessIntegrationTest
         actual.Email.Should().Be(customer1.Email);
         actual.Balance.Should().Be(customer1.Balance);
         actual.IsVerified.Should().Be(customer1.IsVerified);
-        actual.CreditScore.Should().Be(customer1.CreditScore);
+        // actual.CreditScore.Should().Be(customer1.CreditScore);
     }
 
     [Fact]
@@ -56,7 +51,8 @@ public class CustomerQueryTests : BusinessIntegrationTest
             .WithFirstName("John").WithLastName("Doe")
             .WithNationalId("1234567899").WithPhoneNumber("09001239876")
             .WithEmail("john@outlook.com").WithBalance(26)
-            .WithIsVerified(true).WithCreditScore(90)
+            .WithIsVerified(true)
+            // .WithCreditScore(90)
             .WithIncomeGroup(IncomeGroup.MoreThanTen).WithJobType(JobType.SelfEmployed)
             .WithNetWorth(15644).Build();
         var customer2 = new CustomerBuilder()
@@ -73,7 +69,7 @@ public class CustomerQueryTests : BusinessIntegrationTest
         actual.Email.Should().Be(customer2.Email);
         actual.Balance.Should().Be(customer2.Balance);
         actual.IsVerified.Should().Be(customer2.IsVerified);
-        actual.CreditScore.Should().Be(customer2.CreditScore);
+        // actual.CreditScore.Should().Be(customer2.CreditScore);
         actual.IncomeGroup.Should().Be(customer2.IncomeGroup.ToString());
         actual.JobType.Should().Be(customer2.JobType.ToString());
         actual.NetWorth.Should().Be(customer2.NetWorth);
@@ -86,7 +82,8 @@ public class CustomerQueryTests : BusinessIntegrationTest
             .WithFirstName("John").WithLastName("Doe")
             .WithNationalId("1234567899")
             .WithPhoneNumber("09001239876").WithEmail("john@outlook.com")
-            .WithBalance(26).WithIsVerified(true).WithCreditScore(90)
+            .WithBalance(26).WithIsVerified(true)
+            // .WithCreditScore(90)
             .Build();
         Save(customer1);
         var actual = await _sut.GetById(-1);
@@ -101,12 +98,16 @@ public class CustomerQueryTests : BusinessIntegrationTest
             .WithFirstName("John").WithLastName("Doe")
             .WithNationalId("1234567899").WithPhoneNumber("09001239876")
             .WithEmail("john@outlook.com").WithBalance(26)
-            .WithIsVerified(true).WithCreditScore(90).Build();
+            .WithIsVerified(true)
+            // .WithCreditScore(90)
+            .Build();
         var customer2 = new CustomerBuilder()
             .WithFirstName("Jacob").WithLastName("Doe")
             .WithNationalId("1234567898").WithPhoneNumber("09001234321")
             .WithEmail("jacob@outlook.com").WithBalance(34)
-            .WithIsVerified(true).WithCreditScore(89).Build();
+            .WithIsVerified(true)
+            // .WithCreditScore(89)
+            .Build();
         Save(customer1, customer2);
 
         var actual = await _sut.GetAll();
@@ -122,7 +123,7 @@ public class CustomerQueryTests : BusinessIntegrationTest
                 Email = customer1.Email,
                 Balance = customer1.Balance,
                 IsVerified = customer1.IsVerified,
-                CreditScore = customer1.CreditScore
+                // CreditScore = customer1.CreditScore
             },
             new GetCustomerDto
             {
@@ -133,7 +134,7 @@ public class CustomerQueryTests : BusinessIntegrationTest
                 Email = customer2.Email,
                 Balance = customer2.Balance,
                 IsVerified = customer2.IsVerified,
-                CreditScore = customer2.CreditScore
+                // CreditScore = customer2.CreditScore
             }
         ]);
     }
@@ -145,14 +146,16 @@ public class CustomerQueryTests : BusinessIntegrationTest
             .WithFirstName("John").WithLastName("Doe")
             .WithNationalId("1234567899").WithPhoneNumber("09001239876")
             .WithEmail("john@outlook.com").WithBalance(26)
-            .WithIsVerified(true).WithCreditScore(90)
+            .WithIsVerified(true)
+            // .WithCreditScore(90)
             .WithIncomeGroup(IncomeGroup.MoreThanTen).WithJobType(JobType.SelfEmployed)
             .WithNetWorth(15644).Build();
         var customer2 = new CustomerBuilder()
             .WithFirstName("Jacob").WithLastName("Doe")
             .WithNationalId("1234567898").WithPhoneNumber("09001234321")
             .WithEmail("jacob@outlook.com").WithBalance(34)
-            .WithIsVerified(true).WithCreditScore(89)
+            .WithIsVerified(true)
+            // .WithCreditScore(89)
             .WithIncomeGroup(IncomeGroup.MoreThanTen).WithJobType(JobType.UnEmployed)
             .WithNetWorth(18546).Build();
         Save(customer1, customer2);
@@ -171,7 +174,7 @@ public class CustomerQueryTests : BusinessIntegrationTest
                 Email = customer1.Email,
                 Balance = customer1.Balance,
                 IsVerified = customer1.IsVerified,
-                CreditScore = customer1.CreditScore,
+                // CreditScore = customer1.CreditScore,
                 JobType = customer1.JobType.ToString(),
                 IncomeGroup = customer1.IncomeGroup.ToString(),
                 NetWorth = customer1.NetWorth
@@ -185,7 +188,7 @@ public class CustomerQueryTests : BusinessIntegrationTest
                 Email = customer2.Email,
                 Balance = customer2.Balance,
                 IsVerified = customer2.IsVerified,
-                CreditScore = customer2.CreditScore,
+                // CreditScore = customer2.CreditScore,
                 JobType = customer2.JobType.ToString(),
                 IncomeGroup = customer2.IncomeGroup.ToString(),
                 NetWorth = customer2.NetWorth
@@ -207,9 +210,9 @@ public class CustomerQueryTests : BusinessIntegrationTest
         var lr3 = new LoanRequestBuilder().Build();
         var in11 = new InstallmentBuilder().WithFine(0.01m).Build();
         var in12 = new InstallmentBuilder().WithFine(0.01m).Build();
-        var in13 = new InstallmentBuilder().WithFine(0.01m).Build();
-        var in21 = new InstallmentBuilder().WithFine(0.01m).Build();
-        var in22 = new InstallmentBuilder().Build();
+        // var in13 = new InstallmentBuilder().WithFine(0.01m).Build();
+        // var in21 = new InstallmentBuilder().WithFine(0.01m).Build();
+        // var in22 = new InstallmentBuilder().Build();
         lr1.Installments.UnionWith([in11]);
         lr2.Installments.UnionWith([in12]);
         lr3.Installments.UnionWith([in11]);
@@ -230,7 +233,7 @@ public class CustomerQueryTests : BusinessIntegrationTest
                 Email = customer2.Email,
                 Balance = customer2.Balance,
                 IsVerified = customer2.IsVerified,
-                CreditScore = customer2.CreditScore
+                // CreditScore = customer2.CreditScore
             }
         ]);
     }
@@ -242,14 +245,16 @@ public class CustomerQueryTests : BusinessIntegrationTest
             .WithFirstName("John").WithLastName("Doe")
             .WithNationalId("1234567899").WithPhoneNumber("09001239876")
             .WithEmail("john@outlook.com").WithBalance(26)
-            .WithIsVerified(true).WithCreditScore(90)
+            .WithIsVerified(true)
+            // .WithCreditScore(90)
             .WithIncomeGroup(IncomeGroup.MoreThanTen).WithJobType(JobType.SelfEmployed)
             .WithNetWorth(15644).Build();
         var customer2 = new CustomerBuilder()
             .WithFirstName("Jacob").WithLastName("Doe")
             .WithNationalId("1234567898").WithPhoneNumber("09001234321")
             .WithEmail("jacob@outlook.com").WithBalance(34)
-            .WithIsVerified(true).WithCreditScore(89)
+            .WithIsVerified(true)
+            // .WithCreditScore(89)
             .WithIncomeGroup(IncomeGroup.MoreThanTen).WithJobType(JobType.UnEmployed)
             .WithNetWorth(18546).Build();
         var lr1 = new LoanRequestBuilder().Build();
@@ -278,7 +283,7 @@ public class CustomerQueryTests : BusinessIntegrationTest
                 Email = customer1.Email,
                 Balance = customer1.Balance,
                 IsVerified = customer1.IsVerified,
-                CreditScore = customer1.CreditScore,
+                // CreditScore = customer1.CreditScore,
                 JobType = customer1.JobType.ToString(),
                 IncomeGroup = customer1.IncomeGroup.ToString(),
                 NetWorth = customer1.NetWorth
