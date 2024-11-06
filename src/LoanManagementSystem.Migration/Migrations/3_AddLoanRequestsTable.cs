@@ -12,7 +12,7 @@ public class AddLoanRequestsTable : FluentMigrator.Migration
             .WithColumn("Id").AsInt32().PrimaryKey().Identity()
             .WithColumn("Status").AsInt32().NotNullable()
             .WithColumn("DelayInRepayment").AsBoolean().NotNullable()
-            .WithColumn("ConfirmationDate").AsDateTime2().Nullable()
+            .WithColumn("ConfirmationDate").AsDate().Nullable()
             .WithColumn("Rate").AsInt32().NotNullable()
             .WithColumn("LoanId").AsInt32().NotNullable()
             .WithColumn("CustomerId").AsInt32().NotNullable()
