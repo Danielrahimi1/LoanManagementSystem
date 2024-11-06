@@ -16,7 +16,7 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
             {
                 LoanId = lr.LoanId,
                 CustomerId = lr.CustomerId,
-                Status = lr.Status,
+                Status = lr.Status.ToString(),
                 DelayInRepayment = lr.DelayInRepayment,
                 ConfirmationDate = lr.ConfirmationDate,
                 Rate = lr.Rate
@@ -29,7 +29,7 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
             {
                 LoanId = lr.LoanId,
                 CustomerId = lr.CustomerId,
-                Status = lr.Status,
+                Status = lr.Status.ToString(),
                 DelayInRepayment = lr.DelayInRepayment,
                 ConfirmationDate = lr.ConfirmationDate,
                 Rate = lr.Rate
@@ -41,7 +41,7 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
             {
                 LoanId = lr.LoanId,
                 CustomerId = lr.CustomerId,
-                Status = lr.Status,
+                Status = lr.Status.ToString(),
                 DelayInRepayment = lr.DelayInRepayment,
                 ConfirmationDate = lr.ConfirmationDate,
                 Rate = lr.Rate
@@ -49,11 +49,12 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
 
     public async Task<GetLoanRequestDto[]> GetAllActiveLoans() =>
         await (from lr in context.Set<LoanRequest>()
+            where lr.Status == LoanRequestStatus.Active
             select new GetLoanRequestDto
             {
                 LoanId = lr.LoanId,
                 CustomerId = lr.CustomerId,
-                Status = lr.Status,
+                Status = lr.Status.ToString(),
                 DelayInRepayment = lr.DelayInRepayment,
                 ConfirmationDate = lr.ConfirmationDate,
                 Rate = lr.Rate,
@@ -66,16 +67,24 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
             {
                 LoanId = lr.LoanId,
                 CustomerId = lr.CustomerId,
-                Status = lr.Status,
+                Status = lr.Status.ToString(),
                 DelayInRepayment = lr.DelayInRepayment,
                 ConfirmationDate = lr.ConfirmationDate,
                 Rate = lr.Rate
             }).ToArrayAsync();
 
-    public Task<GetLoanRequestDto[]> GetAllDoneLoans()
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<GetLoanRequestDto[]> GetAllCloseLoans() =>
+        await (from lr in context.Set<LoanRequest>()
+            where lr.Status == LoanRequestStatus.Close
+            select new GetLoanRequestDto
+            {
+                LoanId = lr.LoanId,
+                CustomerId = lr.CustomerId,
+                Status = lr.Status.ToString(),
+                DelayInRepayment = lr.DelayInRepayment,
+                ConfirmationDate = lr.ConfirmationDate,
+                Rate = lr.Rate
+            }).ToArrayAsync();
 
     public async Task<GetLoanRequestWithCustomerDto[]> GetAllWithCustomer() =>
         await (from lr in context.Set<LoanRequest>()
@@ -89,7 +98,7 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                 PhoneNumber = c.PhoneNumber,
                 Email = c.Email,
                 LoanId = lr.LoanId,
-                Status = lr.Status,
+                Status = lr.Status.ToString(),
                 DelayInRepayment = lr.DelayInRepayment,
                 ConfirmationDate = lr.ConfirmationDate,
                 Rate = lr.Rate
@@ -108,7 +117,7 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                 PhoneNumber = c.PhoneNumber,
                 Email = c.Email,
                 LoanId = lr.LoanId,
-                Status = lr.Status,
+                Status = lr.Status.ToString(),
                 DelayInRepayment = lr.DelayInRepayment,
                 ConfirmationDate = lr.ConfirmationDate,
                 Rate = lr.Rate
@@ -127,7 +136,7 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                 PhoneNumber = c.PhoneNumber,
                 Email = c.Email,
                 LoanId = lr.LoanId,
-                Status = lr.Status,
+                Status = lr.Status.ToString(),
                 DelayInRepayment = lr.DelayInRepayment,
                 ConfirmationDate = lr.ConfirmationDate,
                 Rate = lr.Rate
@@ -146,7 +155,7 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                 PhoneNumber = c.PhoneNumber,
                 Email = c.Email,
                 LoanId = lr.LoanId,
-                Status = lr.Status,
+                Status = lr.Status.ToString(),
                 DelayInRepayment = lr.DelayInRepayment,
                 ConfirmationDate = lr.ConfirmationDate,
                 Rate = lr.Rate
