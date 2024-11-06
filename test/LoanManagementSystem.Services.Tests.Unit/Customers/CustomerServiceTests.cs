@@ -161,6 +161,72 @@ public class CustomerServiceTests : BusinessIntegrationTest
     }
 
     [Fact]
+    public async Task Update_update_customer_details_when_given_updateCustomerDto()
+    {
+        var customer1 = new CustomerBuilder()
+            .WithFirstName("John").WithLastName("Doe")
+            .WithNationalId("1234567899").WithPhoneNumber("09001239876")
+            .WithEmail("john@outlook.com").WithBalance(26)
+            .WithIsVerified(true).WithCreditScore(90)
+            .WithIncomeGroup(IncomeGroup.MoreThanTen).WithJobType(JobType.SelfEmployed)
+            .WithNetWorth(15644).Build();
+        var customer2 = new CustomerBuilder()
+            .WithFirstName("Jacob").WithLastName("Doe")
+            .WithNationalId("1234567898").WithPhoneNumber("09001234321")
+            .WithEmail("jacob@outlook.com").WithBalance(34)
+            .WithIsVerified(true).WithCreditScore(89)
+            .WithIncomeGroup(IncomeGroup.MoreThanTen).WithJobType(JobType.UnEmployed)
+            .WithNetWorth(18546).Build();
+        Save(customer1, customer2);
+
+        var dto = new UpdateCustomerDto
+        {
+            FirstName = "Giovanni",
+            LastName = "Rossi",
+            NationalId = "1234567999",
+            PhoneNumber = "09391234321",
+            Email = "giovanni@gmail.com",
+            JobType = JobType.SelfEmployed.ToString(),
+            Income = 128,
+            NetWorth = 16768
+        };
+
+        await _sut.Update(customer2.Id, dto);
+        var actual = ReadContext.Set<Customer>();
+        // actual.Should().BeEquivalentTo([customer1, dto.As<Customer>()]);
+        actual.Should().BeEquivalentTo([
+            new
+            {
+                FirstName = "Giovanni",
+                LastName = "Rossi",
+                NationalId = "1234567999",
+                PhoneNumber = "09391234321",
+                Email = "giovanni@gmail.com",
+                Balance = 34,
+                IsVerified = false,
+                CreditScore = 89,
+                IncomeGroup = IncomeGroup.MoreThanTen,
+                JobType = JobType.SelfEmployed.ToString(),
+                NetWorth = 16768
+            },
+            new
+            {
+                FirstName = "Giovanni",
+                LastName = "Rossi",
+                NationalId = "1234567999",
+                PhoneNumber = "09391234321",
+                Email = "giovanni@gmail.com",
+                Balance = 34,
+                IsVerified = false,
+                CreditScore = 89,
+                IncomeGroup = IncomeGroup.MoreThanTen,
+                JobType = JobType.SelfEmployed.ToString(),
+                NetWorth = 16768
+            }
+        ]);
+    }
+
+    [Fact]
     public async Task Delete_remove_a_customer_when_given_id()
     {
         var customer1 = new CustomerBuilder().WithFirstName("Jacob").Build();
