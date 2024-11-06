@@ -12,7 +12,7 @@ public class GetLoanRequestWithCustomerDto
     public required string Email { get; set; }
     public required int LoanId { get; init; }
     public required int Rate { get; init; }
-    public required LoanRequestStatus Status { get; set; }
+    public required string Status { get; set; }
     public required bool DelayInRepayment { get; set; }
     public DateOnly? ConfirmationDate { get; set; }
 }
