@@ -41,7 +41,7 @@ public class CustomerAppService(
             Email = dto.Email,
             Balance = 0,
             IsVerified = false,
-            CreditScore = 0,
+            // CreditScore = 0,
             JobType = JobType.UnEmployed,
             IncomeGroup = IncomeGroup.LessThanFive,
             NetWorth = 0,
@@ -153,7 +153,7 @@ public class CustomerAppService(
             dto.Income > 5 ? IncomeGroup.FiveUptoIncludingTen : IncomeGroup.LessThanFive;
         customer.NetWorth = dto.NetWorth ?? customer.NetWorth;
         
-        customer.CreditScore= (int)customer.JobType + (int)customer.IncomeGroup;
+        // customer.CreditScore= (int)customer.JobType + (int)customer.IncomeGroup;
         customerRepository.Update(customer);
         await unitOfWork.Save();
     }

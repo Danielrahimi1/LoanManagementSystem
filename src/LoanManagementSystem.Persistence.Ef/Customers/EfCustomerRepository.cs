@@ -6,9 +6,9 @@ namespace LoanManagementSystem.Persistence.Ef.Customers;
 
 public class EfCustomerRepository(EfDataContext context) : CustomerRepository
 {
-    public async Task<int> GetCreditScoreById(int id) =>
-        await context.Set<Customer>().Where(c => c.Id == id)
-            .Select(c => c.CreditScore).FirstAsync();
+    // public async Task<int> GetCreditScoreById(int id) =>
+    //     await context.Set<Customer>().Where(c => c.Id == id)
+    //         .Select(c => c.CreditScore).FirstAsync();
 
     public async Task Add(Customer customer) =>
         await context.Set<Customer>().AddAsync(customer);

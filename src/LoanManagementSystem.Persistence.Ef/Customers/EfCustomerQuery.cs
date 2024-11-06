@@ -21,7 +21,7 @@ public class EfCustomerQuery(EfDataContext context) : CustomerQuery
                 Email = c.Email,
                 Balance = c.Balance,
                 IsVerified = c.IsVerified,
-                CreditScore = c.CreditScore
+                // CreditScore = c.CreditScore
             }).FirstOrDefaultAsync();
 
     public async Task<GetCustomerWithStatementDto?> GetByIdWithStatement(int id) =>
@@ -36,7 +36,7 @@ public class EfCustomerQuery(EfDataContext context) : CustomerQuery
                 Email = c.Email,
                 Balance = c.Balance,
                 IsVerified = c.IsVerified,
-                CreditScore = c.CreditScore,
+                // CreditScore = c.CreditScore,
                 JobType = c.JobType.ToString(),
                 IncomeGroup = c.IncomeGroup.ToString(),
                 NetWorth = c.NetWorth
@@ -53,7 +53,7 @@ public class EfCustomerQuery(EfDataContext context) : CustomerQuery
                 Email = c.Email,
                 Balance = c.Balance,
                 IsVerified = c.IsVerified,
-                CreditScore = c.CreditScore
+                // CreditScore = c.CreditScore
             }).ToArrayAsync();
 
     public async Task<GetCustomerWithStatementDto[]> GetAllWithStatement() =>
@@ -67,7 +67,7 @@ public class EfCustomerQuery(EfDataContext context) : CustomerQuery
                 Email = c.Email,
                 Balance = c.Balance,
                 IsVerified = c.IsVerified,
-                CreditScore = c.CreditScore,
+                // CreditScore = c.CreditScore,
                 JobType = c.JobType.ToString(),
                 IncomeGroup = c.IncomeGroup.ToString(),
                 NetWorth = c.NetWorth
@@ -95,7 +95,7 @@ public class EfCustomerQuery(EfDataContext context) : CustomerQuery
                 Email = c.Email,
                 Balance = c.Balance,
                 IsVerified = c.IsVerified,
-                CreditScore = c.CreditScore,
+                // CreditScore = c.CreditScore,
             }).ToArrayAsync();
 
     public async Task<GetCustomerWithStatementDto[]> GetRiskyCustomersWithStatement()
@@ -124,7 +124,7 @@ public class EfCustomerQuery(EfDataContext context) : CustomerQuery
                 Email = c.Email,
                 Balance = c.Balance,
                 IsVerified = c.IsVerified,
-                CreditScore = c.CreditScore,
+                // CreditScore = c.CreditScore,
                 JobType = c.JobType.ToString(),
                 IncomeGroup = c.IncomeGroup.ToString(),
                 NetWorth = c.NetWorth

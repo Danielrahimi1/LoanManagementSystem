@@ -5,7 +5,7 @@ namespace LoanManagementSystem.Services.Customers.Contracts.Interfaces;
 
 public interface CustomerRepository
 {
-    Task<int> GetCreditScoreById(int id);
+    // Task<int> GetCreditScoreById(int id);
     Task Add(Customer customer);
     Task<bool> IsDuplicateByNationalId(string nationalId);
     Task<bool> IsVerified(int id);
