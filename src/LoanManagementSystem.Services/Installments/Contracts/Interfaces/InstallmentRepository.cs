@@ -7,6 +7,7 @@ public interface InstallmentRepository
 {
     Task AddRange(params Installment[] installments);
     Task Add(Installment installment);
+    Task<int> CountDelayedInstallments(int customerId);
     Task<Installment?> Find(int id);
     void Update(Installment installment);
 }

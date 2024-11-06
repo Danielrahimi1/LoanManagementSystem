@@ -6,6 +6,7 @@ using LoanManagementSystem.Entities.LoanRequests;
 using LoanManagementSystem.Entities.LoanRequests.Enums;
 using LoanManagementSystem.Services.Customers.Contracts.Interfaces;
 using LoanManagementSystem.Services.Customers.Exceptions;
+using LoanManagementSystem.Services.Installments.Contracts.Interfaces;
 using LoanManagementSystem.Services.LoanRequests.Contracts.DTOs;
 using LoanManagementSystem.Services.LoanRequests.Contracts.Interfaces;
 using LoanManagementSystem.Services.LoanRequests.Exceptions;
@@ -19,6 +20,7 @@ public class LoanRequestAppService(
     LoanRequestRepository loanRequestRepository,
     CustomerRepository customerRepository,
     LoanRepository loanRepository,
+    InstallmentRepository installmentRepository,
     DateService dateService,
     UnitOfWork unitOfWork)
     : LoanRequestService
@@ -46,7 +48,12 @@ public class LoanRequestAppService(
         var onTimeClosedLoans = await loanRequestRepository.CountNonDelayedLoans(customerId) * 30;
         var loanNetWorthRatio = loan.Amount / customer.NetWorth < loan.Amount * 0.5M ? 20 :
             loan.Amount < loan.Amount * 0.7M ? 10 : 0;
-        var rate = (int)customer.IncomeGroup + (int)customer.JobType + onTimeClosedLoans + loanNetWorthRatio;
+        var delayedInstallments = await installmentRepository.CountDelayedInstallments(customerId);
+        var rate = (int)customer.IncomeGroup +
+                   (int)customer.JobType +
+                   onTimeClosedLoans +
+                   loanNetWorthRatio +
+                   (delayedInstallments * (-5));
         if (rate < 60)
         {
             throw new NotEnoughCreditScoreException();
@@ -58,7 +65,7 @@ public class LoanRequestAppService(
             CustomerId = dto.CustomerId,
             Status = LoanRequestStatus.Review,
             DelayInRepayment = false,
-            Rate = rate,
+            Rate = rate > 100 ? 100 : rate,
             ConfirmationDate = null,
             Customer = customer,
         };
