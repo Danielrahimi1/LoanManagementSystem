@@ -13,6 +13,7 @@ public class AddLoanRequestsTable : FluentMigrator.Migration
             .WithColumn("Status").AsInt32().NotNullable()
             .WithColumn("DelayInRepayment").AsBoolean().NotNullable()
             .WithColumn("ConfirmationDate").AsDateTime2().Nullable()
+            .WithColumn("Rate").AsInt32().NotNullable()
             .WithColumn("LoanId").AsInt32().NotNullable()
             .WithColumn("CustomerId").AsInt32().NotNullable()
                 .ForeignKey("FK_LoanRequests_Customers", "Customers", "Id")

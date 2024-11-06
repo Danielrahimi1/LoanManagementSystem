@@ -12,6 +12,7 @@ public class LoanRequestEntityMap : IEntityTypeConfiguration<LoanRequest>
         builder.HasKey(lr => lr.Id);
         builder.Property(lr => lr.Id).UseIdentityColumn();
         builder.Property(lr => lr.ConfirmationDate).IsRequired(false);
+        builder.Property(lr => lr.Rate).IsRequired();
         builder.HasMany(lr => lr.Installments).WithOne(installment => installment.LoanRequest)
             .HasForeignKey(installment => installment.LoanRequestId);
     }

@@ -13,6 +13,7 @@ public class LoanRequest
     public int CustomerId { get; set; }
     public required LoanRequestStatus Status { get; set; }
     public bool DelayInRepayment { get; set; }
+    public int Rate { get; set; }
     public DateOnly? ConfirmationDate { get; set; }
     public Customer Customer { get; set; }
     public HashSet<Installment> Installments { get; set; } = [];
