@@ -153,10 +153,6 @@ public class CustomerAppService(
             dto.Income > 5 ? IncomeGroup.FiveUptoIncludingTen : IncomeGroup.LessThanFive;
         customer.NetWorth = dto.NetWorth ?? customer.NetWorth;
         
-        // if loanRequest not delayed +30
-        // if installment delayed -5
-        // LoanAmount/NetWorth
-        
         customer.CreditScore= (int)customer.JobType + (int)customer.IncomeGroup;
         customerRepository.Update(customer);
         await unitOfWork.Save();
