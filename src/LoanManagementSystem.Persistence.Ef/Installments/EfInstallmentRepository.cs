@@ -14,6 +14,12 @@ public class EfInstallmentRepository(EfDataContext context) : InstallmentReposit
     public async Task Add(Installment installment) =>
         await context.Set<Installment>().AddAsync(installment);
 
+    public async Task<Installment?> GetFirstUnpaidInstallment(int loanRequestId) =>
+        await context.Set<Installment>().Where(i => i.LoanRequestId == loanRequestId)
+            .OrderBy(i => i.PaymentDeadLine)
+            .FirstOrDefaultAsync(i => i.PaymentDate == null);
+
+
     public async Task<int> CountDelayedInstallments(int customerId) =>
         await (from c in context.Set<Customer>()
             where c.Id == customerId
@@ -24,6 +30,10 @@ public class EfInstallmentRepository(EfDataContext context) : InstallmentReposit
                 on lr.Id equals i.LoanRequestId
             where i.Fine > 0
             select i).CountAsync();
+
+    public async Task<bool> HasUnpaidInstallments(int loanRequestId) =>
+        await context.Set<Installment>()
+            .AnyAsync(i => i.LoanRequestId == loanRequestId && i.PaymentDate != null);
 
     public async Task<Installment?> Find(int id) =>
         await context.Set<Installment>().FirstOrDefaultAsync(i => i.Id == id);

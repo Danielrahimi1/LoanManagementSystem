@@ -4,5 +4,5 @@ namespace LoanManagementSystem.Services.Installments.Contracts.Interfaces;
 
 public interface InstallmentService
 {
-    Task Pay(int id);
+    Task<decimal> Pay(int loanRequestId);
 }

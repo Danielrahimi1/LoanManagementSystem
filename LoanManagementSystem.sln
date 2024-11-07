@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanManagementSystem.Migrat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanManagementSystem.Persistence.Ef", "src\LoanManagementSystem.Persistence.Ef\LoanManagementSystem.Persistence.Ef.csproj", "{F4A12A1A-DC9B-40A3-8193-EF8771D653BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanManagementSystem.Application.Tests.Integration", "test\LoanManagementSystem.Application.Tests.Integration\LoanManagementSystem.Application.Tests.Integration.csproj", "{943CA537-1142-43C0-99BF-1CADF3F0BD80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,7 @@ Global
 		{782AD394-915D-4255-A2C9-F4FD4787C325} = {5C14CC26-FADD-489C-A85F-8A7428DACE29}
 		{4D5FDD30-B769-4628-B3E2-1F2D69382049} = {5C14CC26-FADD-489C-A85F-8A7428DACE29}
 		{F4A12A1A-DC9B-40A3-8193-EF8771D653BF} = {5C14CC26-FADD-489C-A85F-8A7428DACE29}
+		{943CA537-1142-43C0-99BF-1CADF3F0BD80} = {152E57D0-FBDA-4FEE-8099-52DE8ABC0B57}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{3C8514E4-B723-4E30-8A4A-5BD5226E463D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -74,5 +77,9 @@ Global
 		{F4A12A1A-DC9B-40A3-8193-EF8771D653BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4A12A1A-DC9B-40A3-8193-EF8771D653BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4A12A1A-DC9B-40A3-8193-EF8771D653BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{943CA537-1142-43C0-99BF-1CADF3F0BD80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{943CA537-1142-43C0-99BF-1CADF3F0BD80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{943CA537-1142-43C0-99BF-1CADF3F0BD80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{943CA537-1142-43C0-99BF-1CADF3F0BD80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

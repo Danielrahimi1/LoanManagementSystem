@@ -10,17 +10,12 @@ public class InstallmentAppService(
     UnitOfWork unitOfWork,
     DateService dateService) : InstallmentService
 {
-    public async Task Pay(int id)
+    public async Task<decimal> Pay(int loanRequestId)
     {
-        var installment = await installmentRepository.Find(id);
+        var installment = await installmentRepository.GetFirstUnpaidInstallment(loanRequestId);
         if (installment is null)
         {
             throw new InstallmentNotFoundException();
-        }
-
-        if (installment.PaymentDate is not null)
-        {
-            throw new InstallmentAlreadyPaidException();
         }
 
         installment.PaymentDate = dateService.UtcNow;
@@ -28,8 +23,9 @@ public class InstallmentAppService(
         {
             installment.Fine = installment.Amount * 0.05M;
         }
-
+        
         installmentRepository.Update(installment);
         await unitOfWork.Save();
+        return installment.Amount + installment.MonthlyInterest + installment.Fine;
     }
 }

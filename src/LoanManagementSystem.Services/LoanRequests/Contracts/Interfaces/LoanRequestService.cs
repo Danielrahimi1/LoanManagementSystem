@@ -8,5 +8,6 @@ public interface LoanRequestService
     Task Open(int customerId, AddLoanRequestDto dto);
     Task Accept(int id);
     Task Reject(int id);
-    Task Activate(int id);
+    Task<decimal> Activate(int id);
+    Task Close(int id);
 }

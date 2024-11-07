@@ -117,7 +117,7 @@ public class LoanRequestAppService(
         await unitOfWork.Save();
     }
 
-    public async Task Activate(int id)
+    public async Task<decimal> Activate(int id)
     {
         var lr = await loanRequestRepository.Find(id);
         if (lr is null)
@@ -137,8 +137,8 @@ public class LoanRequestAppService(
         var installmentAmount = loan!.Amount / loan.InstallmentCount;
         var monthlyInterest = installmentAmount * (loan.AnnualInterestRate / 12M / 100M);
 
-        var customer = await customerRepository.Find(lr.CustomerId);
-        customer!.Balance += loan.Amount;
+        // var customer = await customerRepository.Find(lr.CustomerId);
+        // customer!.Balance += loan.Amount;
 
         lr.Installments.UnionWith(
             from month in Enumerable.Range(1, loan.InstallmentCount)
@@ -153,6 +153,30 @@ public class LoanRequestAppService(
             }
         );
 
+        loanRequestRepository.Update(lr);
+        await unitOfWork.Save();
+        return loan.Amount;
+    }
+
+    public async Task Close(int id)
+    {
+        var lr = await loanRequestRepository.Find(id);
+        if (lr is null)
+        {
+            throw new LoanRequestNotFoundException();
+        }
+
+        if (lr.Status != LoanRequestStatus.Active)
+        {
+            throw new LoanRequestMustBeActive();
+        }
+
+        if (await installmentRepository.HasUnpaidInstallments(lr.Id))
+        {
+            throw new HasUnpaidInstallmentsException();
+        }
+        lr.Status = LoanRequestStatus.Close;
+        
         loanRequestRepository.Update(lr);
         await unitOfWork.Save();
     }
