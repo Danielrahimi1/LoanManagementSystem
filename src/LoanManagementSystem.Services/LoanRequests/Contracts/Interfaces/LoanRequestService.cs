@@ -9,5 +9,4 @@ public interface LoanRequestService
     Task Accept(int id);
     Task Reject(int id);
     Task Activate(int id);
-    Task Pay(int id);
 }

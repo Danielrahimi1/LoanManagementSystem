@@ -120,7 +120,6 @@ public class LoanRequestAppService(
 
     public async Task Activate(int id)
     {
-        // TODO: Change lr state to Activate, after first installment paid.
         var lr = await loanRequestRepository.Find(id);
         if (lr is null)
         {
@@ -153,29 +152,5 @@ public class LoanRequestAppService(
 
         loanRequestRepository.Update(lr);
         await unitOfWork.Save();
-    }
-
-    public async Task Pay(int id)
-    {
-        // var installment = await installmentRepository.Find(id);
-        // if (installment is null)
-        // {
-        //     throw new InstallmentNotFoundException();
-        // }
-        //
-        // if (installment.PaymentDate is not null)
-        // {
-        //     throw new InstallmentAlreadyPaidException();
-        // }
-        //
-        // installment.PaymentDate = dateService.UtcNow;
-        // if (installment.PaymentDeadLine < installment.PaymentDate)
-        // {
-        //     installment.Fine = installment.Amount * 0.05M;
-        // }
-        // installmentRepository.Update(installment);
-        // await unitOfWork.Save();
-        await Task.CompletedTask;
-        throw new NotImplementedException();
     }
 }
