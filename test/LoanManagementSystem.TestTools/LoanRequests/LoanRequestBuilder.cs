@@ -14,7 +14,8 @@ public class LoanRequestBuilder
         _loanRequest = new LoanRequest
         {
             LoanId = 1,
-            Status = (LoanRequestStatus)0,
+            CustomerId = 0,
+            Status = LoanRequestStatus.Review,
             DelayInRepayment = false,
             Rate = 0,
             ConfirmationDate = null,
@@ -43,6 +44,11 @@ public class LoanRequestBuilder
     public LoanRequestBuilder WithDelayInRepayment(bool value)
     {
         _loanRequest.DelayInRepayment = value;
+        return this;
+    }
+    public LoanRequestBuilder WithCustomerId(int value)
+    {
+        _loanRequest.CustomerId = value;
         return this;
     }
     public LoanRequestBuilder WithRate(int value)
