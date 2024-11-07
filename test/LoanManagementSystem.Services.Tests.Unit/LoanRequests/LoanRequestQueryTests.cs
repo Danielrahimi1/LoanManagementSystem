@@ -131,6 +131,46 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
     }
 
     [Fact]
+    public async Task GetAllAcceptLoans_return_all_accept_loans_when_invoked()
+    {
+        var loan = new LoanBuilder().Build();
+        Save(loan);
+        var customer1 = new CustomerBuilder().Build();
+        var customer2 = new CustomerBuilder().Build();
+        var lr1 = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Accept).WithLoanId(loan.Id).Build();
+        var lr2 = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Reject).WithLoanId(loan.Id).Build();
+        var lr3 = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Accept).WithLoanId(loan.Id).Build();
+        customer1.LoanRequests.UnionWith([lr1]);
+        customer2.LoanRequests.UnionWith([lr2, lr3]);
+        Save(customer1, customer2);
+
+        var actual = await _sut.GetAllAcceptLoans();
+
+        // actual.Should().Satisfy(lr => lr.Status == LoanRequestStatus.Active.ToString());
+        actual.Should().HaveCount(2);
+        actual.Should().BeEquivalentTo([
+            new GetLoanRequestDto
+            {
+                LoanId = lr1.LoanId,
+                CustomerId = lr1.CustomerId,
+                Rate = lr1.Rate,
+                Status = LoanRequestStatus.Accept.ToString(),
+                DelayInRepayment = lr1.DelayInRepayment,
+                ConfirmationDate = lr1.ConfirmationDate
+            },
+            new GetLoanRequestDto
+            {
+                LoanId = lr3.LoanId,
+                CustomerId = lr3.CustomerId,
+                Rate = lr3.Rate,
+                Status = LoanRequestStatus.Accept.ToString(),
+                DelayInRepayment = lr3.DelayInRepayment,
+                ConfirmationDate = lr3.ConfirmationDate
+            },
+        ]);
+    }
+    
+    [Fact]
     public async Task GetAllActiveLoans_return_all_active_loans_when_invoked()
     {
         var loan = new LoanBuilder().Build();
@@ -315,6 +355,55 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
         ]);
     }
 
+    [Fact]
+    public async Task GetAllAcceptLoansWithCustomer_return_all_accept_loans_with_customer_when_invoked()
+    {
+        var loan = new LoanBuilder().Build();
+        Save(loan);
+        var customer1 = new CustomerBuilder().Build();
+        var customer2 = new CustomerBuilder().Build();
+        var lr1 = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Accept).WithLoanId(loan.Id).Build();
+        var lr2 = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Reject).WithLoanId(loan.Id).Build();
+        var lr3 = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Accept).WithLoanId(loan.Id).Build();
+        customer1.LoanRequests.UnionWith([lr1]);
+        customer2.LoanRequests.UnionWith([lr2, lr3]);
+        Save(customer1, customer2);
+
+        var actual = await _sut.GetAllAcceptLoansWithCustomer();
+
+        // actual.Should().Satisfy(lr => lr.Status == LoanRequestStatus.Active.ToString());
+        actual.Should().HaveCount(2);
+        actual.Should().BeEquivalentTo([
+            new GetLoanRequestWithCustomerDto
+            {
+                FirstName = customer1.FirstName,
+                LastName = customer1.LastName,
+                NationalId = customer1.NationalId,
+                PhoneNumber = customer1.PhoneNumber,
+                Email = customer1.Email,
+                LoanId = lr1.LoanId,
+                Rate = lr1.Rate,
+                Status = LoanRequestStatus.Accept.ToString(),
+                DelayInRepayment = lr1.DelayInRepayment,
+                ConfirmationDate = lr1.ConfirmationDate
+            },
+            new GetLoanRequestWithCustomerDto
+            {
+                FirstName = customer2.FirstName,
+                LastName = customer2.LastName,
+                NationalId = customer2.NationalId,
+                PhoneNumber = customer2.PhoneNumber,
+                Email = customer2.Email,
+                LoanId = lr3.LoanId,
+                Rate = lr3.Rate,
+                Status = LoanRequestStatus.Accept.ToString(),
+                DelayInRepayment = lr3.DelayInRepayment,
+                ConfirmationDate = lr3.ConfirmationDate
+            },
+        ]);
+    }
+
+    
     [Fact]
     public async Task GetAllActiveLoansWithCustomer_return_all_active_loans_with_customer_when_invoked()
     {
