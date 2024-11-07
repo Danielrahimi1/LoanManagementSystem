@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LoanManagementSystem.Entities.Installments;
@@ -137,6 +136,10 @@ public class LoanRequestAppService(
         lr.ConfirmationDate = dateService.UtcNow;
         var installmentAmount = loan!.Amount / loan.InstallmentCount;
         var monthlyInterest = installmentAmount * (loan.AnnualInterestRate / 12M / 100M);
+
+        var customer = await customerRepository.Find(lr.CustomerId);
+        customer!.Balance += loan.Amount;
+
         lr.Installments.UnionWith(
             from month in Enumerable.Range(1, loan.InstallmentCount)
             select new Installment
