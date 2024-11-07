@@ -47,6 +47,19 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                 Rate = lr.Rate
             }).ToArrayAsync();
 
+    public async Task<GetLoanRequestDto[]> GetAllAcceptLoans() =>
+        await(from lr in context.Set<LoanRequest>()
+            where lr.Status == LoanRequestStatus.Accept
+            select new GetLoanRequestDto
+            {
+                LoanId = lr.LoanId,
+                CustomerId = lr.CustomerId,
+                Status = lr.Status.ToString(),
+                DelayInRepayment = lr.DelayInRepayment,
+                ConfirmationDate = lr.ConfirmationDate,
+                Rate = lr.Rate,
+            }).ToArrayAsync();
+
     public async Task<GetLoanRequestDto[]> GetAllActiveLoans() =>
         await (from lr in context.Set<LoanRequest>()
             where lr.Status == LoanRequestStatus.Active
@@ -103,9 +116,28 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                 ConfirmationDate = lr.ConfirmationDate,
                 Rate = lr.Rate
             }).ToArrayAsync();
-    
+
+    public async Task<GetLoanRequestWithCustomerDto[]> GetAllAcceptLoansWithCustomer() =>
+        await (from lr in context.Set<LoanRequest>()
+            where lr.Status == LoanRequestStatus.Accept
+            join c in context.Set<Customer>()
+                on lr.CustomerId equals c.Id
+            select new GetLoanRequestWithCustomerDto
+            {
+                FirstName = c.FirstName,
+                LastName = c.LastName,
+                NationalId = c.NationalId,
+                PhoneNumber = c.PhoneNumber,
+                Email = c.Email,
+                LoanId = lr.LoanId,
+                Status = lr.Status.ToString(),
+                DelayInRepayment = lr.DelayInRepayment,
+                ConfirmationDate = lr.ConfirmationDate,
+                Rate = lr.Rate
+            }).ToArrayAsync();
+
     public async Task<GetLoanRequestWithCustomerDto[]> GetAllActiveLoansWithCustomer() =>
-        await(from lr in context.Set<LoanRequest>()
+        await (from lr in context.Set<LoanRequest>()
             where lr.Status == LoanRequestStatus.Active
             join c in context.Set<Customer>()
                 on lr.CustomerId equals c.Id
