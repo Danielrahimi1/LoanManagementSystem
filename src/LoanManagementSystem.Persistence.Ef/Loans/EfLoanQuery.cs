@@ -25,7 +25,7 @@ public class EfLoanQuery(EfDataContext context) : LoanQuery
                 InstallmentCount = loan.InstallmentCount,
                 AnnualInterestRate = loan.AnnualInterestRate,
             }).ToArrayAsync();
-    
+
     public async Task<GetLoanDto[]> GetAllShortPeriod() =>
         await (from loan in context.Set<Loan>()
             where loan.InstallmentCount <= 12

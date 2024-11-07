@@ -103,7 +103,7 @@ public class LoanQueryTests : BusinessIntegrationTest
             }
         ]);
     }
-    
+
     [Fact]
     public async Task GetAllLongPeriod_return_all_long_period_loans_when_invoked()
     {
@@ -133,5 +133,4 @@ public class LoanQueryTests : BusinessIntegrationTest
             }
         ]);
     }
-    
 }

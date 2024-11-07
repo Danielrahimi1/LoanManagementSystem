@@ -48,7 +48,7 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
             }).ToArrayAsync();
 
     public async Task<GetLoanRequestDto[]> GetAllAcceptLoans() =>
-        await(from lr in context.Set<LoanRequest>()
+        await (from lr in context.Set<LoanRequest>()
             where lr.Status == LoanRequestStatus.Accept
             select new GetLoanRequestDto
             {

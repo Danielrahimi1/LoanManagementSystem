@@ -30,29 +30,31 @@ public class InstallmentBuilder
         _installment.Amount = value;
         return this;
     }
-    
+
     public InstallmentBuilder WithMonthlyInterest(decimal value)
     {
         _installment.MonthlyInterest = value;
         return this;
     }
+
     public InstallmentBuilder WithPaymentDeadLine(DateOnly value)
     {
         _installment.PaymentDeadLine = value;
         return this;
     }
+
     public InstallmentBuilder WithPaymentDate(DateOnly value)
     {
         _installment.PaymentDate = value;
         return this;
     }
-    
+
     public InstallmentBuilder WithFine(decimal value)
     {
         _installment.Fine = value;
         return this;
     }
-    
+
     public Installment Build()
     {
         return _installment;

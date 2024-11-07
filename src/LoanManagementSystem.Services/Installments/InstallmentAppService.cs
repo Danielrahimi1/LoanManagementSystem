@@ -28,6 +28,7 @@ public class InstallmentAppService(
         {
             installment.Fine = installment.Amount * 0.05M;
         }
+
         installmentRepository.Update(installment);
         await unitOfWork.Save();
     }

@@ -1,6 +1,6 @@
 using FluentAssertions;
-using LoanManagementSystem.Entities.Customers;
 using LoanManagementSystem.Entities.Customers.Enums;
+using LoanManagementSystem.Entities.Installments;
 using LoanManagementSystem.Entities.LoanRequests;
 using LoanManagementSystem.Entities.LoanRequests.Enums;
 using LoanManagementSystem.Services.Customers.Exceptions;
@@ -13,6 +13,7 @@ using LoanManagementSystem.TestTools.Infrastructure.DataBaseConfig.Integration;
 using LoanManagementSystem.TestTools.Installments;
 using LoanManagementSystem.TestTools.LoanRequests;
 using LoanManagementSystem.TestTools.Loans;
+using DateOnly = System.DateOnly;
 
 namespace LoanManagementSystem.Services.Tests.Unit.LoanRequests;
 
@@ -127,8 +128,8 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
         };
 
         await _sut.Open(customer.Id, dto);
-        var actual = ReadContext.Set<LoanRequest>();
 
+        var actual = ReadContext.Set<LoanRequest>();
         actual.Should().ContainSingle(lr => lr.Rate == 30 + 30);
     }
 
@@ -156,7 +157,7 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
         var i2 = new InstallmentBuilder().WithFine(1).Build(); // -5
         var i3 = new InstallmentBuilder().WithFine(1).Build(); // -5
         lr1.Installments.UnionWith([i1, i2, i3]);
-        customer.LoanRequests.UnionWith([lr1, lr2, lr3]);
+        customer.LoanRequests.UnionWith([lr1, lr2, lr3, lr4]);
         Save(customer);
         var dto = new AddLoanRequestDto
         {
@@ -165,8 +166,8 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
         };
 
         await _sut.Open(customer.Id, dto);
-        var actual = ReadContext.Set<LoanRequest>();
 
+        var actual = ReadContext.Set<LoanRequest>();
         actual.Should().ContainSingle(lr => lr.Rate == 30 + 30 + 30 - 5 - 5 - 5);
     }
 
@@ -194,7 +195,7 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
         var i2 = new InstallmentBuilder().WithFine(1).Build(); // -5
         var i3 = new InstallmentBuilder().WithFine(1).Build(); // -5
         lr1.Installments.UnionWith([i1, i2, i3]);
-        customer.LoanRequests.UnionWith([lr1, lr2, lr3]);
+        customer.LoanRequests.UnionWith([lr1, lr2, lr3, lr4]);
         Save(customer);
         var dto = new AddLoanRequestDto
         {
@@ -203,8 +204,8 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
         };
 
         await _sut.Open(customer.Id, dto);
-        var actual = ReadContext.Set<LoanRequest>();
 
+        var actual = ReadContext.Set<LoanRequest>();
         actual.Should().ContainSingle(lr => lr.Rate == 30 + 30 + 30 - 5 - 5 - 5 + 20);
     }
 
@@ -232,7 +233,7 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
         var i2 = new InstallmentBuilder().WithFine(1).Build(); // -5
         var i3 = new InstallmentBuilder().WithFine(1).Build(); // -5
         lr1.Installments.UnionWith([i1, i2, i3]);
-        customer.LoanRequests.UnionWith([lr1, lr2, lr3]);
+        customer.LoanRequests.UnionWith([lr1, lr2, lr3, lr4]);
         Save(customer);
         var dto = new AddLoanRequestDto
         {
@@ -241,8 +242,8 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
         };
 
         await _sut.Open(customer.Id, dto);
-        var actual = ReadContext.Set<LoanRequest>();
 
+        var actual = ReadContext.Set<LoanRequest>();
         actual.Should().ContainSingle(lr => lr.Rate == 30 + 30 + 30 - 5 - 5 - 5 + 10);
     }
 
@@ -285,8 +286,8 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
         };
 
         await _sut.Open(customer.Id, dto);
-        var actual = ReadContext.Set<LoanRequest>();
 
+        var actual = ReadContext.Set<LoanRequest>();
         actual.Should().ContainSingle(lr => lr.Rate == 100);
     }
 
@@ -322,8 +323,8 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
         Save(lr);
 
         await _sut.Accept(lr.Id);
-        var result = ReadContext.Set<LoanRequest>().Single();
 
+        var result = ReadContext.Set<LoanRequest>().Single();
         result.Should().BeEquivalentTo(new LoanRequest
         {
             Id = lr.Id,
@@ -333,8 +334,115 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
             DelayInRepayment = lr.DelayInRepayment,
             Rate = lr.Rate,
             ConfirmationDate = lr.ConfirmationDate,
-            Customer = null,
             Installments = lr.Installments
         }, config => config.Excluding(item => item.Customer));
+    }
+
+    [Fact]
+    public async Task Reject_change_loan_request_status_to_reject_when_status_is_review()
+    {
+        var customer = new CustomerBuilder().Build();
+        Save(customer);
+        var lr = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Review).Build();
+        customer.LoanRequests.Add(lr);
+        Save(lr);
+
+        await _sut.Reject(lr.Id);
+
+        var result = ReadContext.Set<LoanRequest>().Single();
+        result.Should().BeEquivalentTo(new LoanRequest
+        {
+            Id = lr.Id,
+            LoanId = lr.LoanId,
+            CustomerId = lr.CustomerId,
+            Status = LoanRequestStatus.Reject,
+            DelayInRepayment = lr.DelayInRepayment,
+            Rate = lr.Rate,
+            ConfirmationDate = lr.ConfirmationDate,
+            Installments = lr.Installments
+        }, config => config.Excluding(item => item.Customer));
+    }
+
+    [Fact]
+    public async Task Activate_throw_exception_when_loan_request_status_is_not_accept()
+    {
+        var customer = new CustomerBuilder().Build();
+        Save(customer);
+        var lr = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Review).Build();
+        customer.LoanRequests.Add(lr);
+        Save(lr);
+
+        var actual = async () => await _sut.Activate(lr.Id);
+
+        await actual.Should().ThrowExactlyAsync<LoanRequestMustBeAcceptedException>();
+    }
+
+    [Fact]
+    public async Task Activate_change_loan_request_status_to_active_when_status_is_accept()
+    {
+        var cDate = new DateOnly(2024, 12, 31);
+        var customer = new CustomerBuilder().Build();
+        Save(customer);
+        var loan = new LoanBuilder().WithAmount(10)
+            .WithInstallmentCount(3).WithAnnualInterestRate(15).Build();
+        Save(loan);
+        var lr = new LoanRequestBuilder().WithConfirmationDate(cDate)
+            .WithStatus(LoanRequestStatus.Accept).WithLoanId(loan.Id).Build();
+        customer.LoanRequests.Add(lr);
+        Save(lr);
+
+        await _sut.Activate(lr.Id);
+
+        var result = ReadContext.Set<LoanRequest>().Single();
+        result.Should().BeEquivalentTo(new LoanRequest
+        {
+            LoanId = lr.LoanId,
+            CustomerId = lr.CustomerId,
+            Status = LoanRequestStatus.Active,
+            DelayInRepayment = lr.DelayInRepayment,
+            Rate = lr.Rate,
+            ConfirmationDate = cDate,
+            Installments = []
+        }, config => config.Excluding(item => item.Id));
+    }
+
+    [Fact]
+    public async Task Activate_generate_installments_when_activated()
+    {
+        var cDate = new DateOnly(2024, 12, 31);
+        var customer = new CustomerBuilder().Build();
+        Save(customer);
+        var loan = new LoanBuilder().WithAmount(10)
+            .WithInstallmentCount(3).WithAnnualInterestRate(15).Build();
+        Save(loan);
+        var lr = new LoanRequestBuilder().WithConfirmationDate(cDate)
+            .WithStatus(LoanRequestStatus.Accept).WithLoanId(loan.Id).Build();
+        customer.LoanRequests.Add(lr);
+        Save(lr);
+
+        await _sut.Activate(lr.Id);
+
+        var result = ReadContext.Set<Installment>().ToList();
+        result.Should().AllSatisfy(i => i.LoanRequestId.Should().Be(lr.Id));
+        result.Should().AllSatisfy(i =>
+            i.Amount.Should().Be(Math.Truncate(loan.Amount / loan.InstallmentCount * 100) / 100M));
+        result.Should().AllSatisfy(i => i.MonthlyInterest.Should()
+            .Be(Math.Truncate(loan.Amount / loan.InstallmentCount * loan.AnnualInterestRate / 12 / 100 * 100) / 100M));
+        result.Should().AllSatisfy(i => i.Fine.Should()
+            .Be(0));
+        result.Should().BeEquivalentTo([
+            new
+            {
+                PaymentDeadLine = cDate.AddMonths(1),
+            },
+            new
+            {
+                PaymentDeadLine = cDate.AddMonths(2),
+            },
+            new
+            {
+                PaymentDeadLine = cDate.AddMonths(3),
+            }
+        ]);
     }
 }

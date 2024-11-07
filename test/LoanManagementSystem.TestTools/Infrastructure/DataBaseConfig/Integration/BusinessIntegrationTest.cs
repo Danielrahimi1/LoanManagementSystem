@@ -9,7 +9,7 @@ public class BusinessIntegrationTest : EFDataContextDatabaseFixture
     protected EfDataContext SetupContext { get; init; }
     protected EfDataContext ReadContext { get; init; }
     protected string TenantId { get; } = "Tenant_Id";
-    
+
     protected BusinessIntegrationTest(string? tenantId = null)
     {
         if (tenantId != null)
@@ -21,13 +21,14 @@ public class BusinessIntegrationTest : EFDataContextDatabaseFixture
         Context = CreateDataContext(TenantId);
         ReadContext = CreateDataContext(TenantId);
     }
+
     protected void Save<T>(T entity)
         where T : class
     {
         Context.Manipulate(_ => _.Add(entity));
     }
 
-    protected void Save<T>(params T[] entities) 
+    protected void Save<T>(params T[] entities)
         where T : class
     {
         foreach (var entity in entities)

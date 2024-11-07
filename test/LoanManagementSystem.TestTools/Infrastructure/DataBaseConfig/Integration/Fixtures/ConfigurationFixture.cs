@@ -37,6 +37,6 @@ public class PersistenceConfig
     DisableParallelization = false)]
 public class
     ConfigurationCollectionFixture : ICollectionFixture<
-        ConfigurationFixture>
+    ConfigurationFixture>
 {
 }

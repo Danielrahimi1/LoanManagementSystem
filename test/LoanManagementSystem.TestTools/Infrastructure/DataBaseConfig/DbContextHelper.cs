@@ -12,7 +12,7 @@ public static class DbContextHelper
         manipulate(dbContext);
         dbContext.SaveChanges();
     }
-    
+
     public static void Save<TDbContext, TEntity>(
         this TDbContext dbContext,
         TEntity entity)

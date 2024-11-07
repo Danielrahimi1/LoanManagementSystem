@@ -7,11 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Loans\Exceptions\" />
+        <Folder Include="Loans\Exceptions\"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LoanManagementSystem.Entities\LoanManagementSystem.Entities.csproj" />
+        <ProjectReference Include="..\LoanManagementSystem.Entities\LoanManagementSystem.Entities.csproj"/>
     </ItemGroup>
 
 </Project>

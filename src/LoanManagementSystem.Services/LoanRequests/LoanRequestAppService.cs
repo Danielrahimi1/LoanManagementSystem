@@ -121,7 +121,6 @@ public class LoanRequestAppService(
     public async Task Activate(int id)
     {
         // TODO: Change lr state to Activate, after first installment paid.
-        
         var lr = await loanRequestRepository.Find(id);
         if (lr is null)
         {
@@ -138,9 +137,9 @@ public class LoanRequestAppService(
         lr.Status = LoanRequestStatus.Active;
         lr.ConfirmationDate = dateService.UtcNow;
         var installmentAmount = loan!.Amount / loan.InstallmentCount;
-        var monthlyInterest = installmentAmount * (loan.AnnualInterestRate / 12M);
+        var monthlyInterest = installmentAmount * (loan.AnnualInterestRate / 12M / 100M);
         lr.Installments.UnionWith(
-            from month in Enumerable.Range(1, loan.InstallmentCount + 1)
+            from month in Enumerable.Range(1, loan.InstallmentCount)
             select new Installment
             {
                 LoanRequestId = lr.Id,

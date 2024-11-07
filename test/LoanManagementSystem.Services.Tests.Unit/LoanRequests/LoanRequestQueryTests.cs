@@ -169,7 +169,7 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
             },
         ]);
     }
-    
+
     [Fact]
     public async Task GetAllActiveLoans_return_all_active_loans_when_invoked()
     {
@@ -231,7 +231,7 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
         Save(customer1, customer2);
 
         var actual = await _sut.GetAllDelayedLoans();
-        
+
         actual.Should().HaveCount(2);
         actual.Should().BeEquivalentTo([
             new GetLoanRequestDto
@@ -254,7 +254,7 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
             },
         ]);
     }
-    
+
     [Fact]
     public async Task GetAllCloseLoans_return_all_done_loans_when_invoked()
     {
@@ -324,7 +324,6 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
                 Status = lr1.Status.ToString(),
                 DelayInRepayment = lr1.DelayInRepayment,
                 ConfirmationDate = lr1.ConfirmationDate,
-
             },
             new GetLoanRequestWithCustomerDto
             {
@@ -403,7 +402,7 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
         ]);
     }
 
-    
+
     [Fact]
     public async Task GetAllActiveLoansWithCustomer_return_all_active_loans_with_customer_when_invoked()
     {
@@ -473,7 +472,7 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
         Save(customer1, customer2);
 
         var actual = await _sut.GetAllDelayedLoansWithCustomer();
-        
+
         actual.Should().HaveCount(2);
         actual.Should().BeEquivalentTo([
             new GetLoanRequestWithCustomerDto
@@ -504,7 +503,7 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
             },
         ]);
     }
-    
+
     [Fact]
     public async Task GetAllCloseLoansWithCustomer_return_all_done_loans_with_customer_when_invoked()
     {

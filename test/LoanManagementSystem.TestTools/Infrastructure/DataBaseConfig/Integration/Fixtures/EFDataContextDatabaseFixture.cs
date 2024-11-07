@@ -11,7 +11,7 @@ public class EFDataContextDatabaseFixture : DatabaseFixture
     {
         var connectionString =
             new ConfigurationFixture().Value.ConnectionString;
-        
+
 
         return new EfDataContext(
             $"server=.;database=LMS;Trusted_Connection=True;Encrypt=false;TrustServerCertificate=true;");

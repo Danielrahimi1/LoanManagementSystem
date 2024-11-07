@@ -10,8 +10,8 @@
     <ItemGroup>
         <PackageReference Include="FluentMigrator" Version="6.2.0"/>
         <PackageReference Include="FluentMigrator.Runner" Version="6.2.0"/>
-        <PackageReference Include="FluentMigrator.Runner.SqlServer" Version="6.2.0" />
-        <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+        <PackageReference Include="FluentMigrator.Runner.SqlServer" Version="6.2.0"/>
+        <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2"/>
     </ItemGroup>
 
 </Project>

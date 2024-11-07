@@ -135,7 +135,7 @@ public class CustomerAppService(
 
             customer.NationalId = dto.NationalId;
         }
-        
+
         if (dto.Income is not null)
         {
             var income = dto.Income > 10 ? IncomeGroup.MoreThanTen :
@@ -147,12 +147,14 @@ public class CustomerAppService(
         customer.PhoneNumber = dto.PhoneNumber ?? customer.PhoneNumber;
         customer.Email = dto.Email ?? customer.Email;
         customer.IsVerified = false;
-        customer.JobType = dto.JobType != null ? (JobType)Enum.Parse(typeof(JobType), dto.JobType, true) : customer.JobType;
+        customer.JobType = dto.JobType != null
+            ? (JobType)Enum.Parse(typeof(JobType), dto.JobType, true)
+            : customer.JobType;
         customer.IncomeGroup = dto.Income == null ? customer.IncomeGroup :
             dto.Income > 10 ? IncomeGroup.MoreThanTen :
             dto.Income > 5 ? IncomeGroup.FiveUptoIncludingTen : IncomeGroup.LessThanFive;
         customer.NetWorth = dto.NetWorth ?? customer.NetWorth;
-        
+
         // customer.CreditScore= (int)customer.JobType + (int)customer.IncomeGroup;
         customerRepository.Update(customer);
         await unitOfWork.Save();

@@ -113,7 +113,7 @@ public class EfCustomerQuery(EfDataContext context) : CustomerQuery
                 Delays = g.Count()
             }).Where(ig => ig.Delays > 1);
         return await (from i in installments
-            join c in context.Set<Customer>() 
+            join c in context.Set<Customer>()
                 on i.CustomerId equals c.Id
             select new GetCustomerWithStatementDto
             {

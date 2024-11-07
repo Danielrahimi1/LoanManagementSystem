@@ -23,7 +23,7 @@ public class LoanRequestBuilder
             Installments = []
         };
     }
-    
+
     public LoanRequestBuilder WithCustomer(Customer value)
     {
         _loanRequest.Customer = value;
@@ -41,32 +41,37 @@ public class LoanRequestBuilder
         _loanRequest.Status = value;
         return this;
     }
+
     public LoanRequestBuilder WithDelayInRepayment(bool value)
     {
         _loanRequest.DelayInRepayment = value;
         return this;
     }
+
     public LoanRequestBuilder WithCustomerId(int value)
     {
         _loanRequest.CustomerId = value;
         return this;
     }
+
     public LoanRequestBuilder WithRate(int value)
     {
         _loanRequest.Rate = value;
         return this;
     }
+
     public LoanRequestBuilder WithConfirmationDate(DateOnly value)
     {
         _loanRequest.ConfirmationDate = value;
         return this;
     }
+
     public LoanRequestBuilder WithInstallments(params Installment[] installments)
     {
         _loanRequest.Installments.UnionWith(installments);
         return this;
     }
-    
+
     public LoanRequest Build()
     {
         return _loanRequest;

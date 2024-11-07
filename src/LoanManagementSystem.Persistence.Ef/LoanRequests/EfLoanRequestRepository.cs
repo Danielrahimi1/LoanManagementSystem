@@ -1,5 +1,4 @@
 using LoanManagementSystem.Entities.LoanRequests;
-using LoanManagementSystem.Entities.LoanRequests.Enums;
 using LoanManagementSystem.Services.LoanRequests.Contracts.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +14,7 @@ public class EfLoanRequestRepository(EfDataContext context) : LoanRequestReposit
 
     public async Task<int> CountNonDelayedLoans(int customerId) =>
         await context.Set<LoanRequest>()
-            .CountAsync(lr => lr.CustomerId == customerId && (int)lr.Status == 5);
+            .CountAsync(lr => lr.CustomerId == customerId && lr.DelayInRepayment == false);
 
     public async Task<bool> HasActiveLoanRequests(int customerId) =>
         await context.Set<LoanRequest>()

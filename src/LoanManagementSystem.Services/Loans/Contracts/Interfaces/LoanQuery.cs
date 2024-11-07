@@ -9,5 +9,4 @@ public interface LoanQuery
     Task<GetLoanDto[]> GetAll();
     Task<GetLoanDto[]> GetAllShortPeriod();
     Task<GetLoanDto[]> GetAllLongPeriod();
-    
 }

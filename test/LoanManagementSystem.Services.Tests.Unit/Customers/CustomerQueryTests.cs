@@ -13,7 +13,7 @@ namespace LoanManagementSystem.Services.Tests.Unit.Customers;
 public class CustomerQueryTests : BusinessIntegrationTest
 {
     private readonly CustomerQuery _sut;
-    
+
     public CustomerQueryTests() =>
         _sut = new EfCustomerQuery(ReadContext);
 
@@ -217,7 +217,7 @@ public class CustomerQueryTests : BusinessIntegrationTest
         lr2.Installments.UnionWith([in12]);
         lr3.Installments.UnionWith([in11]);
         customer1.LoanRequests.Add(lr1);
-        customer2.LoanRequests.UnionWith([lr2,lr3]);
+        customer2.LoanRequests.UnionWith([lr2, lr3]);
         Save(customer1, customer2);
 
         var actual = await _sut.GetRiskyCustomers();
@@ -266,7 +266,7 @@ public class CustomerQueryTests : BusinessIntegrationTest
         lr1.Installments.UnionWith([in1]);
         lr2.Installments.UnionWith([in2]);
         lr3.Installments.UnionWith([in3]);
-        customer1.LoanRequests.UnionWith([lr1,lr2]);
+        customer1.LoanRequests.UnionWith([lr1, lr2]);
         customer2.LoanRequests.Add(lr3);
         Save(customer1, customer2);
 
