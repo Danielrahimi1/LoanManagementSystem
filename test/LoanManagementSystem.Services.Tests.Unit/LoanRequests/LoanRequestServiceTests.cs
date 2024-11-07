@@ -1,4 +1,5 @@
 using FluentAssertions;
+using LoanManagementSystem.Entities.Customers;
 using LoanManagementSystem.Entities.Customers.Enums;
 using LoanManagementSystem.Entities.LoanRequests;
 using LoanManagementSystem.Entities.LoanRequests.Enums;
@@ -290,7 +291,50 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
     }
 
     [Fact]
-    public async Task Accept()
+    public async Task Accept_throw_exception_when_loan_request_not_found()
     {
+        var actual = async () => await _sut.Accept(-1);
+
+        await actual.Should().ThrowExactlyAsync<LoanRequestNotFoundException>();
+    }
+
+    [Fact]
+    public async Task Accept_throw_exception_when_loan_request_is_not_in_review_state()
+    {
+        var customer = new CustomerBuilder().Build();
+        Save(customer);
+        var lr = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Reject).Build();
+        customer.LoanRequests.Add(lr);
+        Save(lr);
+
+        var actual = async () => await _sut.Accept(lr.Id);
+
+        await actual.Should().ThrowExactlyAsync<LoanRequestMustBeReviewedException>();
+    }
+
+    [Fact]
+    public async Task Accept_change_loan_request_status_to_accept_when_status_is_review()
+    {
+        var customer = new CustomerBuilder().Build();
+        Save(customer);
+        var lr = new LoanRequestBuilder().WithStatus(LoanRequestStatus.Review).Build();
+        customer.LoanRequests.Add(lr);
+        Save(lr);
+
+        await _sut.Accept(lr.Id);
+        var result = ReadContext.Set<LoanRequest>().Single();
+
+        result.Should().BeEquivalentTo(new LoanRequest
+        {
+            Id = lr.Id,
+            LoanId = lr.LoanId,
+            CustomerId = lr.CustomerId,
+            Status = LoanRequestStatus.Accept,
+            DelayInRepayment = lr.DelayInRepayment,
+            Rate = lr.Rate,
+            ConfirmationDate = lr.ConfirmationDate,
+            Customer = null,
+            Installments = lr.Installments
+        }, config => config.Excluding(item => item.Customer));
     }
 }

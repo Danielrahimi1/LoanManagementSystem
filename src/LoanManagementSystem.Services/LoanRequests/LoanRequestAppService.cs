@@ -62,7 +62,7 @@ public class LoanRequestAppService(
                    delayedInstallments;
         if (rate < 60)
         {
-            throw new NotEnoughCreditScoreException();
+            throw new RateBelowSixtyException();
         }
 
         var lr = new LoanRequest
@@ -88,29 +88,12 @@ public class LoanRequestAppService(
             throw new LoanRequestNotFoundException();
         }
 
-        var loan = await loanRepository.Find(lr.LoanId);
-
         if (lr.Status != LoanRequestStatus.Review)
         {
             throw new LoanRequestMustBeReviewedException();
         }
 
         lr.Status = LoanRequestStatus.Accept;
-        lr.ConfirmationDate = dateService.UtcNow;
-        var installmentAmount = loan!.Amount / loan.InstallmentCount;
-        var monthlyInterest = installmentAmount * (loan.AnnualInterestRate / 12M);
-        lr.Installments.UnionWith(
-            from month in Enumerable.Range(1, loan.InstallmentCount + 1)
-            select new Installment
-            {
-                LoanRequestId = lr.Id,
-                LoanRequest = lr,
-                Amount = installmentAmount,
-                MonthlyInterest = monthlyInterest,
-                PaymentDeadLine = lr.ConfirmationDate.Value.AddMonths(month),
-                Fine = 0,
-            }
-        );
 
         loanRequestRepository.Update(lr);
         await unitOfWork.Save();
@@ -138,6 +121,39 @@ public class LoanRequestAppService(
     public async Task Activate(int id)
     {
         // TODO: Change lr state to Activate, after first installment paid.
+        
+        var lr = await loanRequestRepository.Find(id);
+        if (lr is null)
+        {
+            throw new LoanRequestNotFoundException();
+        }
+
+        var loan = await loanRepository.Find(lr.LoanId);
+
+        if (lr.Status != LoanRequestStatus.Accept)
+        {
+            throw new LoanRequestMustBeAcceptedException();
+        }
+
+        lr.Status = LoanRequestStatus.Active;
+        lr.ConfirmationDate = dateService.UtcNow;
+        var installmentAmount = loan!.Amount / loan.InstallmentCount;
+        var monthlyInterest = installmentAmount * (loan.AnnualInterestRate / 12M);
+        lr.Installments.UnionWith(
+            from month in Enumerable.Range(1, loan.InstallmentCount + 1)
+            select new Installment
+            {
+                LoanRequestId = lr.Id,
+                LoanRequest = lr,
+                Amount = installmentAmount,
+                MonthlyInterest = monthlyInterest,
+                PaymentDeadLine = lr.ConfirmationDate.Value.AddMonths(month),
+                Fine = 0,
+            }
+        );
+
+        loanRequestRepository.Update(lr);
+        await unitOfWork.Save();
     }
 
     public async Task Pay(int id)
