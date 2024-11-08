@@ -95,7 +95,6 @@ public class EfCustomerQuery(EfDataContext context) : CustomerQuery
                 Email = c.Email,
                 Balance = c.Balance,
                 IsVerified = c.IsVerified,
-                // CreditScore = c.CreditScore,
             }).ToArrayAsync();
 
     public async Task<GetCustomerWithStatementDto[]> GetRiskyCustomersWithStatement()

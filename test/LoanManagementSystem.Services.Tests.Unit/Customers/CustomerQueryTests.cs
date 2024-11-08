@@ -214,15 +214,6 @@ public class CustomerQueryTests : BusinessIntegrationTest
         var in12 = new InstallmentBuilder().WithFine(0.01m).WithLoanRequest(lr2).Build();
         var in13 = new InstallmentBuilder().WithFine(0.01m).WithLoanRequest(lr3).Build();
         Save(in11,in12,in13);
-        // var in13 = new InstallmentBuilder().WithFine(0.01m).Build();
-        // var in21 = new InstallmentBuilder().WithFine(0.01m).Build();
-        // var in22 = new InstallmentBuilder().Build();
-        // lr1.Installments.UnionWith([in11]);
-        // lr2.Installments.UnionWith([in12]);
-        // lr3.Installments.UnionWith([in11]);
-        // customer1.LoanRequests.Add(lr1);
-        // customer2.LoanRequests.UnionWith([lr2, lr3]);
-        // Save(customer1, customer2);
 
         var actual = await _sut.GetRiskyCustomers();
 
