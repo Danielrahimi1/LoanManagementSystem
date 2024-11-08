@@ -1,6 +1,8 @@
 using LoanManagementSystem.Entities.Customers;
+using LoanManagementSystem.Entities.Installments;
 using LoanManagementSystem.Entities.LoanRequests;
 using LoanManagementSystem.Entities.LoanRequests.Enums;
+using LoanManagementSystem.Services.Installments.Contracts.DTOs;
 using LoanManagementSystem.Services.LoanRequests.Contracts.DTOs;
 using LoanManagementSystem.Services.LoanRequests.Contracts.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -86,7 +88,7 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                 Rate = lr.Rate
             }).ToArrayAsync();
 
-    public async Task<GetLoanRequestDto[]> GetAllCloseLoans() =>
+    public async Task<GetLoanRequestDto[]> GetAllClosedLoans() =>
         await (from lr in context.Set<LoanRequest>()
             where lr.Status == LoanRequestStatus.Close
             select new GetLoanRequestDto
@@ -192,4 +194,29 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                 ConfirmationDate = lr.ConfirmationDate,
                 Rate = lr.Rate
             }).ToArrayAsync();
+
+    public async Task<GetRemainingLoanDto[]> GetAllRemainingLoans()
+    {
+        return await (from lr in context.Set<LoanRequest>()
+                where lr.Status == LoanRequestStatus.Active
+                join i in context.Set<Installment>() on lr.Id equals i.LoanRequestId
+                group i by lr into g
+                select new GetRemainingLoanDto
+                {
+                    Status = g.Key.Status.ToString(),
+                    IsDelayed = g.Key.DelayInRepayment,
+                    TotalPaid = g.Where(i => i.PaymentDate != null).Sum(i=>i.Amount+i.Fine+i.MonthlyInterest),
+                    Installments = g.Where(i => i.PaymentDate == null).
+                        Select(i => new GetInstallmentDto
+                    {
+                        LoanRequestId = i.LoanRequestId,
+                        Amount = i.Amount,
+                        MonthlyInterest = i.MonthlyInterest,
+                        PaymentDeadLine = i.PaymentDeadLine,
+                        PaymentDate = null,
+                        Fine = i.Fine
+                    }).ToArray(),
+                }
+            ).ToArrayAsync();
+    }
 }

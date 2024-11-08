@@ -12,4 +12,5 @@ public interface InstallmentQuery
     Task<GetInstallmentDto[]> GetAllByLoanRequest(int loanRequestId);
     Task<GetInstallmentDto[]> GetAllDelayed();
     Task<GetInstallmentDto[]> GetAllClosed();
+    Task<GetMonthlyIncomeDto[]> GetAllIncome();
 }

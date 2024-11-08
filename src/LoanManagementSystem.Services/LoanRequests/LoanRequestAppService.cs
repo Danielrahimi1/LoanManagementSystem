@@ -137,9 +137,6 @@ public class LoanRequestAppService(
         var installmentAmount = loan!.Amount / loan.InstallmentCount;
         var monthlyInterest = installmentAmount * (loan.AnnualInterestRate / 12M / 100M);
 
-        // var customer = await customerRepository.Find(lr.CustomerId);
-        // customer!.Balance += loan.Amount;
-
         lr.Installments.UnionWith(
             from month in Enumerable.Range(1, loan.InstallmentCount)
             select new Installment

@@ -11,10 +11,11 @@ public interface LoanRequestQuery
     Task<GetLoanRequestDto[]> GetAllAcceptLoans();
     Task<GetLoanRequestDto[]> GetAllActiveLoans();
     Task<GetLoanRequestDto[]> GetAllDelayedLoans();
-    Task<GetLoanRequestDto[]> GetAllCloseLoans();
+    Task<GetLoanRequestDto[]> GetAllClosedLoans();
     Task<GetLoanRequestWithCustomerDto[]> GetAllWithCustomer();
     Task<GetLoanRequestWithCustomerDto[]> GetAllAcceptLoansWithCustomer();
     Task<GetLoanRequestWithCustomerDto[]> GetAllActiveLoansWithCustomer();
     Task<GetLoanRequestWithCustomerDto[]> GetAllDelayedLoansWithCustomer();
     Task<GetLoanRequestWithCustomerDto[]> GetAllClosedLoansWithCustomer();
+    Task<GetRemainingLoanDto[]> GetAllRemainingLoans();
 }

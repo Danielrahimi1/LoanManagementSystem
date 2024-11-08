@@ -113,4 +113,16 @@ public class EfInstallmentQuery(EfDataContext context) : InstallmentQuery
                 PaymentDate = i.PaymentDate,
                 Fine = i.Fine
             }).ToArrayAsync();
+
+    public async Task<GetMonthlyIncomeDto[]> GetAllIncome() =>
+        await (from i in context.Set<Installment>()
+            where i.PaymentDate.HasValue
+            group i by i.PaymentDate.Value.Month
+            into g
+            select new GetMonthlyIncomeDto
+            {
+                Interest = g.Sum(i => i.MonthlyInterest),
+                Fine = g.Sum(i => i.Fine)
+            }
+        ).ToArrayAsync();
 }
