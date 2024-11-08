@@ -44,6 +44,8 @@ public class CustomerServiceTests : BusinessIntegrationTest
     [InlineData("123asd")]
     [InlineData("12648a75311")]
     [InlineData("12648a75311 1234567899")]
+    [InlineData("1234567899a")]
+    [InlineData("12345678999999")]
     public async Task Register_throw_exception_when_nationalId_is_invalid(string nationalId)
     {
         var dto = new AddCustomerDto

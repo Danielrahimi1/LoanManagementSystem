@@ -141,24 +141,28 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
         var customer = new CustomerBuilder().WithNetWorth(0).WithIsVerified(true)
             .WithIncomeGroup(IncomeGroup.LessThanFive)
             .WithJobType(JobType.UnEmployed).Build();
+        Save(customer);
         var lr1 = new LoanRequestBuilder().WithDelayInRepayment(true)
             .WithStatus(LoanRequestStatus.Close).WithRate(0)
+            .WithCustomerId(customer.Id)
             .Build();
         var lr2 = new LoanRequestBuilder().WithDelayInRepayment(false)
             .WithStatus(LoanRequestStatus.Close).WithRate(0)
+            .WithCustomerId(customer.Id)
             .Build(); // +30
         var lr3 = new LoanRequestBuilder().WithDelayInRepayment(false)
             .WithStatus(LoanRequestStatus.Close).WithRate(0)
+            .WithCustomerId(customer.Id)
             .Build(); // +30
         var lr4 = new LoanRequestBuilder().WithDelayInRepayment(false)
             .WithStatus(LoanRequestStatus.Close).WithRate(0)
+            .WithCustomerId(customer.Id)
             .Build(); // +30
-        var i1 = new InstallmentBuilder().WithFine(1).Build(); // -5
-        var i2 = new InstallmentBuilder().WithFine(1).Build(); // -5
-        var i3 = new InstallmentBuilder().WithFine(1).Build(); // -5
-        lr1.Installments.UnionWith([i1, i2, i3]);
-        customer.LoanRequests.UnionWith([lr1, lr2, lr3, lr4]);
-        Save(customer);
+        Save(lr1, lr2, lr3, lr4);
+        var i1 = new InstallmentBuilder().WithFine(1).WithLoanRequest(lr1).Build(); // -5
+        var i2 = new InstallmentBuilder().WithFine(1).WithLoanRequest(lr1).Build(); // -5
+        var i3 = new InstallmentBuilder().WithFine(1).WithLoanRequest(lr1).Build(); // -5
+        Save(i1,i2,i3);
         var dto = new AddLoanRequestDto
         {
             LoanId = loan.Id,
@@ -179,24 +183,29 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
         var customer = new CustomerBuilder().WithNetWorth(100).WithIsVerified(true)
             .WithIncomeGroup(IncomeGroup.LessThanFive)
             .WithJobType(JobType.UnEmployed).Build();
+        Save(customer);
         var lr1 = new LoanRequestBuilder().WithDelayInRepayment(true)
             .WithStatus(LoanRequestStatus.Close).WithRate(0)
+            .WithCustomerId(customer.Id)
             .Build();
         var lr2 = new LoanRequestBuilder().WithDelayInRepayment(false)
             .WithStatus(LoanRequestStatus.Close).WithRate(0)
+            .WithCustomerId(customer.Id)
             .Build(); // +30
         var lr3 = new LoanRequestBuilder().WithDelayInRepayment(false)
             .WithStatus(LoanRequestStatus.Close).WithRate(0)
+            .WithCustomerId(customer.Id)
             .Build(); // +30
         var lr4 = new LoanRequestBuilder().WithDelayInRepayment(false)
             .WithStatus(LoanRequestStatus.Close).WithRate(0)
+            .WithCustomerId(customer.Id)
             .Build(); // +30
-        var i1 = new InstallmentBuilder().WithFine(1).Build(); // -5
-        var i2 = new InstallmentBuilder().WithFine(1).Build(); // -5
-        var i3 = new InstallmentBuilder().WithFine(1).Build(); // -5
-        lr1.Installments.UnionWith([i1, i2, i3]);
-        customer.LoanRequests.UnionWith([lr1, lr2, lr3, lr4]);
-        Save(customer);
+        Save(lr1, lr2, lr3, lr4);
+        // customer.LoanRequests.UnionWith([lr1, lr2, lr3, lr4]);
+        var i1 = new InstallmentBuilder().WithFine(1).WithLoanRequest(lr1).Build(); // -5
+        var i2 = new InstallmentBuilder().WithFine(1).WithLoanRequest(lr1).Build(); // -5
+        var i3 = new InstallmentBuilder().WithFine(1).WithLoanRequest(lr1).Build(); // -5
+        Save(i1, i2, i3);
         var dto = new AddLoanRequestDto
         {
             LoanId = loan.Id,
@@ -217,24 +226,28 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
         var customer = new CustomerBuilder().WithNetWorth(100).WithIsVerified(true)
             .WithIncomeGroup(IncomeGroup.LessThanFive)
             .WithJobType(JobType.UnEmployed).Build();
+        Save(customer);
         var lr1 = new LoanRequestBuilder().WithDelayInRepayment(true)
             .WithStatus(LoanRequestStatus.Close).WithRate(0)
+            .WithCustomerId(customer.Id)
             .Build();
         var lr2 = new LoanRequestBuilder().WithDelayInRepayment(false)
             .WithStatus(LoanRequestStatus.Close).WithRate(0)
+            .WithCustomerId(customer.Id)
             .Build(); // +30
         var lr3 = new LoanRequestBuilder().WithDelayInRepayment(false)
             .WithStatus(LoanRequestStatus.Close).WithRate(0)
+            .WithCustomerId(customer.Id)
             .Build(); // +30
         var lr4 = new LoanRequestBuilder().WithDelayInRepayment(false)
             .WithStatus(LoanRequestStatus.Close).WithRate(0)
+            .WithCustomerId(customer.Id)
             .Build(); // +30
-        var i1 = new InstallmentBuilder().WithFine(1).Build(); // -5
-        var i2 = new InstallmentBuilder().WithFine(1).Build(); // -5
-        var i3 = new InstallmentBuilder().WithFine(1).Build(); // -5
-        lr1.Installments.UnionWith([i1, i2, i3]);
-        customer.LoanRequests.UnionWith([lr1, lr2, lr3, lr4]);
-        Save(customer);
+        Save(lr1, lr2, lr3, lr4);
+        var i1 = new InstallmentBuilder().WithLoanRequest(lr1).WithFine(1).Build(); // -5
+        var i2 = new InstallmentBuilder().WithLoanRequest(lr1).WithFine(1).Build(); // -5
+        var i3 = new InstallmentBuilder().WithLoanRequest(lr1).WithFine(1).Build(); // -5
+        Save(i1, i2, i3);
         var dto = new AddLoanRequestDto
         {
             LoanId = loan.Id,
@@ -255,30 +268,32 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
         var customer = new CustomerBuilder().WithNetWorth(100).WithIsVerified(true)
             .WithIncomeGroup(IncomeGroup.LessThanFive)
             .WithJobType(JobType.UnEmployed).Build();
-        var lr1 = new LoanRequestBuilder().WithDelayInRepayment(true)
+        Save(customer);
+        var lr1 = new LoanRequestBuilder()
+            .WithDelayInRepayment(true).WithCustomerId(customer.Id)
             .WithStatus(LoanRequestStatus.Close).WithRate(0)
             .Build();
-        var lr2 = new LoanRequestBuilder().WithDelayInRepayment(false)
+        var lr2 = new LoanRequestBuilder()
+            .WithDelayInRepayment(false).WithCustomerId(customer.Id)
             .WithStatus(LoanRequestStatus.Close).WithRate(0)
             .Build(); // +30
-        var lr3 = new LoanRequestBuilder().WithDelayInRepayment(false)
+        var lr3 = new LoanRequestBuilder()
+            .WithDelayInRepayment(false).WithCustomerId(customer.Id)
             .WithStatus(LoanRequestStatus.Close).WithRate(0)
             .Build(); // +30
-        var lr4 = new LoanRequestBuilder().WithDelayInRepayment(false)
+        var lr4 = new LoanRequestBuilder()
+            .WithDelayInRepayment(false).WithCustomerId(customer.Id)
             .WithStatus(LoanRequestStatus.Close).WithRate(0)
             .Build(); // +30
-        var lr5 = new LoanRequestBuilder().WithDelayInRepayment(false)
+        var lr5 = new LoanRequestBuilder()
+            .WithDelayInRepayment(false).WithCustomerId(customer.Id)
             .WithStatus(LoanRequestStatus.Close).WithRate(0)
             .Build(); // +30
-        var lr6 = new LoanRequestBuilder().WithDelayInRepayment(false)
+        var lr6 = new LoanRequestBuilder()
+            .WithDelayInRepayment(false).WithCustomerId(customer.Id)
             .WithStatus(LoanRequestStatus.Close).WithRate(0)
             .Build(); // +30
-        var i1 = new InstallmentBuilder().WithFine(1).Build(); // -5
-        var i2 = new InstallmentBuilder().WithFine(1).Build(); // -5
-        var i3 = new InstallmentBuilder().WithFine(1).Build(); // -5
-        lr1.Installments.UnionWith([i1, i2, i3]);
-        customer.LoanRequests.UnionWith([lr1, lr2, lr3, lr4, lr5, lr6]);
-        Save(customer);
+        Save(lr1, lr2, lr3, lr4, lr5, lr6);
         var dto = new AddLoanRequestDto
         {
             LoanId = loan.Id,
@@ -334,7 +349,7 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
             DelayInRepayment = lr.DelayInRepayment,
             Rate = lr.Rate,
             ConfirmationDate = lr.ConfirmationDate,
-            Installments = lr.Installments
+            Installments = []
         }, config => config.Excluding(item => item.Customer));
     }
 
@@ -359,7 +374,7 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
             DelayInRepayment = lr.DelayInRepayment,
             Rate = lr.Rate,
             ConfirmationDate = lr.ConfirmationDate,
-            Installments = lr.Installments
+            Installments = []
         }, config => config.Excluding(item => item.Customer));
     }
 
@@ -380,7 +395,7 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
     [Fact]
     public async Task Activate_change_loan_request_status_to_active_when_status_is_accept()
     {
-        var cDate = new DateOnly(2024, 12, 31);
+        var cDate = new DateOnly(2024, 11, 08);
         var customer = new CustomerBuilder().Build();
         Save(customer);
         var loan = new LoanBuilder().WithAmount(10)
@@ -409,7 +424,7 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
     [Fact]
     public async Task Activate_generate_installments_when_activated()
     {
-        var cDate = new DateOnly(2024, 12, 31);
+        var cDate = new DateOnly(2024, 11, 08);
         var customer = new CustomerBuilder().Build();
         Save(customer);
         var loan = new LoanBuilder().WithAmount(10)

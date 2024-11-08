@@ -1,10 +1,12 @@
 using FluentAssertions;
 using LoanManagementSystem.Entities.LoanRequests.Enums;
 using LoanManagementSystem.Persistence.Ef.LoanRequests;
+using LoanManagementSystem.Services.Installments.Contracts.DTOs;
 using LoanManagementSystem.Services.LoanRequests.Contracts.DTOs;
 using LoanManagementSystem.Services.LoanRequests.Contracts.Interfaces;
 using LoanManagementSystem.TestTools.Customers;
 using LoanManagementSystem.TestTools.Infrastructure.DataBaseConfig.Integration;
+using LoanManagementSystem.TestTools.Installments;
 using LoanManagementSystem.TestTools.LoanRequests;
 using LoanManagementSystem.TestTools.Loans;
 
@@ -269,7 +271,7 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
         customer2.LoanRequests.UnionWith([lr2, lr3]);
         Save(customer1, customer2);
 
-        var actual = await _sut.GetAllCloseLoans();
+        var actual = await _sut.GetAllClosedLoans();
 
         // actual.Should().Satisfy(lr => lr.Status == LoanRequestStatus.Active.ToString());
         actual.Should().HaveCount(2);
@@ -520,7 +522,6 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
 
         var actual = await _sut.GetAllClosedLoansWithCustomer();
 
-        // actual.Should().Satisfy(lr => lr.Status == LoanRequestStatus.Active.ToString());
         actual.Should().HaveCount(2);
         actual.Should().BeEquivalentTo([
             new GetLoanRequestWithCustomerDto
@@ -549,6 +550,68 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
                 DelayInRepayment = lr2.DelayInRepayment,
                 ConfirmationDate = lr2.ConfirmationDate
             },
+        ]);
+    }
+
+    [Fact]
+    public async Task
+        GetAllRemainingLoans_return_active_loan_requests_with_their_installments_and_paid_amount_when_invoked()
+    {
+        var loan = new LoanBuilder().Build();
+        Save(loan);
+        var customer1 = new CustomerBuilder().Build();
+        Save(customer1);
+        var lr1 = new LoanRequestBuilder()
+            .WithStatus(LoanRequestStatus.Active).WithLoanId(loan.Id)
+            .WithCustomerId(customer1.Id)
+            .Build();
+        Save(lr1);
+        var i1 = new InstallmentBuilder()
+            .WithLoanRequest(lr1)
+            .WithAmount(100).WithMonthlyInterest(1.5m).WithFine(0)
+            .WithPaymentDate(new DateOnly(2024, 1, 5))
+            .WithPaymentDeadLine(new DateOnly(2024, 1, 5))
+            .Build();
+        var i2 = new InstallmentBuilder()
+            .WithLoanRequest(lr1)
+            .WithAmount(100).WithMonthlyInterest(1.5m).WithFine(2)
+            .WithPaymentDate(new DateOnly(2024, 2, 4))
+            .WithPaymentDeadLine(new DateOnly(2024, 2, 5))
+            .Build();
+        var i3 = new InstallmentBuilder()
+            .WithLoanRequest(lr1)
+            .WithAmount(100).WithMonthlyInterest(1.5m).WithFine(0)
+            .WithPaymentDate(new DateOnly(2024, 3, 3))
+            .WithPaymentDeadLine(new DateOnly(2024, 3, 5))
+            .Build();
+        var i4 = new InstallmentBuilder()
+            .WithLoanRequest(lr1)
+            .WithAmount(100).WithMonthlyInterest(1.5m).WithFine(0)
+            .WithPaymentDeadLine(new DateOnly(2024, 3, 5))
+            .Build();
+        Save(i1, i2, i3, i4);
+
+        var actual = await _sut.GetAllRemainingLoans();
+
+        actual.Should().HaveCount(1);
+        actual.Should().BeEquivalentTo([new
+        {
+            Status = LoanRequestStatus.Active.ToString(),
+            IsDelayed = lr1.DelayInRepayment,
+            TotalPaid = (i1.Fine + i1.Amount + i1.MonthlyInterest) +
+                        (i2.Fine + i2.Amount + i3.MonthlyInterest) +
+                        (i3.Fine + i2.Amount + i3.MonthlyInterest),
+        }]);
+        actual[0].Installments.Should().HaveCount(1);
+        actual[0].Installments.Should().BeEquivalentTo([new GetInstallmentDto
+            {
+                LoanRequestId = i4.LoanRequestId,
+                Amount = i4.Amount,
+                MonthlyInterest = i4.MonthlyInterest,
+                PaymentDeadLine = i4.PaymentDeadLine,
+                PaymentDate = i4.PaymentDate,
+                Fine = i4.Fine
+            }
         ]);
     }
 }

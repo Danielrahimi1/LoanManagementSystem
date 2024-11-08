@@ -13,14 +13,15 @@ public class LoanRequestBuilder
     {
         _loanRequest = new LoanRequest
         {
-            LoanId = 1,
+            Id = 0,
+            LoanId = 0,
             CustomerId = 0,
-            Status = LoanRequestStatus.Review,
+            Status = (LoanRequestStatus)0,
             DelayInRepayment = false,
             Rate = 0,
             ConfirmationDate = null,
             Customer = null,
-            Installments = []
+            Installments = null
         };
     }
 
