@@ -20,16 +20,12 @@ public static class LoanRequestServiceFactory
         var loanRepository = new EfLoanRepository(context);
         var installmentRepository = new EfInstallmentRepository(context);
         var unitOfWork = new EfUnitOfWork(context);
-        var dateService = new Mock<DateService>();
-        dateService.Setup(s => s.UtcNow).Returns(new DateOnly(2024, 12, 31));
-
 
         return new LoanRequestAppService(
             loanRequestRepository,
             customerRepository,
             loanRepository,
             installmentRepository,
-            dateService.Object,
             unitOfWork
         );
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using LoanManagementSystem.Services.Installments.Contracts.Interfaces;
 using LoanManagementSystem.Services.Installments.Exceptions;
@@ -7,8 +8,8 @@ namespace LoanManagementSystem.Services.Installments;
 
 public class InstallmentAppService(
     InstallmentRepository installmentRepository,
-    UnitOfWork unitOfWork,
-    DateService dateService) : InstallmentService
+    UnitOfWork unitOfWork
+) : InstallmentService
 {
     public async Task<decimal> Pay(int loanRequestId)
     {
@@ -18,12 +19,12 @@ public class InstallmentAppService(
             throw new InstallmentNotFoundException();
         }
 
-        installment.PaymentDate = dateService.UtcNow;
+        installment.PaymentDate = DateOnly.FromDateTime(DateTime.UtcNow);
         if (installment.PaymentDeadLine < installment.PaymentDate)
         {
-            installment.Fine = installment.Amount * 0.05M;
+            installment.Fine = installment.Amount * 0.02M;
         }
-        
+
         installmentRepository.Update(installment);
         await unitOfWork.Save();
         return installment.Amount + installment.MonthlyInterest + installment.Fine;

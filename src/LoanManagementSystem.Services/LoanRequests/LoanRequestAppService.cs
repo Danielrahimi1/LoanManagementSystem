@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LoanManagementSystem.Entities.Installments;
@@ -20,7 +21,6 @@ public class LoanRequestAppService(
     CustomerRepository customerRepository,
     LoanRepository loanRepository,
     InstallmentRepository installmentRepository,
-    DateService dateService,
     UnitOfWork unitOfWork)
     : LoanRequestService
 {
@@ -71,7 +71,7 @@ public class LoanRequestAppService(
             Status = LoanRequestStatus.Review,
             DelayInRepayment = false,
             Rate = rate > 100 ? 100 : rate,
-            ConfirmationDate = dateService.UtcNow,
+            ConfirmationDate = DateOnly.FromDateTime(DateTime.UtcNow),
             Customer = customer,
         };
 
@@ -133,7 +133,7 @@ public class LoanRequestAppService(
         }
 
         lr.Status = LoanRequestStatus.Active;
-        lr.ConfirmationDate = dateService.UtcNow;
+        lr.ConfirmationDate = DateOnly.FromDateTime(DateTime.UtcNow);
         var installmentAmount = loan!.Amount / loan.InstallmentCount;
         var monthlyInterest = installmentAmount * (loan.AnnualInterestRate / 12M / 100M);
 
@@ -171,12 +171,11 @@ public class LoanRequestAppService(
             throw new LoanRequestMustBeActive();
         }
 
-        if (await installmentRepository.HasUnpaidInstallments(lr.Id))
+        if (!await installmentRepository.HasUnpaidInstallments(lr.Id))
         {
-            throw new HasUnpaidInstallmentsException();
+            lr.Status = LoanRequestStatus.Close;
         }
-        lr.Status = LoanRequestStatus.Close;
-        
+
         loanRequestRepository.Update(lr);
         await unitOfWork.Save();
     }
