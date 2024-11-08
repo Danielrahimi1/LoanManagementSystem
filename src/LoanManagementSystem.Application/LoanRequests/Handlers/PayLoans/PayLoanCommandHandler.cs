@@ -3,7 +3,6 @@ using LoanManagementSystem.Application.LoanRequests.Handlers.PayLoans.Contracts.
 using LoanManagementSystem.Services.Customers.Contracts.DTOs;
 using LoanManagementSystem.Services.Customers.Contracts.Interfaces;
 using LoanManagementSystem.Services.LoanRequests.Contracts.Interfaces;
-using LoanManagementSystem.Services.Loans.Contracts.Interfaces;
 using LoanManagementSystem.Services.UnitOfWorks;
 
 namespace LoanManagementSystem.Application.LoanRequests.Handlers.PayLoans;
