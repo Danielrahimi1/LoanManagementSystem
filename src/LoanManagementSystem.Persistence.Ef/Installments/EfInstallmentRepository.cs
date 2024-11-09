@@ -33,7 +33,7 @@ public class EfInstallmentRepository(EfDataContext context) : InstallmentReposit
 
     public async Task<bool> HasUnpaidInstallments(int loanRequestId) =>
         await context.Set<Installment>()
-            .AnyAsync(i => i.LoanRequestId == loanRequestId && i.PaymentDate != null);
+            .AnyAsync(i => i.LoanRequestId == loanRequestId && i.PaymentDate == null);
 
     public async Task<Installment?> Find(int id) =>
         await context.Set<Installment>().FirstOrDefaultAsync(i => i.Id == id);

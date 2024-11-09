@@ -165,7 +165,7 @@ public class LoanRequestAppService(
 
         if (lr.Status != LoanRequestStatus.Active)
         {
-            throw new LoanRequestMustBeActive();
+            throw new LoanRequestMustBeActiveException();
         }
 
         if (!await installmentRepository.HasUnpaidInstallments(lr.Id))

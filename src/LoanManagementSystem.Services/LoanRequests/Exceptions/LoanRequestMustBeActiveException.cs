@@ -2,6 +2,6 @@ using System;
 
 namespace LoanManagementSystem.Services.LoanRequests.Exceptions;
 
-public class LoanRequestMustBeActive : Exception
+public class LoanRequestMustBeActiveException : Exception
 {
 }
