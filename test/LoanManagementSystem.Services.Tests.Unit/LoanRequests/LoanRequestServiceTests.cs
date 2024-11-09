@@ -13,7 +13,6 @@ using LoanManagementSystem.TestTools.Infrastructure.DataBaseConfig.Integration;
 using LoanManagementSystem.TestTools.Installments;
 using LoanManagementSystem.TestTools.LoanRequests;
 using LoanManagementSystem.TestTools.Loans;
-using DateOnly = System.DateOnly;
 
 namespace LoanManagementSystem.Services.Tests.Unit.LoanRequests;
 
@@ -395,7 +394,7 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
     [Fact]
     public async Task Activate_change_loan_request_status_to_active_when_status_is_accept()
     {
-        var cDate = new DateOnly(2024, 11, 08);
+        var cDate = DateOnly.FromDateTime(DateTime.UtcNow);
         var customer = new CustomerBuilder().Build();
         Save(customer);
         var loan = new LoanBuilder().WithAmount(10)
@@ -424,7 +423,7 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
     [Fact]
     public async Task Activate_generate_installments_when_activated()
     {
-        var cDate = new DateOnly(2024, 11, 08);
+        var cDate = DateOnly.FromDateTime(DateTime.UtcNow);
         var customer = new CustomerBuilder().Build();
         Save(customer);
         var loan = new LoanBuilder().WithAmount(10)
