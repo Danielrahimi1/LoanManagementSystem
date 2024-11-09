@@ -3,7 +3,7 @@ using LoanManagementSystem.Entities.Installments;
 using LoanManagementSystem.Entities.LoanRequests;
 using LoanManagementSystem.Entities.LoanRequests.Enums;
 
-namespace LoanManagementSystem.TestTools.LoanRequests;
+namespace LoanManagementSystem.TestTools.Services.LoanRequests;
 
 public class LoanRequestBuilder
 {

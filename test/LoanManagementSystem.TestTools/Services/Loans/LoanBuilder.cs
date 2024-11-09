@@ -1,6 +1,6 @@
 using LoanManagementSystem.Entities.Loans;
 
-namespace LoanManagementSystem.TestTools.Loans;
+namespace LoanManagementSystem.TestTools.Services.Loans;
 
 public class LoanBuilder
 {

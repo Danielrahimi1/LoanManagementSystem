@@ -5,9 +5,9 @@ using LoanManagementSystem.Entities.LoanRequests.Enums;
 using LoanManagementSystem.Services.Customers.Contracts.DTOs;
 using LoanManagementSystem.Services.Customers.Contracts.Interfaces;
 using LoanManagementSystem.Services.Customers.Exceptions;
-using LoanManagementSystem.TestTools.Customers;
-using LoanManagementSystem.TestTools.Infrastructure.DataBaseConfig.Integration;
-using LoanManagementSystem.TestTools.LoanRequests;
+using LoanManagementSystem.TestTools.Services.Customers;
+using LoanManagementSystem.TestTools.Services.Infrastructure.DataBaseConfig.Integration;
+using LoanManagementSystem.TestTools.Services.LoanRequests;
 
 namespace LoanManagementSystem.Services.Tests.Unit.Customers;
 

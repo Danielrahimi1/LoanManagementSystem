@@ -1,7 +1,7 @@
 using LoanManagementSystem.Persistence.Ef;
-using LoanManagementSystem.TestTools.Infrastructure.DataBaseConfig.Integration.Fixtures;
+using LoanManagementSystem.TestTools.Services.Infrastructure.DataBaseConfig.Integration.Fixtures;
 
-namespace LoanManagementSystem.TestTools.Infrastructure.DataBaseConfig.Integration;
+namespace LoanManagementSystem.TestTools.Services.Infrastructure.DataBaseConfig.Integration;
 
 public class BusinessIntegrationTest : EFDataContextDatabaseFixture
 {

@@ -1,5 +1,5 @@
-using LoanManagementSystem.Application.LoanRequests.Handlers.PayLoans.Contracts;
-using LoanManagementSystem.Application.LoanRequests.Handlers.PayLoans.Contracts.DTOs;
+using LoanManagementSystem.Application.Installments.Handlers.PayInstallments.Contracts;
+using LoanManagementSystem.Application.Installments.Handlers.PayInstallments.Contracts.DTOs;
 using LoanManagementSystem.Services.Customers.Contracts.DTOs;
 using LoanManagementSystem.Services.Customers.Contracts.Interfaces;
 using LoanManagementSystem.Services.Installments.Contracts.Interfaces;
@@ -12,9 +12,9 @@ public class PayInstallmentCommandHandler(
     CustomerService customerService,
     LoanRequestService loanRequestService,
     InstallmentService installmentService,
-    UnitOfWork unitOfWork) : PayLoanHandler
+    UnitOfWork unitOfWork) : PayInstallmentHandler
 {
-    public async Task Handle(ActivateLoanRequestCommand cmd)
+    public async Task Handle(PayInstallmentCommand cmd)
     {
         await unitOfWork.Begin();
         try
@@ -29,7 +29,7 @@ public class PayInstallmentCommandHandler(
             
             await unitOfWork.Commit();
         }
-        catch (Exception e)
+        catch (Exception)
         {
             await unitOfWork.Rollback();
             throw;

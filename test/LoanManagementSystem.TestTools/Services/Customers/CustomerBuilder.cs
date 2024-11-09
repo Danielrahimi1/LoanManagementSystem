@@ -1,7 +1,7 @@
 ﻿using LoanManagementSystem.Entities.Customers;
 using LoanManagementSystem.Entities.Customers.Enums;
 
-namespace LoanManagementSystem.TestTools.Customers;
+namespace LoanManagementSystem.TestTools.Services.Customers;
 
 public class CustomerBuilder
 {

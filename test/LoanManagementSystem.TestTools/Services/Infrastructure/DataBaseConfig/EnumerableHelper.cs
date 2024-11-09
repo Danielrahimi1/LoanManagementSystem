@@ -1,4 +1,4 @@
-﻿namespace LoanManagementSystem.TestTools.Infrastructure.DataBaseConfig;
+﻿namespace LoanManagementSystem.TestTools.Services.Infrastructure.DataBaseConfig;
 
 public static class EnumerableHelper
 {

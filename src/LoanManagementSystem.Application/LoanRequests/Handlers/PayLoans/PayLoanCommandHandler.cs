@@ -24,7 +24,7 @@ public class PayLoanCommandHandler(
             });
             await unitOfWork.Commit();
         }
-        catch (Exception e)
+        catch (Exception)
         {
             await unitOfWork.Rollback();
             throw;

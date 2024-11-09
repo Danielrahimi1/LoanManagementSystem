@@ -4,7 +4,7 @@ using LoanManagementSystem.Persistence.Ef.UnitOfWorks;
 using LoanManagementSystem.Services.Loans;
 using LoanManagementSystem.Services.Loans.Contracts.Interfaces;
 
-namespace LoanManagementSystem.TestTools.Loans;
+namespace LoanManagementSystem.TestTools.Services.Loans;
 
 public static class LoanServiceFactory
 {

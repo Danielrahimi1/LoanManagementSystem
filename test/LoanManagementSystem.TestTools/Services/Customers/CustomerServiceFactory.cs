@@ -5,7 +5,7 @@ using LoanManagementSystem.Persistence.Ef.UnitOfWorks;
 using LoanManagementSystem.Services.Customers;
 using LoanManagementSystem.Services.Customers.Contracts.Interfaces;
 
-namespace LoanManagementSystem.TestTools.Customers;
+namespace LoanManagementSystem.TestTools.Services.Customers;
 
 public static class CustomerServiceFactory
 {

@@ -4,12 +4,10 @@ using LoanManagementSystem.Persistence.Ef.Installments;
 using LoanManagementSystem.Persistence.Ef.LoanRequests;
 using LoanManagementSystem.Persistence.Ef.Loans;
 using LoanManagementSystem.Persistence.Ef.UnitOfWorks;
-using LoanManagementSystem.Services;
 using LoanManagementSystem.Services.LoanRequests;
 using LoanManagementSystem.Services.LoanRequests.Contracts.Interfaces;
-using Moq;
 
-namespace LoanManagementSystem.TestTools.LoanRequests;
+namespace LoanManagementSystem.TestTools.Services.LoanRequests;
 
 public static class LoanRequestServiceFactory
 {

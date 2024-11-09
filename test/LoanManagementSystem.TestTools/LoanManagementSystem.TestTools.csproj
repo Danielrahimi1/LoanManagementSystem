@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\src\LoanManagementSystem.Application\LoanManagementSystem.Application.csproj" />
         <ProjectReference Include="..\..\src\LoanManagementSystem.Entities\LoanManagementSystem.Entities.csproj"/>
         <ProjectReference Include="..\..\src\LoanManagementSystem.Persistence.Ef\LoanManagementSystem.Persistence.Ef.csproj"/>
         <ProjectReference Include="..\..\src\LoanManagementSystem.Services\LoanManagementSystem.Services.csproj"/>
@@ -22,6 +23,10 @@
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1"/>
         <PackageReference Include="Moq" Version="4.20.72"/>
         <PackageReference Include="xunit.extensibility.core" Version="2.9.2"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services\" />
     </ItemGroup>
 
 </Project>

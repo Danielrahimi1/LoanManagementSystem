@@ -3,10 +3,10 @@ using LoanManagementSystem.Entities.Customers.Enums;
 using LoanManagementSystem.Persistence.Ef.Customers;
 using LoanManagementSystem.Services.Customers.Contracts.DTOs;
 using LoanManagementSystem.Services.Customers.Contracts.Interfaces;
-using LoanManagementSystem.TestTools.Customers;
-using LoanManagementSystem.TestTools.Infrastructure.DataBaseConfig.Integration;
-using LoanManagementSystem.TestTools.Installments;
-using LoanManagementSystem.TestTools.LoanRequests;
+using LoanManagementSystem.TestTools.Services.Customers;
+using LoanManagementSystem.TestTools.Services.Infrastructure.DataBaseConfig.Integration;
+using LoanManagementSystem.TestTools.Services.Installments;
+using LoanManagementSystem.TestTools.Services.LoanRequests;
 
 namespace LoanManagementSystem.Services.Tests.Unit.Customers;
 

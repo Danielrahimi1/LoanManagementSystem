@@ -2,8 +2,8 @@ using FluentAssertions;
 using LoanManagementSystem.Persistence.Ef.Loans;
 using LoanManagementSystem.Services.Loans.Contracts.DTOs;
 using LoanManagementSystem.Services.Loans.Contracts.Interfaces;
-using LoanManagementSystem.TestTools.Infrastructure.DataBaseConfig.Integration;
-using LoanManagementSystem.TestTools.Loans;
+using LoanManagementSystem.TestTools.Services.Infrastructure.DataBaseConfig.Integration;
+using LoanManagementSystem.TestTools.Services.Loans;
 
 namespace LoanManagementSystem.Services.Tests.Unit.Loans;
 

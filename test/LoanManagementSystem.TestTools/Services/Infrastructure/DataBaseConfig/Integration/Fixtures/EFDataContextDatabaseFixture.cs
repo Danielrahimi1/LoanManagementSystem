@@ -1,7 +1,7 @@
 using LoanManagementSystem.Persistence.Ef;
 using Xunit;
 
-namespace LoanManagementSystem.TestTools.Infrastructure.DataBaseConfig.Integration.
+namespace LoanManagementSystem.TestTools.Services.Infrastructure.DataBaseConfig.Integration.
     Fixtures;
 
 [Collection(nameof(ConfigurationFixture))]

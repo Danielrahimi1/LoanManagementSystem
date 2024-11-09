@@ -1,6 +1,6 @@
 using System.Transactions;
 
-namespace LoanManagementSystem.TestTools.Infrastructure.DataBaseConfig.Integration.Fixtures;
+namespace LoanManagementSystem.TestTools.Services.Infrastructure.DataBaseConfig.Integration.Fixtures;
 
 public class DatabaseFixture : IDisposable
 {

@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
-namespace LoanManagementSystem.TestTools.Infrastructure.DataBaseConfig.Integration.Fixtures;
+namespace LoanManagementSystem.TestTools.Services.Infrastructure.DataBaseConfig.Integration.Fixtures;
 
 public class ConfigurationFixture
 {

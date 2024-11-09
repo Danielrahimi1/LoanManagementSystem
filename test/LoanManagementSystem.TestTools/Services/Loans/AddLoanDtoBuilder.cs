@@ -1,7 +1,6 @@
-using LoanManagementSystem.Entities.Loans;
 using LoanManagementSystem.Services.Loans.Contracts.DTOs;
 
-namespace LoanManagementSystem.TestTools.Loans;
+namespace LoanManagementSystem.TestTools.Services.Loans;
 
 public class AddLoanDtoBuilder
 {

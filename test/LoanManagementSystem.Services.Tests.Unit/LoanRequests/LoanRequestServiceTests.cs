@@ -8,11 +8,11 @@ using LoanManagementSystem.Services.LoanRequests.Contracts.DTOs;
 using LoanManagementSystem.Services.LoanRequests.Contracts.Interfaces;
 using LoanManagementSystem.Services.LoanRequests.Exceptions;
 using LoanManagementSystem.Services.Loans.Exceptions;
-using LoanManagementSystem.TestTools.Customers;
-using LoanManagementSystem.TestTools.Infrastructure.DataBaseConfig.Integration;
-using LoanManagementSystem.TestTools.Installments;
-using LoanManagementSystem.TestTools.LoanRequests;
-using LoanManagementSystem.TestTools.Loans;
+using LoanManagementSystem.TestTools.Services.Customers;
+using LoanManagementSystem.TestTools.Services.Infrastructure.DataBaseConfig.Integration;
+using LoanManagementSystem.TestTools.Services.Installments;
+using LoanManagementSystem.TestTools.Services.LoanRequests;
+using LoanManagementSystem.TestTools.Services.Loans;
 
 namespace LoanManagementSystem.Services.Tests.Unit.LoanRequests;
 

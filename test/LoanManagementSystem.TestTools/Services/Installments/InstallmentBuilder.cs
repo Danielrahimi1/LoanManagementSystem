@@ -1,7 +1,7 @@
 using LoanManagementSystem.Entities.Installments;
 using LoanManagementSystem.Entities.LoanRequests;
 
-namespace LoanManagementSystem.TestTools.Installments;
+namespace LoanManagementSystem.TestTools.Services.Installments;
 
 public class InstallmentBuilder
 {
