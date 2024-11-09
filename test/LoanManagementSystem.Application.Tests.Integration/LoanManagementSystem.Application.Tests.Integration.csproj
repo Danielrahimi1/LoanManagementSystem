@@ -27,10 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Installments\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\src\LoanManagementSystem.Application\LoanManagementSystem.Application.csproj" />
       <ProjectReference Include="..\LoanManagementSystem.TestTools\LoanManagementSystem.TestTools.csproj" />
     </ItemGroup>

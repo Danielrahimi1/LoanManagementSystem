@@ -24,9 +24,7 @@ public class PayInstallmentCommandHandler(
             {
                 Charge = -payment // discharge :)
             });
-            
             await loanRequestService.Close(cmd.LoanRequestId);
-            
             await unitOfWork.Commit();
         }
         catch (Exception)
