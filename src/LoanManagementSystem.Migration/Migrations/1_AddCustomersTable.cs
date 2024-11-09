@@ -14,12 +14,12 @@ public class AddCustomersTable : FluentMigrator.Migration
             .WithColumn("NationalId").AsString(10).NotNullable()
             .WithColumn("PhoneNumber").AsString(11).NotNullable()
             .WithColumn("Email").AsString(320).NotNullable()
-            .WithColumn("Balance").AsDecimal(19,4).NotNullable()
+            .WithColumn("Balance").AsDecimal(19,6).NotNullable()
             .WithColumn("IsVerified").AsBoolean().NotNullable()
             // .WithColumn("CreditScore").AsInt32().NotNullable()
             .WithColumn("JobType").AsInt32().NotNullable()
             .WithColumn("IncomeGroup").AsInt32().NotNullable()
-            .WithColumn("NetWorth").AsDecimal().NotNullable();
+            .WithColumn("NetWorth").AsDecimal(19,6).NotNullable();
     }
 
     public override void Down()

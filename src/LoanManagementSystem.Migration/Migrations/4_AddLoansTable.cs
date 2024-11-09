@@ -10,7 +10,7 @@ public class AddLoansTable : FluentMigrator.Migration
     {
         Create.Table("Loans")
             .WithColumn("Id").AsInt32().PrimaryKey().Identity()
-            .WithColumn("Amount").AsDecimal(19, 4).NotNullable()
+            .WithColumn("Amount").AsDecimal(19, 6).NotNullable()
             .WithColumn("InstallmentCount").AsInt32().NotNullable()
             .WithColumn("AnnualInterestRate").AsInt32().NotNullable();
     }

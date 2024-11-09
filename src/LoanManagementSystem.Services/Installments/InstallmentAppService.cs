@@ -22,7 +22,7 @@ public class InstallmentAppService(
         installment.PaymentDate = DateOnly.FromDateTime(DateTime.UtcNow);
         if (installment.PaymentDeadLine < installment.PaymentDate)
         {
-            installment.Fine = installment.Amount * 0.02M;
+            installment.Fine = installment.Amount *0.02M;
         }
 
         installmentRepository.Update(installment);
