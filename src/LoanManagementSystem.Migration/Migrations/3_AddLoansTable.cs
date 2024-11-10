@@ -3,7 +3,7 @@ using FluentMigrator;
 
 namespace Migration.Migrations;
 
-[Migration(4)]
+[Migration(3)]
 public class AddLoansTable : FluentMigrator.Migration
 {
     public override void Up()

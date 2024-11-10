@@ -3,7 +3,7 @@ using FluentMigrator;
 
 namespace Migration.Migrations;
 
-[Migration(5)]
+[Migration(4)]
 public class AddInstallmentsTable : FluentMigrator.Migration
 {
     public override void Up()
