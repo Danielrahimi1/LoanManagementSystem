@@ -17,8 +17,7 @@ public class CustomerBuilder
             PhoneNumber = "9001112233",
             Email = "name@domain.com",
             Balance = 0,
-            IsVerified = false,
-            // CreditScore = 0
+            IsVerified = false
         };
     }
 
@@ -63,12 +62,6 @@ public class CustomerBuilder
         _customer.IsVerified = value;
         return this;
     }
-
-    // public CustomerBuilder WithCreditScore(int value)
-    // {
-    //     _customer.CreditScore = value;
-    //     return this;
-    // }
 
     public CustomerBuilder WithIncomeGroup(IncomeGroup value)
     {

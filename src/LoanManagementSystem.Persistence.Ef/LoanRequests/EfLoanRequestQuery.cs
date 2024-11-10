@@ -59,7 +59,7 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                 Status = lr.Status.ToString(),
                 DelayInRepayment = lr.DelayInRepayment,
                 ConfirmationDate = lr.ConfirmationDate,
-                Rate = lr.Rate,
+                Rate = lr.Rate
             }).ToArrayAsync();
 
     public async Task<GetLoanRequestDto[]> GetAllActiveLoans() =>
@@ -72,7 +72,7 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                 Status = lr.Status.ToString(),
                 DelayInRepayment = lr.DelayInRepayment,
                 ConfirmationDate = lr.ConfirmationDate,
-                Rate = lr.Rate,
+                Rate = lr.Rate
             }).ToArrayAsync();
 
     public async Task<GetLoanRequestDto[]> GetAllDelayedLoans() =>
@@ -215,7 +215,7 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
                         PaymentDeadLine = i.PaymentDeadLine,
                         PaymentDate = null,
                         Fine = i.Fine
-                    }).ToArray(),
+                    }).ToArray()
                 }
             ).ToArrayAsync();
     }

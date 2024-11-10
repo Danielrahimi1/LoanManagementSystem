@@ -23,8 +23,7 @@ public class EfInstallmentQuery(EfDataContext context) : InstallmentQuery
                 PaymentDate = i.PaymentDate,
                 Fine = i.Fine
             }).FirstOrDefaultAsync();
-
-
+    
     public async Task<GetInstallmentDto[]> GetAll() =>
         await (from i in context.Set<Installment>()
             select new GetInstallmentDto
@@ -116,13 +115,13 @@ public class EfInstallmentQuery(EfDataContext context) : InstallmentQuery
 
     public async Task<GetMonthlyIncomeDto[]> GetAllIncome() =>
         await (from i in context.Set<Installment>()
-            where i.PaymentDate.HasValue
-            group i by i.PaymentDate.Value.Month
-            into g
-            select new GetMonthlyIncomeDto
-            {
-                Interest = g.Sum(i => i.MonthlyInterest),
-                Fine = g.Sum(i => i.Fine)
-            }
-        ).ToArrayAsync();
+                where i.PaymentDate.HasValue
+                group i by i.PaymentDate.Value.Month
+                into g
+                select new GetMonthlyIncomeDto
+                {
+                    Interest = g.Sum(i => i.MonthlyInterest),
+                    Fine = g.Sum(i => i.Fine)
+                }
+            ).ToArrayAsync();
 }

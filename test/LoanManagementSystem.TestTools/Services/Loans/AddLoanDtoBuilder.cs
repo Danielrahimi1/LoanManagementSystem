@@ -27,8 +27,6 @@ public class AddLoanDtoBuilder
         return this;
     }
 
-    public AddLoanDto Build()
-    {
-        return _loan;
-    }
+    public AddLoanDto Build() => _loan;
+    
 }

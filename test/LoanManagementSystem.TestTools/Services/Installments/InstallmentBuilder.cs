@@ -55,8 +55,5 @@ public class InstallmentBuilder
         return this;
     }
 
-    public Installment Build()
-    {
-        return _installment;
-    }
+    public Installment Build() => _installment;
 }

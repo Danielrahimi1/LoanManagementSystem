@@ -16,12 +16,10 @@ public class LoanRequestBuilder
             Id = 0,
             LoanId = 0,
             CustomerId = 0,
-            Status = (LoanRequestStatus)0,
+            Status = 0,
             DelayInRepayment = false,
             Rate = 0,
-            ConfirmationDate = null,
-            Customer = null,
-            Installments = null
+            ConfirmationDate = null
         };
     }
 

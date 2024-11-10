@@ -20,7 +20,6 @@ public class CustomerEntityMap : IEntityTypeConfiguration<Customer>
         builder.Property(customer => customer.JobType).IsRequired(false);
         builder.Property(customer => customer.IncomeGroup).IsRequired(false);
         builder.Property(customer => customer.NetWorth).IsRequired(false);
-
         builder.HasMany(customer => customer.LoanRequests)
             .WithOne(loanRequest => loanRequest.Customer)
             .HasForeignKey(lr => lr.CustomerId)

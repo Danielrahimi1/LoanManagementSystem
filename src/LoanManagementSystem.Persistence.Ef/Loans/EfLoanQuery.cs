@@ -14,7 +14,7 @@ public class EfLoanQuery(EfDataContext context) : LoanQuery
             {
                 Amount = loan.Amount,
                 InstallmentCount = loan.InstallmentCount,
-                AnnualInterestRate = loan.AnnualInterestRate,
+                AnnualInterestRate = loan.AnnualInterestRate
             }).FirstOrDefaultAsync();
 
     public async Task<GetLoanDto[]> GetAll() =>
@@ -23,7 +23,7 @@ public class EfLoanQuery(EfDataContext context) : LoanQuery
             {
                 Amount = loan.Amount,
                 InstallmentCount = loan.InstallmentCount,
-                AnnualInterestRate = loan.AnnualInterestRate,
+                AnnualInterestRate = loan.AnnualInterestRate
             }).ToArrayAsync();
 
     public async Task<GetLoanDto[]> GetAllShortPeriod() =>
@@ -33,7 +33,7 @@ public class EfLoanQuery(EfDataContext context) : LoanQuery
             {
                 Amount = loan.Amount,
                 InstallmentCount = loan.InstallmentCount,
-                AnnualInterestRate = loan.AnnualInterestRate,
+                AnnualInterestRate = loan.AnnualInterestRate
             }).ToArrayAsync();
 
     public async Task<GetLoanDto[]> GetAllLongPeriod() =>
@@ -43,6 +43,6 @@ public class EfLoanQuery(EfDataContext context) : LoanQuery
             {
                 Amount = loan.Amount,
                 InstallmentCount = loan.InstallmentCount,
-                AnnualInterestRate = loan.AnnualInterestRate,
+                AnnualInterestRate = loan.AnnualInterestRate
             }).ToArrayAsync();
 }

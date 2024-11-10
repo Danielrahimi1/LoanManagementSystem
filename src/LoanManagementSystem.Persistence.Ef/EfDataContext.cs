@@ -8,10 +8,10 @@ namespace LoanManagementSystem.Persistence.Ef;
 
 public class EfDataContext(DbContextOptions<EfDataContext> options) : DbContext(options)
 {
-    public DbSet<Customer> Customers { get; set; }
-    public DbSet<Loan> Loans { get; set; }
-    public DbSet<LoanRequest> LoanRequests { get; set; }
-    public DbSet<Installment> Installments { get; set; }
+    public DbSet<Customer> Customers { get; init; }
+    public DbSet<Loan> Loans { get; init; }
+    public DbSet<LoanRequest> LoanRequests { get; init; }
+    public DbSet<Installment> Installments { get; init; }
 
     public EfDataContext(
         string connectionString)

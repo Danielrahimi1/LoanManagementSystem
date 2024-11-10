@@ -34,8 +34,6 @@ public class LoanBuilder
         return this;
     }
 
-    public Loan Build()
-    {
-        return _loan;
-    }
+    public Loan Build() => _loan;
+    
 }
