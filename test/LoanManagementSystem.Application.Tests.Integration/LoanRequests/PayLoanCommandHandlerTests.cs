@@ -43,7 +43,6 @@ public class PayLoanCommandHandlerTests : BusinessIntegrationTest
         Save(lr);
         var cmd = new ActivateLoanRequestCommand
         {
-            LoanId = loan.Id,
             CustomerId = customer.Id,
             LoanRequestId = lr.Id
         };

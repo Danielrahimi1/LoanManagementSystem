@@ -13,10 +13,7 @@ public class Customer
     public required string PhoneNumber { get; set; }
     public required string Email { get; set; }
     public decimal Balance { get; set; }
-
     public bool IsVerified { get; set; }
-
-    // public int CreditScore { get; set; }
     public JobType JobType { get; set; }
     public IncomeGroup IncomeGroup { get; set; }
     public decimal NetWorth { get; set; }

@@ -2,7 +2,6 @@ namespace LoanManagementSystem.Application.LoanRequests.Handlers.PayLoans.Contra
 
 public class ActivateLoanRequestCommand
 {
-    public int LoanId { get; set; }
-    public int CustomerId { get; set; }
-    public int LoanRequestId { get; set; }
+    public required int CustomerId { get; init; }
+    public required int LoanRequestId { get; init; }
 }

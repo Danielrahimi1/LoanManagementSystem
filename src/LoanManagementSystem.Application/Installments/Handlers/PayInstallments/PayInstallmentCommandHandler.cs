@@ -22,7 +22,7 @@ public class PayInstallmentCommandHandler(
             var payment = await installmentService.Pay(cmd.LoanRequestId);
             await customerService.Charge(cmd.CustomerId, new UpdateBalanceDto
             {
-                Charge = -payment // discharge :)
+                Charge = -payment
             });
             await loanRequestService.Close(cmd.LoanRequestId);
             await unitOfWork.Commit();

@@ -23,16 +23,15 @@ public class PayInstallmentCommandHandlerTests : BusinessIntegrationTest
     private readonly Mock<CustomerService> _customerService;
     private readonly Mock<LoanRequestService> _loanRequestService;
     private readonly Mock<InstallmentService> _installmentService;
-    private readonly Mock<UnitOfWork> _unitOfWork;
 
     public PayInstallmentCommandHandlerTests()
     {
         _customerService = new Mock<CustomerService>();
         _loanRequestService = new Mock<LoanRequestService>();
         _installmentService = new Mock<InstallmentService>();
-        _unitOfWork = new Mock<UnitOfWork>();
+        Mock<UnitOfWork> unitOfWork = new();
         _sut = PayInstallmentHandlerFactory.CreateHandler(SetupContext,
-            _customerService.Object, _loanRequestService.Object, _installmentService.Object, _unitOfWork.Object);
+            _customerService.Object, _loanRequestService.Object, _installmentService.Object, unitOfWork.Object);
     }
     
     [Fact]

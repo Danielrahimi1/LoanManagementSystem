@@ -2,6 +2,6 @@ namespace LoanManagementSystem.Application.Installments.Handlers.PayInstallments
 
 public class PayInstallmentCommand
 {
-    public int CustomerId { get; set; }
-    public int LoanRequestId { get; set; }
+    public required int CustomerId { get; init; }
+    public required int LoanRequestId { get; init; }
 }
