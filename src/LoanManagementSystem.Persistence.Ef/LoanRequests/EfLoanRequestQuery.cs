@@ -200,14 +200,14 @@ public class EfLoanRequestQuery(EfDataContext context) : LoanRequestQuery
         return await (from lr in context.Set<LoanRequest>()
                 where lr.Status == LoanRequestStatus.Active
                 join i in context.Set<Installment>() on lr.Id equals i.LoanRequestId
-                group i by lr into g
+                group i by lr
+                into g
                 select new GetRemainingLoanDto
                 {
                     Status = g.Key.Status.ToString(),
                     IsDelayed = g.Key.DelayInRepayment,
-                    TotalPaid = g.Where(i => i.PaymentDate != null).Sum(i=>i.Amount+i.Fine+i.MonthlyInterest),
-                    Installments = g.Where(i => i.PaymentDate == null).
-                        Select(i => new GetInstallmentDto
+                    TotalPaid = g.Where(i => i.PaymentDate != null).Sum(i => i.Amount + i.Fine + i.MonthlyInterest),
+                    Installments = g.Where(i => i.PaymentDate == null).Select(i => new GetInstallmentDto
                     {
                         LoanRequestId = i.LoanRequestId,
                         Amount = i.Amount,

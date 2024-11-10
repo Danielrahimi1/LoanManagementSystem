@@ -49,7 +49,7 @@ public class CustomersController(CustomerService service, CustomerQuery query) :
         var customers = await query.GetRiskyCustomersWithStatement();
         return Ok(customers);
     }
-    
+
     [HttpPost("register/")]
     public async Task<IActionResult> Register([FromBody] AddCustomerDto dto)
     {

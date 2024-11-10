@@ -161,7 +161,7 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
         var i1 = new InstallmentBuilder().WithFine(1).WithLoanRequest(lr1).Build(); // -5
         var i2 = new InstallmentBuilder().WithFine(1).WithLoanRequest(lr1).Build(); // -5
         var i3 = new InstallmentBuilder().WithFine(1).WithLoanRequest(lr1).Build(); // -5
-        Save(i1,i2,i3);
+        Save(i1, i2, i3);
         var dto = new AddLoanRequestDto
         {
             LoanId = loan.Id,
@@ -473,7 +473,7 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
 
         await expected.Should().ThrowExactlyAsync<LoanRequestMustBeActiveException>();
     }
-    
+
     [Fact]
     public async Task Close_not_close_loan_request_when_loan_request_have_unpaid_installment()
     {
@@ -484,13 +484,13 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
         Save(lr);
         var i1 = new InstallmentBuilder().WithLoanRequest(lr).Build();
         Save(i1);
-        
+
         await _sut.Close(lr.Id);
 
         var actual = ReadContext.Set<LoanRequest>().Single();
         actual.Status.Should().Be(LoanRequestStatus.Active);
     }
-    
+
     [Fact]
     public async Task Close_close_loan_request_when_loan_request_installments_are_paid()
     {
@@ -500,9 +500,9 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
             .WithCustomerId(c1.Id).WithStatus(LoanRequestStatus.Active).Build();
         Save(lr);
         var i1 = new InstallmentBuilder()
-            .WithPaymentDate(new DateOnly(2024,1,1)).WithLoanRequest(lr).Build();
+            .WithPaymentDate(new DateOnly(2024, 1, 1)).WithLoanRequest(lr).Build();
         Save(i1);
-        
+
         await _sut.Close(lr.Id);
 
         var actual = ReadContext.Set<LoanRequest>().Single();

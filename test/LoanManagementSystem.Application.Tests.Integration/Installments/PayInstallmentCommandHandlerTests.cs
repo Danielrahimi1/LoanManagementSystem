@@ -33,7 +33,7 @@ public class PayInstallmentCommandHandlerTests : BusinessIntegrationTest
         _sut = PayInstallmentHandlerFactory.CreateHandler(SetupContext,
             _customerService.Object, _loanRequestService.Object, _installmentService.Object, unitOfWork.Object);
     }
-    
+
     [Fact]
     public async Task PayLoan_add_loan_amount_to_customer_balance_when_loan_requests_activated()
     {
@@ -56,9 +56,9 @@ public class PayInstallmentCommandHandlerTests : BusinessIntegrationTest
             LoanRequestId = lr.Id
         };
         _installmentService.Setup(s => s.Pay(It.IsAny<int>())).ReturnsAsync(It.IsAny<decimal>());
-        
+
         await _sut.Handle(cmd);
-        
+
         _installmentService.Verify(s => s.Pay(It.IsAny<int>()));
         _customerService.Verify(s => s.Charge(It.IsAny<int>(), It.Is<UpdateBalanceDto>(dto =>
             dto.Charge == It.IsAny<decimal>())));

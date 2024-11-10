@@ -28,5 +28,4 @@ public class AddLoanDtoBuilder
     }
 
     public AddLoanDto Build() => _loan;
-    
 }

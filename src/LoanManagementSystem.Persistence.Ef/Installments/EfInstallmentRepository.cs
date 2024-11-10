@@ -18,7 +18,7 @@ public class EfInstallmentRepository(EfDataContext context) : InstallmentReposit
         await context.Set<Installment>().Where(i => i.LoanRequestId == loanRequestId)
             .OrderBy(i => i.PaymentDeadLine)
             .FirstOrDefaultAsync(i => i.PaymentDate == null);
-    
+
     public async Task<int> CountDelayedInstallments(int customerId) =>
         await (from c in context.Set<Customer>()
             where c.Id == customerId

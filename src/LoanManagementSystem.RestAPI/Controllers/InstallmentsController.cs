@@ -64,7 +64,7 @@ public class InstallmentsController(InstallmentQuery query, PayInstallmentHandle
         var lrs = await query.GetAllIncome();
         return Ok(lrs);
     }
-    
+
     [HttpPatch("pay/")]
     public async Task<IActionResult> Pay([FromBody] PayInstallmentCommand dto)
     {

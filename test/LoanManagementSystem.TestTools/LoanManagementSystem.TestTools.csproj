@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\LoanManagementSystem.Application\LoanManagementSystem.Application.csproj" />
+        <ProjectReference Include="..\..\src\LoanManagementSystem.Application\LoanManagementSystem.Application.csproj"/>
         <ProjectReference Include="..\..\src\LoanManagementSystem.Entities\LoanManagementSystem.Entities.csproj"/>
         <ProjectReference Include="..\..\src\LoanManagementSystem.Persistence.Ef\LoanManagementSystem.Persistence.Ef.csproj"/>
         <ProjectReference Include="..\..\src\LoanManagementSystem.Services\LoanManagementSystem.Services.csproj"/>
@@ -26,7 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Services\" />
+        <Folder Include="Services\"/>
     </ItemGroup>
 
 </Project>

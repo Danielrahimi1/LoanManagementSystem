@@ -23,7 +23,7 @@ public class EfInstallmentQuery(EfDataContext context) : InstallmentQuery
                 PaymentDate = i.PaymentDate,
                 Fine = i.Fine
             }).FirstOrDefaultAsync();
-    
+
     public async Task<GetInstallmentDto[]> GetAll() =>
         await (from i in context.Set<Installment>()
             select new GetInstallmentDto

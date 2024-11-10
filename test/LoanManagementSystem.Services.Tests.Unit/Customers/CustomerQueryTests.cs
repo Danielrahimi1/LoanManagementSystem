@@ -209,11 +209,11 @@ public class CustomerQueryTests : BusinessIntegrationTest
         var lr1 = new LoanRequestBuilder().WithCustomerId(customer1.Id).Build();
         var lr2 = new LoanRequestBuilder().WithCustomerId(customer2.Id).Build();
         var lr3 = new LoanRequestBuilder().WithCustomerId(customer1.Id).Build();
-        Save(lr1,lr2,lr3);
+        Save(lr1, lr2, lr3);
         var in11 = new InstallmentBuilder().WithFine(0.01m).WithLoanRequest(lr1).Build();
         var in12 = new InstallmentBuilder().WithFine(0.01m).WithLoanRequest(lr2).Build();
         var in13 = new InstallmentBuilder().WithFine(0.01m).WithLoanRequest(lr3).Build();
-        Save(in11,in12,in13);
+        Save(in11, in12, in13);
 
         var actual = await _sut.GetRiskyCustomers();
 
@@ -256,11 +256,11 @@ public class CustomerQueryTests : BusinessIntegrationTest
         var lr1 = new LoanRequestBuilder().WithCustomerId(customer1.Id).Build();
         var lr2 = new LoanRequestBuilder().WithCustomerId(customer1.Id).Build();
         var lr3 = new LoanRequestBuilder().WithCustomerId(customer2.Id).Build();
-        Save(lr1,lr2,lr3);
+        Save(lr1, lr2, lr3);
         var in1 = new InstallmentBuilder().WithFine(0.01m).WithLoanRequest(lr1).Build();
         var in2 = new InstallmentBuilder().WithFine(0.01m).WithLoanRequest(lr2).Build();
         var in3 = new InstallmentBuilder().WithFine(0.01m).WithLoanRequest(lr3).Build();
-        Save(in1,in2,in3);
+        Save(in1, in2, in3);
         // lr1.Installments.UnionWith([in1]);
         // lr2.Installments.UnionWith([in2]);
         // lr3.Installments.UnionWith([in3]);

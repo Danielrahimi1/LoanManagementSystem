@@ -594,16 +594,19 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
         var actual = await _sut.GetAllRemainingLoans();
 
         actual.Should().HaveCount(1);
-        actual.Should().BeEquivalentTo([new
-        {
-            Status = LoanRequestStatus.Active.ToString(),
-            IsDelayed = lr1.DelayInRepayment,
-            TotalPaid = (i1.Fine + i1.Amount + i1.MonthlyInterest) +
-                        (i2.Fine + i2.Amount + i3.MonthlyInterest) +
-                        (i3.Fine + i2.Amount + i3.MonthlyInterest),
-        }]);
+        actual.Should().BeEquivalentTo([
+            new
+            {
+                Status = LoanRequestStatus.Active.ToString(),
+                IsDelayed = lr1.DelayInRepayment,
+                TotalPaid = (i1.Fine + i1.Amount + i1.MonthlyInterest) +
+                            (i2.Fine + i2.Amount + i3.MonthlyInterest) +
+                            (i3.Fine + i2.Amount + i3.MonthlyInterest),
+            }
+        ]);
         actual[0].Installments.Should().HaveCount(1);
-        actual[0].Installments.Should().BeEquivalentTo([new GetInstallmentDto
+        actual[0].Installments.Should().BeEquivalentTo([
+            new GetInstallmentDto
             {
                 LoanRequestId = i4.LoanRequestId,
                 Amount = i4.Amount,

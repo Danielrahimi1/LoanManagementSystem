@@ -33,15 +33,15 @@ public class InstallmentServiceTests : BusinessIntegrationTest
         Save(lr1);
         var i1 = new InstallmentBuilder()
             .WithLoanRequest(lr1)
-            .WithPaymentDeadLine(new DateOnly(2060,1,1)).Build();
+            .WithPaymentDeadLine(new DateOnly(2060, 1, 1)).Build();
         Save(i1);
-        
+
         await _sut.Pay(lr1.Id);
 
         var actual = ReadContext.Set<Installment>().Single();
         actual.PaymentDate.Should().Be(DateOnly.FromDateTime(DateTime.UtcNow));
     }
-    
+
     [Fact]
     public async Task Pay_find_installment_when_payment_deadline_is_less_than_payment_date()
     {
@@ -52,15 +52,15 @@ public class InstallmentServiceTests : BusinessIntegrationTest
         var i1 = new InstallmentBuilder()
             .WithLoanRequest(lr1)
             .WithAmount(100)
-            .WithPaymentDeadLine(new DateOnly(2020,1,1)).Build();
+            .WithPaymentDeadLine(new DateOnly(2020, 1, 1)).Build();
         Save(i1);
-        
+
         await _sut.Pay(lr1.Id);
         var actual = ReadContext.Set<Installment>().Single();
-        
+
         actual.Fine.Should().Be(2);
     }
-    
+
     [Fact]
     public async Task Pay_return_installment_cost_when_paid()
     {
@@ -72,11 +72,11 @@ public class InstallmentServiceTests : BusinessIntegrationTest
             .WithLoanRequest(lr1)
             .WithAmount(100)
             .WithMonthlyInterest(2)
-            .WithPaymentDeadLine(new DateOnly(2020,1,1)).Build();
+            .WithPaymentDeadLine(new DateOnly(2020, 1, 1)).Build();
         Save(i1);
-        
+
         var actual = await _sut.Pay(lr1.Id);
-        
+
         actual.Should().Be(100 + 2 + 2);
     }
 }

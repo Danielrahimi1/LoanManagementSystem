@@ -35,5 +35,4 @@ public class LoanBuilder
     }
 
     public Loan Build() => _loan;
-    
 }
