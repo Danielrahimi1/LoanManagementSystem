@@ -13,35 +13,6 @@ public class LoanRequestsController(
     LoanRequestQuery query,
     PayLoanHandler handler) : ControllerBase
 {
-    [HttpPost("{id:int}/open/")]
-    public async Task<IActionResult> Open([FromRoute] int id, [FromBody] AddLoanRequestDto dto)
-    {
-        await service.Open(id, dto);
-        return Ok();
-    }
-
-    [HttpPatch("{id:int}/accept/")]
-    public async Task<IActionResult> RegisterWithStatement([FromRoute] int id)
-    {
-        await service.Accept(id);
-        return Ok();
-    }
-
-    [HttpPatch("reject/{id:int}/")]
-    public async Task<IActionResult> Update([FromRoute] int id)
-    {
-        await service.Reject(id);
-        return Ok();
-    }
-
-    [HttpPatch("activate/")]
-    public async Task<IActionResult> Activate([FromBody] ActivateLoanRequestCommand dto)
-    {
-        await handler.Handle(dto);
-        return Ok();
-    }
-
-
     [HttpGet("{id:int}/")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
@@ -131,5 +102,33 @@ public class LoanRequestsController(
     {
         var lrs = await query.GetAllRemainingLoans();
         return Ok(lrs);
+    }
+
+    [HttpPost("open/{id:int}/")]
+    public async Task<IActionResult> Open([FromRoute] int id, [FromBody] AddLoanRequestDto dto)
+    {
+        await service.Open(id, dto);
+        return Ok();
+    }
+
+    [HttpPatch("accept/{id:int}/")]
+    public async Task<IActionResult> RegisterWithStatement([FromRoute] int id)
+    {
+        await service.Accept(id);
+        return Ok();
+    }
+
+    [HttpPatch("reject/{id:int}/")]
+    public async Task<IActionResult> Update([FromRoute] int id)
+    {
+        await service.Reject(id);
+        return Ok();
+    }
+
+    [HttpPatch("activate/")]
+    public async Task<IActionResult> Activate([FromBody] ActivateLoanRequestCommand dto)
+    {
+        await handler.Handle(dto);
+        return Ok();
     }
 }

@@ -8,27 +8,6 @@ namespace LoanManagementSystem.RestAPI.Controllers;
 [ApiController]
 public class LoansController(LoanService service, LoanQuery query) : ControllerBase
 {
-    [HttpPost("create/")]
-    public async Task<IActionResult> Create([FromBody] AddLoanDto dto)
-    {
-        await service.Create(dto);
-        return Ok();
-    }
-
-    [HttpPatch("update/{id:int}/")]
-    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateLoanDto dto)
-    {
-        await service.Update(id, dto);
-        return Ok();
-    }
-
-    [HttpPost("delete/{id:int}/")]
-    public async Task<IActionResult> Delete([FromRoute] int id)
-    {
-        await service.Delete(id);
-        return Ok();
-    }
-
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
@@ -55,5 +34,26 @@ public class LoansController(LoanService service, LoanQuery query) : ControllerB
     {
         var loans = await query.GetAllLongPeriod();
         return Ok(loans);
+    }
+
+    [HttpPost("create/")]
+    public async Task<IActionResult> Create([FromBody] AddLoanDto dto)
+    {
+        await service.Create(dto);
+        return Ok();
+    }
+
+    [HttpPatch("update/{id:int}/")]
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateLoanDto dto)
+    {
+        await service.Update(id, dto);
+        return Ok();
+    }
+
+    [HttpDelete("delete/{id:int}/")]
+    public async Task<IActionResult> Delete([FromRoute] int id)
+    {
+        await service.Delete(id);
+        return Ok();
     }
 }

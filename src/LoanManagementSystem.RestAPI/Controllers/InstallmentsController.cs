@@ -9,13 +9,6 @@ namespace LoanManagementSystem.RestAPI.Controllers;
 [ApiController]
 public class InstallmentsController(InstallmentQuery query, PayInstallmentHandler handler) : ControllerBase
 {
-    [HttpPatch("pay/")]
-    public async Task<IActionResult> Pay([FromBody] PayInstallmentCommand dto)
-    {
-        await handler.Handle(dto);
-        return Ok();
-    }
-
     [HttpGet("{id:int}/")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
@@ -70,5 +63,12 @@ public class InstallmentsController(InstallmentQuery query, PayInstallmentHandle
     {
         var lrs = await query.GetAllIncome();
         return Ok(lrs);
+    }
+    
+    [HttpPatch("pay/")]
+    public async Task<IActionResult> Pay([FromBody] PayInstallmentCommand dto)
+    {
+        await handler.Handle(dto);
+        return Ok();
     }
 }

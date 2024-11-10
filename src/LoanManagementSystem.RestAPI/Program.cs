@@ -7,20 +7,21 @@ using LoanManagementSystem.Persistence.Ef.Customers;
 using LoanManagementSystem.Persistence.Ef.Installments;
 using LoanManagementSystem.Persistence.Ef.LoanRequests;
 using LoanManagementSystem.Persistence.Ef.Loans;
+using LoanManagementSystem.Persistence.Ef.UnitOfWorks;
 using LoanManagementSystem.Services.Customers;
 using LoanManagementSystem.Services.Customers.Contracts.Interfaces;
+using LoanManagementSystem.Services.Installments;
 using LoanManagementSystem.Services.Installments.Contracts.Interfaces;
 using LoanManagementSystem.Services.LoanRequests;
 using LoanManagementSystem.Services.LoanRequests.Contracts.Interfaces;
 using LoanManagementSystem.Services.Loans;
 using LoanManagementSystem.Services.Loans.Contracts.Interfaces;
+using LoanManagementSystem.Services.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -28,19 +29,26 @@ builder.Services.AddDbContext<EfDataContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<CustomerService, CustomerAppService>();
-builder.Services.AddScoped<CustomerQuery, EfCustomerQuery>();
-builder.Services.AddScoped<LoanService, LoanAppService>();
+builder.Services.AddScoped<UnitOfWork, EfUnitOfWork>();
+builder.Services.AddScoped<LoanRepository, EfLoanRepository>();
+builder.Services.AddScoped<CustomerRepository, EfCustomerRepository>();
+builder.Services.AddScoped<LoanRequestRepository, EfLoanRequestRepository>();
+builder.Services.AddScoped<InstallmentRepository, EfInstallmentRepository>();
+
 builder.Services.AddScoped<LoanQuery, EfLoanQuery>();
-builder.Services.AddScoped<InstallmentQuery, EfInstallmentQuery>();
-builder.Services.AddScoped<PayInstallmentHandler, PayInstallmentCommandHandler>();
-builder.Services.AddScoped<LoanRequestService, LoanRequestAppService>();
+builder.Services.AddScoped<CustomerQuery, EfCustomerQuery>();
 builder.Services.AddScoped<LoanRequestQuery, EfLoanRequestQuery>();
+builder.Services.AddScoped<InstallmentQuery, EfInstallmentQuery>();
+
+builder.Services.AddScoped<LoanService, LoanAppService>();
+builder.Services.AddScoped<CustomerService, CustomerAppService>();
+builder.Services.AddScoped<LoanRequestService, LoanRequestAppService>();
+builder.Services.AddScoped<InstallmentService, InstallmentAppService>();
 builder.Services.AddScoped<PayLoanHandler, PayLoanCommandHandler>();
+builder.Services.AddScoped<PayInstallmentHandler, PayInstallmentCommandHandler>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

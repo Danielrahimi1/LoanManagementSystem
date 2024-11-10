@@ -8,48 +8,6 @@ namespace LoanManagementSystem.RestAPI.Controllers;
 [ApiController]
 public class CustomersController(CustomerService service, CustomerQuery query) : ControllerBase
 {
-    [HttpPost("register/")]
-    public async Task<IActionResult> Register([FromBody] AddCustomerDto dto)
-    {
-        await service.Register(dto);
-        return Ok();
-    }
-
-    [HttpPost("register_statement/")]
-    public async Task<IActionResult> RegisterWithStatement([FromBody] AddCustomerWithStatementDto dto)
-    {
-        await service.RegisterWithStatement(dto);
-        return Ok();
-    }
-
-    [HttpPatch("update/{id:int}/")]
-    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCustomerDto dto)
-    {
-        await service.Update(id, dto);
-        return Ok();
-    }
-
-    [HttpPatch("charge/{id:int}/")]
-    public async Task<IActionResult> Charge([FromRoute] int id, [FromBody] UpdateBalanceDto dto)
-    {
-        await service.Charge(id, dto);
-        return Ok();
-    }
-
-    [HttpPatch("verify_manually/{id:int}/")]
-    public async Task<IActionResult> VerifyManually([FromRoute] int id)
-    {
-        await service.VerifyManually(id);
-        return Ok();
-    }
-
-    [HttpDelete("delete/{id:int}/")]
-    public async Task<IActionResult> Delete([FromRoute] int id)
-    {
-        await service.Delete(id);
-        return Ok();
-    }
-
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
@@ -90,5 +48,47 @@ public class CustomersController(CustomerService service, CustomerQuery query) :
     {
         var customers = await query.GetRiskyCustomersWithStatement();
         return Ok(customers);
+    }
+    
+    [HttpPost("register/")]
+    public async Task<IActionResult> Register([FromBody] AddCustomerDto dto)
+    {
+        await service.Register(dto);
+        return Ok();
+    }
+
+    [HttpPost("register_statement/")]
+    public async Task<IActionResult> RegisterWithStatement([FromBody] AddCustomerWithStatementDto dto)
+    {
+        await service.RegisterWithStatement(dto);
+        return Ok();
+    }
+
+    [HttpPatch("update/{id:int}/")]
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCustomerDto dto)
+    {
+        await service.Update(id, dto);
+        return Ok();
+    }
+
+    [HttpPatch("charge/{id:int}/")]
+    public async Task<IActionResult> Charge([FromRoute] int id, [FromBody] UpdateBalanceDto dto)
+    {
+        await service.Charge(id, dto);
+        return Ok();
+    }
+
+    [HttpPatch("verify_manually/{id:int}/")]
+    public async Task<IActionResult> VerifyManually([FromRoute] int id)
+    {
+        await service.VerifyManually(id);
+        return Ok();
+    }
+
+    [HttpDelete("delete/{id:int}/")]
+    public async Task<IActionResult> Delete([FromRoute] int id)
+    {
+        await service.Delete(id);
+        return Ok();
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LoanManagementSystem.Persistence.Ef;
 
-public class EfDataContext : DbContext
+public class EfDataContext(DbContextOptions<EfDataContext> options) : DbContext(options)
 {
     public DbSet<Customer> Customers { get; set; }
     public DbSet<Loan> Loans { get; set; }
@@ -17,12 +17,6 @@ public class EfDataContext : DbContext
         string connectionString)
         : this(new DbContextOptionsBuilder<EfDataContext>()
             .UseSqlServer(connectionString).Options)
-    {
-    }
-
-    public EfDataContext(
-        DbContextOptions<EfDataContext> options)
-        : base(options)
     {
     }
 
