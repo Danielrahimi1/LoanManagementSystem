@@ -12,7 +12,7 @@ using LoanManagementSystem.Services.UnitOfWorks;
 
 namespace LoanManagementSystem.Services.Customers;
 
-public partial class CustomerAppService(
+public class CustomerAppService(
     CustomerRepository customerRepository,
     LoanRequestRepository loanRequestRepository,
     UnitOfWork unitOfWork
@@ -180,7 +180,5 @@ public partial class CustomerAppService(
     }
 
     private static bool IsNationalIdValid(string nationalId) =>
-        MyRegex().IsMatch(nationalId);
-    [GeneratedRegex(@"^\d{10}\b")]
-    private static partial Regex MyRegex();
+        Regex.IsMatch(nationalId, @"^\d{10}\b");
 }
