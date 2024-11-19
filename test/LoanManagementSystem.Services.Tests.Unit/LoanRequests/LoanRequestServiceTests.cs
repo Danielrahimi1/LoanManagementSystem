@@ -200,7 +200,6 @@ public class LoanRequestServiceTests : BusinessIntegrationTest
             .WithCustomerId(customer.Id)
             .Build(); // +30
         Save(lr1, lr2, lr3, lr4);
-        // customer.LoanRequests.UnionWith([lr1, lr2, lr3, lr4]);
         var i1 = new InstallmentBuilder().WithFine(1).WithLoanRequest(lr1).Build(); // -5
         var i2 = new InstallmentBuilder().WithFine(1).WithLoanRequest(lr1).Build(); // -5
         var i3 = new InstallmentBuilder().WithFine(1).WithLoanRequest(lr1).Build(); // -5

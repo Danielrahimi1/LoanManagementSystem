@@ -56,8 +56,8 @@ public class InstallmentServiceTests : BusinessIntegrationTest
         Save(i1);
 
         await _sut.Pay(lr1.Id);
+        
         var actual = ReadContext.Set<Installment>().Single();
-
         actual.Fine.Should().Be(2);
     }
 

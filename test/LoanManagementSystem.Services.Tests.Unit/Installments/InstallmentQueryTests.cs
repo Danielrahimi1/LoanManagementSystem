@@ -1,7 +1,6 @@
 using FluentAssertions;
 using LoanManagementSystem.Entities.LoanRequests.Enums;
 using LoanManagementSystem.Persistence.Ef.Installments;
-using LoanManagementSystem.Services.Installments.Contracts.DTOs;
 using LoanManagementSystem.Services.Installments.Contracts.Interfaces;
 using LoanManagementSystem.TestTools.Services.Customers;
 using LoanManagementSystem.TestTools.Services.Infrastructure.DataBaseConfig.Integration;
@@ -335,7 +334,7 @@ public class InstallmentQueryTests : BusinessIntegrationTest
             new
             {
                 Interest = i3.MonthlyInterest,
-                Fine = i3.Fine
+                i3.Fine
             }
         ]);
     }

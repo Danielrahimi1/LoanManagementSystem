@@ -147,8 +147,7 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
         Save(customer1, customer2);
 
         var actual = await _sut.GetAllAcceptLoans();
-
-        // actual.Should().Satisfy(lr => lr.Status == LoanRequestStatus.Active.ToString());
+        
         actual.Should().HaveCount(2);
         actual.Should().BeEquivalentTo([
             new GetLoanRequestDto
@@ -188,7 +187,6 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
 
         var actual = await _sut.GetAllActiveLoans();
 
-        // actual.Should().Satisfy(lr => lr.Status == LoanRequestStatus.Active.ToString());
         actual.Should().HaveCount(2);
         actual.Should().BeEquivalentTo([
             new GetLoanRequestDto
@@ -273,7 +271,6 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
 
         var actual = await _sut.GetAllClosedLoans();
 
-        // actual.Should().Satisfy(lr => lr.Status == LoanRequestStatus.Active.ToString());
         actual.Should().HaveCount(2);
         actual.Should().BeEquivalentTo([
             new GetLoanRequestDto
@@ -372,7 +369,6 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
 
         var actual = await _sut.GetAllAcceptLoansWithCustomer();
 
-        // actual.Should().Satisfy(lr => lr.Status == LoanRequestStatus.Active.ToString());
         actual.Should().HaveCount(2);
         actual.Should().BeEquivalentTo([
             new GetLoanRequestWithCustomerDto
@@ -421,7 +417,6 @@ public class LoanRequestQueryTests : BusinessIntegrationTest
 
         var actual = await _sut.GetAllActiveLoansWithCustomer();
 
-        // actual.Should().Satisfy(lr => lr.Status == LoanRequestStatus.Active.ToString());
         actual.Should().HaveCount(2);
         actual.Should().BeEquivalentTo([
             new GetLoanRequestWithCustomerDto

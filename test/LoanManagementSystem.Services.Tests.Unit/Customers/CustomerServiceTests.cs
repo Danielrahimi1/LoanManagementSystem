@@ -141,8 +141,8 @@ public class CustomerServiceTests : BusinessIntegrationTest
         Save(customer1);
 
         await _sut.VerifyManually(customer1.Id);
+        
         var actual = ReadContext.Set<Customer>().Single();
-
         actual.IsVerified.Should().Be(true);
     }
 
@@ -167,7 +167,6 @@ public class CustomerServiceTests : BusinessIntegrationTest
             .WithNationalId("1234567899").WithPhoneNumber("09001239876")
             .WithEmail("john@outlook.com").WithBalance(26)
             .WithIsVerified(true)
-            // .WithCreditScore(90)
             .WithIncomeGroup(IncomeGroup.MoreThanTen).WithJobType(JobType.SelfEmployed)
             .WithNetWorth(15644).Build();
         var customer2 = new CustomerBuilder()
@@ -175,7 +174,6 @@ public class CustomerServiceTests : BusinessIntegrationTest
             .WithNationalId("1234567898").WithPhoneNumber("09001234321")
             .WithEmail("jacob@outlook.com").WithBalance(34)
             .WithIsVerified(true)
-            // .WithCreditScore(89)
             .WithIncomeGroup(IncomeGroup.MoreThanTen).WithJobType(JobType.UnEmployed)
             .WithNetWorth(18546).Build();
         Save(customer1, customer2);
@@ -194,7 +192,6 @@ public class CustomerServiceTests : BusinessIntegrationTest
 
         await _sut.Update(customer2.Id, dto);
         var actual = ReadContext.Set<Customer>();
-        // actual.Should().BeEquivalentTo([customer1, dto.As<Customer>()]);
         actual.Should().BeEquivalentTo([
             customer1,
             new Customer
@@ -222,8 +219,8 @@ public class CustomerServiceTests : BusinessIntegrationTest
         Save(customer1, customer2);
 
         await _sut.Delete(customer2.Id);
+        
         var expected = ReadContext.Set<Customer>().Single();
-
         expected.FirstName.Should().Be(customer1.FirstName);
     }
 
