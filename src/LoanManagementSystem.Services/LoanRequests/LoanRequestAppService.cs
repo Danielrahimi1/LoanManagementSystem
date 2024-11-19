@@ -27,22 +27,20 @@ public class LoanRequestAppService(
     public async Task Open(int customerId, AddLoanRequestDto dto)
     {
         var customer = await customerRepository.Find(customerId);
-        var loan = await loanRepository.Find(dto.LoanId);
         if (customer is null)
         {
             throw new CustomerNotFoundException();
         }
-
         if (!customer.IsVerified)
         {
             throw new CustomerNotVerifiedException();
         }
-
         if (await loanRequestRepository.HasActiveLoanRequests(customerId))
         {
             throw new CustomerHasActiveLoanRequestsException();
         }
-
+        
+        var loan = await loanRepository.Find(dto.LoanId);
         if (loan is null)
         {
             throw new LoanNotFoundException();
