@@ -12,7 +12,7 @@ using LoanManagementSystem.Services.UnitOfWorks;
 
 namespace LoanManagementSystem.Services.Customers;
 
-public class CustomerAppService(
+public partial class CustomerAppService(
     CustomerRepository customerRepository,
     LoanRequestRepository loanRequestRepository,
     UnitOfWork unitOfWork
@@ -41,11 +41,8 @@ public class CustomerAppService(
             Email = dto.Email,
             Balance = 0,
             IsVerified = false,
-            // CreditScore = 0,
             JobType = JobType.UnEmployed,
             IncomeGroup = IncomeGroup.LessThanFive,
-            NetWorth = 0,
-            LoanRequests = [],
         };
         await customerRepository.Add(customer);
         await unitOfWork.Save();
@@ -88,6 +85,7 @@ public class CustomerAppService(
 
     public async Task Verify(int id)
     {
+        // TODO: to be implemented by computer vision
         await Task.CompletedTask;
         throw new NotImplementedException();
     }
@@ -132,14 +130,7 @@ public class CustomerAppService(
             {
                 throw new NationalIdDuplicateException();
             }
-
             customer.NationalId = dto.NationalId;
-        }
-
-        if (dto.Income is not null)
-        {
-            var income = dto.Income > 10 ? IncomeGroup.MoreThanTen :
-                dto.Income > 5 ? IncomeGroup.FiveUptoIncludingTen : IncomeGroup.LessThanFive;
         }
 
         customer.FirstName = dto.FirstName ?? customer.FirstName;
@@ -154,8 +145,7 @@ public class CustomerAppService(
             dto.Income > 10 ? IncomeGroup.MoreThanTen :
             dto.Income > 5 ? IncomeGroup.FiveUptoIncludingTen : IncomeGroup.LessThanFive;
         customer.NetWorth = dto.NetWorth ?? customer.NetWorth;
-
-        // customer.CreditScore= (int)customer.JobType + (int)customer.IncomeGroup;
+        
         customerRepository.Update(customer);
         await unitOfWork.Save();
     }
@@ -183,12 +173,14 @@ public class CustomerAppService(
         {
             _ = new MailAddress(email).Address;
         }
-        catch (Exception e)
+        catch (Exception)
         {
             throw new InvalidEmailException();
         }
     }
 
     private static bool IsNationalIdValid(string nationalId) =>
-        Regex.IsMatch(nationalId, @"^\d{10}\b");
+        MyRegex().IsMatch(nationalId);
+    [GeneratedRegex(@"^\d{10}\b")]
+    private static partial Regex MyRegex();
 }
