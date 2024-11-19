@@ -55,13 +55,14 @@ public class PayInstallmentCommandHandlerTests : BusinessIntegrationTest
             CustomerId = customer.Id,
             LoanRequestId = lr.Id
         };
-        _installmentService.Setup(s => s.Pay(It.IsAny<int>())).ReturnsAsync(It.IsAny<decimal>());
+        var charge = i1.Amount + i1.MonthlyInterest + i1.Fine;
+        _installmentService.Setup(s => s.Pay(cmd.LoanRequestId)).ReturnsAsync(charge);
 
         await _sut.Handle(cmd);
 
-        _installmentService.Verify(s => s.Pay(It.IsAny<int>()));
-        _customerService.Verify(s => s.Charge(It.IsAny<int>(), It.Is<UpdateBalanceDto>(dto =>
-            dto.Charge == It.IsAny<decimal>())));
-        _loanRequestService.Verify(s => s.Close(It.IsAny<int>()));
+        _installmentService.Verify(s => s.Pay(cmd.LoanRequestId));
+        _customerService.Verify(s => s.Charge(cmd.CustomerId, It.Is<UpdateBalanceDto>(dto =>
+            dto.Charge == -charge)));
+        _loanRequestService.Verify(s => s.Close(cmd.LoanRequestId));
     }
 }

@@ -46,12 +46,12 @@ public class PayLoanCommandHandlerTests : BusinessIntegrationTest
             CustomerId = customer.Id,
             LoanRequestId = lr.Id
         };
-        _loanRequestService.Setup(s => s.Activate(It.IsAny<int>())).ReturnsAsync(It.IsAny<decimal>());
+        _loanRequestService.Setup(s => s.Activate(cmd.LoanRequestId)).ReturnsAsync(loan.Amount);
 
         await _sut.Handle(cmd);
 
-        _loanRequestService.Verify(s => s.Activate(It.IsAny<int>()));
-        _customerService.Verify(s => s.Charge(It.IsAny<int>(), It.Is<UpdateBalanceDto>(dto =>
-            dto.Charge == It.IsAny<decimal>())));
+        _loanRequestService.Verify(s => s.Activate(cmd.LoanRequestId));
+        _customerService.Verify(s => s.Charge(cmd.CustomerId, It.Is<UpdateBalanceDto>(dto =>
+            dto.Charge == loan.Amount)));
     }
 }
