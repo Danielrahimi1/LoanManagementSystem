@@ -116,7 +116,7 @@ public class EfInstallmentQuery(EfDataContext context) : InstallmentQuery
     public async Task<GetMonthlyIncomeDto[]> GetAllIncome() =>
         await (from i in context.Set<Installment>()
                 where i.PaymentDate.HasValue
-                group i by i!.PaymentDate.Value.Month
+                group i by i.PaymentDate!.Value.Month
                 into g
                 select new GetMonthlyIncomeDto
                 {

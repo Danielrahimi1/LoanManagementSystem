@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using LoanManagementSystem.Services.Installments.Contracts.DTOs;
 
 namespace LoanManagementSystem.Services.LoanRequests.Contracts.DTOs;

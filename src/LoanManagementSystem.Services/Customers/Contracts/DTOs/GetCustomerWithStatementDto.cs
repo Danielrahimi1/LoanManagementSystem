@@ -7,10 +7,9 @@ public class GetCustomerWithStatementDto
     public required string NationalId { get; set; }
     public required string PhoneNumber { get; set; }
     public required string Email { get; set; }
-    public decimal Balance { get; set; }
-    public bool IsVerified { get; set; }
-    public int CreditScore { get; set; }
-    public string JobType { get; set; }
-    public string IncomeGroup { get; set; }
-    public decimal NetWorth { get; set; }
+    public required decimal Balance { get; set; }
+    public required bool IsVerified { get; set; }
+    public required string JobType { get; set; }
+    public required string IncomeGroup { get; set; }
+    public required decimal NetWorth { get; set; }
 }

@@ -14,5 +14,5 @@ public class GetLoanRequestWithCustomerDto
     public required int Rate { get; init; }
     public required string Status { get; set; }
     public required bool DelayInRepayment { get; set; }
-    public DateOnly? ConfirmationDate { get; set; }
+    public required DateOnly? ConfirmationDate { get; set; }
 }

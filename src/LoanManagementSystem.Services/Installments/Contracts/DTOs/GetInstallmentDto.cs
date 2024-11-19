@@ -8,6 +8,6 @@ public class GetInstallmentDto
     public required decimal Amount { get; init; }
     public required decimal MonthlyInterest { get; init; }
     public required DateOnly PaymentDeadLine { get; init; }
-    public DateOnly? PaymentDate { get; init; }
-    public decimal Fine { get; set; }
+    public required DateOnly? PaymentDate { get; init; }
+    public required decimal Fine { get; set; }
 }
