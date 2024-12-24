@@ -30,6 +30,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanManagementSystem.RestAPI", "src\LoanManagementSystem.RestAPI\LoanManagementSystem.RestAPI.csproj", "{9EC38B05-DE63-4E78-AAFB-5FCDD52FE2DD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{F56EA9A7-6B86-4D25-92F7-DB46DCCC438F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanManagementSystem.Contracts", "LoanManagementSystem.Contracts\LoanManagementSystem.Contracts.csproj", "{090B65F6-63ED-4132-8DBC-E2C33CE9F099}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,8 @@ Global
 		{943CA537-1142-43C0-99BF-1CADF3F0BD80} = {152E57D0-FBDA-4FEE-8099-52DE8ABC0B57}
 		{D3E47576-C562-4986-BD7B-D1892969E4B6} = {15E08323-4C2B-4FBD-A8F5-2464CDAF914A}
 		{9EC38B05-DE63-4E78-AAFB-5FCDD52FE2DD} = {D3E47576-C562-4986-BD7B-D1892969E4B6}
+		{F56EA9A7-6B86-4D25-92F7-DB46DCCC438F} = {15E08323-4C2B-4FBD-A8F5-2464CDAF914A}
+		{090B65F6-63ED-4132-8DBC-E2C33CE9F099} = {F56EA9A7-6B86-4D25-92F7-DB46DCCC438F}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{3C8514E4-B723-4E30-8A4A-5BD5226E463D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -91,5 +97,9 @@ Global
 		{9EC38B05-DE63-4E78-AAFB-5FCDD52FE2DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EC38B05-DE63-4E78-AAFB-5FCDD52FE2DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EC38B05-DE63-4E78-AAFB-5FCDD52FE2DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{090B65F6-63ED-4132-8DBC-E2C33CE9F099}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{090B65F6-63ED-4132-8DBC-E2C33CE9F099}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{090B65F6-63ED-4132-8DBC-E2C33CE9F099}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{090B65F6-63ED-4132-8DBC-E2C33CE9F099}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
