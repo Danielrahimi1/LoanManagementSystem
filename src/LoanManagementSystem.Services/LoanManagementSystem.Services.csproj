@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\LoanManagementSystem.Contracts\LoanManagementSystem.Contracts.csproj" />
         <ProjectReference Include="..\LoanManagementSystem.Entities\LoanManagementSystem.Entities.csproj"/>
     </ItemGroup>
 

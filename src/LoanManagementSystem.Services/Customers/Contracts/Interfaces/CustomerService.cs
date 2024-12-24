@@ -1,9 +1,10 @@
 using System.Threading.Tasks;
+using LoanManagementSystem.Contracts.Interfaces;
 using LoanManagementSystem.Services.Customers.Contracts.DTOs;
 
 namespace LoanManagementSystem.Services.Customers.Contracts.Interfaces;
 
-public interface CustomerService
+public interface CustomerService : Service
 {
     Task Register(AddCustomerDto dto);
     Task RegisterWithStatement(AddCustomerWithStatementDto dto);

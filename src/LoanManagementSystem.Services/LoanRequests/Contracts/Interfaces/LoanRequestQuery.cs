@@ -1,9 +1,10 @@
 using System.Threading.Tasks;
+using LoanManagementSystem.Contracts.Interfaces;
 using LoanManagementSystem.Services.LoanRequests.Contracts.DTOs;
 
 namespace LoanManagementSystem.Services.LoanRequests.Contracts.Interfaces;
 
-public interface LoanRequestQuery
+public interface LoanRequestQuery : Repository
 {
     Task<GetLoanRequestDto?> GetById(int id);
     Task<GetLoanRequestDto[]> GetAllByCustomer(int customerId);

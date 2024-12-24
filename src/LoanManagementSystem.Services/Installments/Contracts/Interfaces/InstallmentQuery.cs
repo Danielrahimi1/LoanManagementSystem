@@ -1,9 +1,10 @@
 using System.Threading.Tasks;
+using LoanManagementSystem.Contracts.Interfaces;
 using LoanManagementSystem.Services.Installments.Contracts.DTOs;
 
 namespace LoanManagementSystem.Services.Installments.Contracts.Interfaces;
 
-public interface InstallmentQuery
+public interface InstallmentQuery : Repository
 {
     Task<GetInstallmentDto?> GetById(int id);
     Task<GetInstallmentDto[]> GetAll();

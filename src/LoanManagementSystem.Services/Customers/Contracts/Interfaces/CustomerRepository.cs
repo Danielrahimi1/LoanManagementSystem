@@ -1,9 +1,10 @@
 using System.Threading.Tasks;
+using LoanManagementSystem.Contracts.Interfaces;
 using LoanManagementSystem.Entities.Customers;
 
 namespace LoanManagementSystem.Services.Customers.Contracts.Interfaces;
 
-public interface CustomerRepository
+public interface CustomerRepository : Repository
 {
     // Task<int> GetCreditScoreById(int id);
     Task Add(Customer customer);
