@@ -1,22 +1,10 @@
-using LoanManagementSystem.Application.Installments.Handlers.PayInstallments;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using LoanManagementSystem.Application.Installments.Handlers.PayInstallments.Contracts;
-using LoanManagementSystem.Application.LoanRequests.Handlers.PayLoans;
-using LoanManagementSystem.Application.LoanRequests.Handlers.PayLoans.Contracts;
+using LoanManagementSystem.Contracts.Interfaces;
 using LoanManagementSystem.Persistence.Ef;
-using LoanManagementSystem.Persistence.Ef.Customers;
-using LoanManagementSystem.Persistence.Ef.Installments;
-using LoanManagementSystem.Persistence.Ef.LoanRequests;
 using LoanManagementSystem.Persistence.Ef.Loans;
-using LoanManagementSystem.Persistence.Ef.UnitOfWorks;
-using LoanManagementSystem.Services.Customers;
 using LoanManagementSystem.Services.Customers.Contracts.Interfaces;
-using LoanManagementSystem.Services.Installments;
-using LoanManagementSystem.Services.Installments.Contracts.Interfaces;
-using LoanManagementSystem.Services.LoanRequests;
-using LoanManagementSystem.Services.LoanRequests.Contracts.Interfaces;
-using LoanManagementSystem.Services.Loans;
-using LoanManagementSystem.Services.Loans.Contracts.Interfaces;
-using LoanManagementSystem.Services.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +17,31 @@ builder.Services.AddDbContext<EfDataContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
+var applicationAssembly = typeof(PayInstallmentHandler).Assembly;
+var serviceAssembly = typeof(CustomerService).Assembly;
+var repositoryAssembly = typeof(EfLoanRepository).Assembly;
+
+
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+builder.Host.ConfigureContainer<ContainerBuilder>(b =>
+{
+    b.RegisterAssemblyTypes(applicationAssembly, serviceAssembly)
+        .AssignableTo<Service>()
+        .AsImplementedInterfaces()
+        .InstancePerLifetimeScope();
+    
+    b.RegisterAssemblyTypes(repositoryAssembly, serviceAssembly)
+        .AssignableTo<Repository>()
+        .AsImplementedInterfaces()
+        .InstancePerLifetimeScope();
+    
+    b.RegisterAssemblyTypes(repositoryAssembly, serviceAssembly)
+        .AssignableTo<IScope>()
+        .AsImplementedInterfaces()
+        .InstancePerLifetimeScope();
+});
+
+/*
 builder.Services.AddScoped<UnitOfWork, EfUnitOfWork>();
 builder.Services.AddScoped<LoanRepository, EfLoanRepository>();
 builder.Services.AddScoped<CustomerRepository, EfCustomerRepository>();
@@ -46,6 +59,7 @@ builder.Services.AddScoped<LoanRequestService, LoanRequestAppService>();
 builder.Services.AddScoped<InstallmentService, InstallmentAppService>();
 builder.Services.AddScoped<PayLoanHandler, PayLoanCommandHandler>();
 builder.Services.AddScoped<PayInstallmentHandler, PayInstallmentCommandHandler>();
+*/
 
 var app = builder.Build();
 
