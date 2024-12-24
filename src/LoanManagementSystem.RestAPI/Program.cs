@@ -1,10 +1,5 @@
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using LoanManagementSystem.Application.Installments.Handlers.PayInstallments.Contracts;
-using LoanManagementSystem.Contracts.Interfaces;
 using LoanManagementSystem.Persistence.Ef;
-using LoanManagementSystem.Persistence.Ef.Loans;
-using LoanManagementSystem.Services.Customers.Contracts.Interfaces;
+using LoanManagementSystem.RestAPI.Configs.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,29 +12,33 @@ builder.Services.AddDbContext<EfDataContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
-var applicationAssembly = typeof(PayInstallmentHandler).Assembly;
-var serviceAssembly = typeof(CustomerService).Assembly;
-var repositoryAssembly = typeof(EfLoanRepository).Assembly;
+builder.Host.AddAutofac();
+
+/*
+// var applicationAssembly = typeof(PayInstallmentHandler).Assembly;
+// var serviceAssembly = typeof(CustomerService).Assembly;
+// var repositoryAssembly = typeof(EfLoanRepository).Assembly;
 
 
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-builder.Host.ConfigureContainer<ContainerBuilder>(b =>
-{
-    b.RegisterAssemblyTypes(applicationAssembly, serviceAssembly)
-        .AssignableTo<Service>()
-        .AsImplementedInterfaces()
-        .InstancePerLifetimeScope();
-    
-    b.RegisterAssemblyTypes(repositoryAssembly, serviceAssembly)
-        .AssignableTo<Repository>()
-        .AsImplementedInterfaces()
-        .InstancePerLifetimeScope();
-    
-    b.RegisterAssemblyTypes(repositoryAssembly, serviceAssembly)
-        .AssignableTo<IScope>()
-        .AsImplementedInterfaces()
-        .InstancePerLifetimeScope();
-});
+// builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+// builder.Host.ConfigureContainer<ContainerBuilder>(b =>
+// {
+//     b.RegisterAssemblyTypes(applicationAssembly, serviceAssembly)
+//         .AssignableTo<Service>()
+//         .AsImplementedInterfaces()
+//         .InstancePerLifetimeScope();
+//     
+//     b.RegisterAssemblyTypes(repositoryAssembly, serviceAssembly)
+//         .AssignableTo<Repository>()
+//         .AsImplementedInterfaces()
+//         .InstancePerLifetimeScope();
+//     
+//     b.RegisterAssemblyTypes(repositoryAssembly, serviceAssembly)
+//         .AssignableTo<IScope>()
+//         .AsImplementedInterfaces()
+//         .InstancePerLifetimeScope();
+// });
+*/
 
 /*
 builder.Services.AddScoped<UnitOfWork, EfUnitOfWork>();
