@@ -10,10 +10,13 @@ namespace LoanManagementSystem.RestAPI.Configs.Services;
 public static class ConfigAutofac
 {
     public static void AddAutofac(
-        this ConfigureHostBuilder builder)
+        this ConfigureHostBuilder builder,
+        string connectionString)
     {
         builder.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-        
+        builder.ConfigureContainer<ContainerBuilder>(b =>
+                    b.RegisterModule(new AutofacBusinessModule(connectionString))
+                );
         var applicationAssembly = typeof(PayInstallmentHandler).Assembly;
         var serviceAssembly = typeof(CustomerService).Assembly;
         var repositoryAssembly = typeof(EfLoanRepository).Assembly;

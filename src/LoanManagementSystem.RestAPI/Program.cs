@@ -1,6 +1,4 @@
-using LoanManagementSystem.Persistence.Ef;
 using LoanManagementSystem.RestAPI.Configs.Services;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,11 +6,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<EfDataContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Host.AddAutofac(builder.Configuration.GetConnectionString("DefaultConnection")!);
 
-builder.Host.AddAutofac();
+// builder.Services.AddDbContext<EfDataContext>(options =>
+//     options.UseSqlServer(
+//         builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 /*
 // var applicationAssembly = typeof(PayInstallmentHandler).Assembly;
